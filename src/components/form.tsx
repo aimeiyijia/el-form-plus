@@ -2,32 +2,53 @@ import Vue, { VNode, CreateElement } from 'vue'
 import { Component, Prop, Emit, Watch } from 'vue-property-decorator'
 import omit from 'lodash/omit'
 // 样式
-import '../styles/index.scss'
+import './styles/index.scss'
 
 @Component
 export default class ElTableTs extends Vue {
 
   // form配置项相关
-  @Prop({ type: Array, default: () => {} }) readonly model!: any
+  @Prop({ type: Object, default: () => { } }) readonly model!: any
   // 表单校验规则
-  @Prop({ type: Array, default: () => {} }) readonly rules!: any
+  @Prop({ type: Object, default: () => { } }) readonly rules!: any
   // form配置项相关
-  @Prop({ type: Array, default: () => {} }) readonly attrs!: any
+  @Prop({ type: Object, default: () => { } }) readonly attrs!: any
 
   // 数据相关
   @Prop({ type: Array, default: () => [] }) readonly formItems!: any[]
 
-  created(){
-    console.log(this.data, '表单数据')
+  created() {
+    // console.log(this.model, '表单数据')
+    // console.log(this.rules, '表单检验规则')
+    // console.log(this.attrs, '表单配置项')
+    // console.log(this.formItems, '表单项')
   }
 
   render(h: CreateElement): VNode {
-    const data = this.data
+    const model = this.model
+    const formItems = this.formItems
 
-    const renderFormItem = function (){}
+    const renderFormItem = function () {
+
+      return formItems.map(o => {
+
+        const itemProp = omit(o, ['type', 'filed'])
+        console.log(itemProp, '单项配置')
+        console.log(o.filed, '单项')
+
+        return (<el-form-item props={itemProp}>
+          <el-input v-model={model.name}></el-input>
+        </el-form-item>)
+      })
+    }
 
     return (
-      <el-form ref="form" props={{ model: this.data }} label-width="80px"></el-form>
+      <el-form ref="form" props={{ model: this.model }} label-width="80px">
+        {/* <el-form-item label="活动名称">
+          <el-input v-model={model.name}></el-input>
+        </el-form-item> */}
+        {...renderFormItem()}
+      </el-form>
     )
   }
 }

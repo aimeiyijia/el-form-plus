@@ -15,7 +15,9 @@ export default {
   data() {
     return {
       // 表单数据对象
-      model: {},
+      model: {
+        name: '123',
+      },
       // 表单校验规则
       rules: {},
       // 表单配置
@@ -24,12 +26,17 @@ export default {
       formItems: [
         {
           type: 'input',
+          filed: 'name',
           label: '测试',
           ref: 'test',
-          filed: 'testValue',
         },
       ],
     }
+  },
+  created() {
+    setTimeout(() => {
+      console.log('model: ', this.model)
+    }, 5000)
   },
   methods: {},
 }
