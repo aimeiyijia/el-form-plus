@@ -8,10 +8,14 @@ import '../styles/index.scss'
 export default class ElTableTs extends Vue {
 
   // form配置项相关
-  @Prop({ type: Array, default: () => [] }) readonly form!: any[]
+  @Prop({ type: Array, default: () => {} }) readonly model!: any
+  // 表单校验规则
+  @Prop({ type: Array, default: () => {} }) readonly rules!: any
+  // form配置项相关
+  @Prop({ type: Array, default: () => {} }) readonly attrs!: any
 
   // 数据相关
-  @Prop({ type: Array, default: () => [] }) readonly data!: any[]
+  @Prop({ type: Array, default: () => [] }) readonly formItems!: any[]
 
   created(){
     console.log(this.data, '表单数据')
