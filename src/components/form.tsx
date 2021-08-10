@@ -37,16 +37,18 @@ export default class ElTableTs extends Vue {
         console.log(o.filed, '单项')
 
         return (<el-form-item props={itemProp}>
-          <el-input v-model={model.name}></el-input>
+          {/* <el-input vModel_trim={inputValue}/> */}
+          <el-input value={model.name}
+            on-input={(val: any) => model.name = val.trim()}></el-input>
         </el-form-item>)
       })
     }
 
     return (
       <el-form ref="form" props={{ model: this.model }} label-width="80px">
-        {/* <el-form-item label="活动名称">
-          <el-input v-model={model.name}></el-input>
-        </el-form-item> */}
+        <el-form-item label="活动名称">
+          <el-input vModel_trim={model.name}></el-input>
+        </el-form-item>
         {...renderFormItem()}
       </el-form>
     )
