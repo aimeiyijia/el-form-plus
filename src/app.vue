@@ -1,11 +1,6 @@
 <template>
   <div id="app">
-    <el-form-plus
-      :model="model"
-      :rules="rules"
-      :attrs="formAttrs"
-      :form-items="formItems"
-    ></el-form-plus>
+    <el-form-plus :config="config" :options="options"></el-form-plus>
   </div>
 </template>
 
@@ -14,29 +9,32 @@ export default {
   name: 'app',
   data() {
     return {
-      // 表单数据对象
-      model: {
-        name: '123',
-      },
-      // 表单校验规则
-      rules: {},
-      // 表单配置
-      formAttrs: {},
+      // 表单整体配置
+      config: {},
+
       // 表单项配置
-      formItems: [
+      options: [
         {
+          // 类型 必需
           type: 'input',
-          filed: 'name',
-          label: '测试',
+          // 表单项绑定的值 必需
+          field: 'name',
+          // vue ref属性 必需且尽量唯一 利用此属性来查找某一组件
           ref: 'test',
+          // 表单项是否隐藏 默认为false
+          hidden: false,
+          // el-form-item配置项 可选
+          config: {
+            label: '测试：',
+          },
         },
       ],
     }
   },
   created() {
-    setTimeout(() => {
-      console.log('model: ', this.model)
-    }, 5000)
+    // setTimeout(() => {
+    //   console.log('model: ', this.model)
+    // }, 5000)
   },
   methods: {},
 }

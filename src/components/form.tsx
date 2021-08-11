@@ -4,49 +4,65 @@ import omit from 'lodash/omit'
 // 样式
 import './styles/index.scss'
 
+import Input from './modules/input'
+
 @Component
 export default class ElTableTs extends Vue {
+  // 表单整体配置
+  @Prop({ type: Object, default: () => { } }) readonly config!: any
 
-  // form配置项相关
-  @Prop({ type: Object, default: () => { } }) readonly model!: any
-  // 表单校验规则
-  @Prop({ type: Object, default: () => { } }) readonly rules!: any
-  // form配置项相关
-  @Prop({ type: Object, default: () => { } }) readonly attrs!: any
+  // 单个表单配置项组成的表单项渲染规则
+  @Prop({ type: Array, default: () => [] }) readonly options!: any[]
 
-  // 数据相关
-  @Prop({ type: Array, default: () => [] }) readonly formItems!: any[]
+  private model = {
+    name: 123
+  }
 
   created() {
-    // console.log(this.model, '表单数据')
-    // console.log(this.rules, '表单检验规则')
-    // console.log(this.attrs, '表单配置项')
-    // console.log(this.formItems, '表单项')
+    // console.log(this.config, '表单配置项')
+    // console.log(this.options, '表单项配置项')
   }
 
   render(h: CreateElement): VNode {
-    const model = this.model
-    const formItems = this.formItems
+    let value = '1'
+    // 渲染表单项
+    const renderSingleForm = (singleFormOption: any) => {
 
-    const renderFormItem = function () {
+      let { field } = singleFormOption
+      console.log(field, '值')
+      console.log(this.model[field], '值')
+      return (
+        <Input {...{ props: { config: singleFormOption, model: this.model } }}></Input>
+      )
 
-      return formItems.map(o => {
+    }
 
-        const itemProp = omit(o, ['type', 'filed'])
-        console.log(itemProp, '单项配置')
-        console.log(o.filed, '单项')
+    // 渲染 el-form-item
+    const renderFormItem = () => {
+      const options = this.options
+
+      return options.map(o => {
+
+        // 剥离出el-form-item相关的配置
+        const singleFormOption = omit(o, ['config'])
+        const { config: itemProp } = o
+        // console.log(itemProp, '单项配置')
 
         return (
           <el-form-item {...{ props: itemProp }}>
-            <el-input
-              value={model[o.filed]}
-              on-input={(val: any) => model[o.filed] = val} />
-          </el-form-item>)
+            {renderSingleForm(singleFormOption)}
+          </el-form-item>
+        )
       })
     }
 
     return (
-      <el-form ref="form" model={this.model} label-width="80px">
+      <el-form ref="form" {...{
+        // 为了解决 Invalid handler for event "input": got undefined’
+        props: {
+          model: this.model,
+        }
+      }} label-width="80px">
         {renderFormItem()}
       </el-form>
     )
