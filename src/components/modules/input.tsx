@@ -5,22 +5,23 @@ import { Component, Prop, Emit, Watch } from 'vue-property-decorator'
 export default class ElTableTs extends Vue {
 
   // 表单整体配置
-  @Prop({ type: Object, default: () => { } }) readonly config!: any
+  // @Prop({ type: Object, default: () => { } }) readonly props!: any
 
-  @Prop({ type: Object, default: () => { } }) readonly model!: any
+  // @Prop({ type: Object, default: () => { } }) readonly model!: any
 
-  created(){
+  // private test = ''
+
+  mounted() {
     console.log(this, 'input实例')
+    console.log(this.$attrs, 'attrs')
+    console.log(this.$listeners, 'listeners')
   }
 
   render(h: CreateElement): VNode {
-
-
-
-
-
-    return  <el-input
-             value={this.model[this.config.field]}
-            on-input={(val) => {this.model[this.config.field] = val}} />
+    return <el-input
+      value={this.$attrs.value}
+      on-input={(val: any) => { this.$emit('input', val) }}
+      {...{ on: this.$listeners }}
+    />
   }
 }
