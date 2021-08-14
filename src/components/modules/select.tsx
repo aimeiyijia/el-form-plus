@@ -2,7 +2,7 @@ import Vue, { VNode, CreateElement } from 'vue'
 import { Component, Prop, Emit, Watch } from 'vue-property-decorator'
 
 @Component
-export default class Select extends Vue {
+export default class SelectPlus extends Vue {
   mounted() {
     console.log(this.$attrs, 'attrs')
     console.log(this.$listeners, 'listeners')
@@ -12,7 +12,7 @@ export default class Select extends Vue {
     const renderOptions = () => {
       const { options } = this.$attrs
       console.log(options)
-      return options.map(o => {
+      return (options as any).map((o: any) => {
         const { label, value } = o
         return <el-option key={value} label={label} value={value}></el-option>
       })

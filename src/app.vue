@@ -11,20 +11,22 @@ export default {
     return {
       // 表单整体配置
       config: {
-        labelWidth: '240px',
+        labelWidth: '60px',
       },
 
       // 表单项配置
       options: [
         {
           // 表单项渲染类型 必需
-          type: 'input',
+          type: 'Input',
           // 表单是否隐藏 默认为false（控制的是el-form-item）
           hidden: false,
           // 表单项的配置项
           attrs: {
+            type: 'text',
             // 表单项绑定的值（字段名） 必需
             field: 'name',
+            suffixIcon: "el-icon-date",
             // 初始值
             value: '',
           },
@@ -37,6 +39,8 @@ export default {
               console.log('input事件')
             },
           },
+          // 插槽
+          scopedSlots: { customRender: 'handle' },
           // el-form-item配置项 可选
           config: {
             // vue ref属性 默认为field 利用此属性来查找某一组件
@@ -47,7 +51,7 @@ export default {
         },
         {
           // 表单项渲染类型 必需
-          type: 'select',
+          type: 'Select',
           // 表单是否隐藏 默认为false（控制的是el-form-item）
           hidden: false,
           // 表单项的配置项
@@ -100,9 +104,9 @@ export default {
   },
   created() {
     // const timer = setTimeout(() => {
-    //   this.options[0].attrs.value = '值变化'
-    //   console.log('model: ', this.options)
-    //   clearTimeout(timer)
+    //   // this.options[0].attrs.value = '值变化'
+    //   // console.log('model: ', this.options)
+    //   // clearTimeout(timer)
     // }, 3000)
   },
   methods: {},
@@ -110,8 +114,11 @@ export default {
 </script>
 <style lang="scss">
 html,
-body,
-#app {
+body {
   height: 100%;
+}
+#app {
+  height: calc(100% - 48px);
+  padding: 24px;
 }
 </style>

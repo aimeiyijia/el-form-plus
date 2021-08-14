@@ -2,7 +2,7 @@ import Vue, { VNode, CreateElement } from 'vue'
 import { Component, Prop, Emit, Watch } from 'vue-property-decorator'
 
 @Component
-export default class ElTableTs extends Vue {
+export default class InputPlus extends Vue {
 
   mounted() {
     console.log(this, 'input实例')
@@ -13,8 +13,6 @@ export default class ElTableTs extends Vue {
   render(h: CreateElement): VNode {
     return (
       <el-input
-        ref={this.$attrs.ref}
-        type={this.$attrs.type}
         on-input={(val: any) => {
           this.$emit('input', val)
         }}

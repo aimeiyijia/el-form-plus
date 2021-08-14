@@ -27,6 +27,7 @@ export default class ElTableTs extends Vue {
     // console.log(this.config, '表单配置项')
     // console.log(this.options, '表单项配置项')
     // this.optionsChange()
+    console.log(this, 'form')
   }
   // 监听options 仅就表单项配置而言 options会是个一维数组
   // 先从option中取出所有的field字段 组成model
@@ -51,7 +52,6 @@ export default class ElTableTs extends Vue {
 
     // 渲染表单项
     const renderSingleForm = (singleFormAttrs: any) => {
-      console.log(singleFormAttrs, '单个表单配置项')
 
       let { type, attrs, on } = singleFormAttrs
       const { field } = attrs
@@ -72,8 +72,6 @@ export default class ElTableTs extends Vue {
         } else {
           console.error(`field='${field}'中input必须是函数`)
         }
-
-        console.log(Object.fromEntries(this.model), '表单值')
 
         // fix 无法监听Map的变更
         this.$forceUpdate()
@@ -103,11 +101,14 @@ export default class ElTableTs extends Vue {
 
         // 剥离掉el-form-item相关的配置
         const singleFormAttrs = omit(o, ['hidden', 'config'])
-        const { config: itemProp } = o
-        console.log(itemProp, 'el-form-item配置')
+        const { config } = o
+        const { ref } = config
+        const itemProp = omit(config, ['ref'])
+
+        console.log(itemProp, 'el-form-item配置项')
 
         return (
-          <el-form-item {...{ props: itemProp }}>
+          <el-form-item {...{ props: itemProp }} ref={ref}>
             {renderSingleForm(singleFormAttrs)}
           </el-form-item>
         )
