@@ -1,4 +1,4 @@
-import { radio } from '../modules'
+import { radio, input, Select } from '../modules'
 const vnodes = {
   radio: radio,
   radiobutton: '',
@@ -6,9 +6,9 @@ const vnodes = {
   checkbox: '',
   checkboxbutton: '',
   checkboxgroup: '',
-  input: '',
+  input: input,
   inputnumber: '',
-  select: '',
+  select: Select,
   cascader: '',
   Switch: '',
   Slider: '',
