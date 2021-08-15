@@ -53,12 +53,11 @@ export default class ElTableTs extends Vue {
     // 渲染表单项
     const renderSingleForm = (singleFormAttrs: any) => {
 
-      let { type, attrs, on } = singleFormAttrs
+      let { type, attrs, on, scopedSlots } = singleFormAttrs
       const { field } = attrs
 
-      // 剩余配置
+      // 剥离掉内置的配置项
       const otherAttrs = omit(attrs, ['field', 'value'])
-
       // 表单input event
       const onInput = (val: any) => {
         // 设置新值
@@ -88,6 +87,7 @@ export default class ElTableTs extends Vue {
         <SComponent
           value={value}
           on-input={onInput}
+          {...{ scopedSlots }}
           {...{ attrs: otherAttrs }}
           {...{ on: ons }} />
       )
