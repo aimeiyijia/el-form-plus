@@ -1,4 +1,5 @@
 import {
+  AutocompletePlus,
   CascaderPlus,
   CheckBoxPlus,
   ColorPickerPlus,
@@ -16,6 +17,7 @@ import {
   UploadPlus,
 } from '../modules'
 const vnodes = {
+  Autocomplete: AutocompletePlus,
   Cascader: CascaderPlus,
   CheckBox: CheckBoxPlus,
   ColorPicker: ColorPickerPlus,

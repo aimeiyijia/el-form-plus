@@ -1,3 +1,4 @@
+import AutocompletePlus from './autocomplete'
 import CascaderPlus from './cascader'
 import CheckBoxPlus from './check-box'
 import ColorPickerPlus from './color-picker'
@@ -15,6 +16,7 @@ import TransferPlus from './transfer'
 import UploadPlus from './upload'
 
 export {
+  AutocompletePlus,
   CascaderPlus,
   CheckBoxPlus,
   ColorPickerPlus,
