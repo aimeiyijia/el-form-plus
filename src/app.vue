@@ -188,24 +188,24 @@ export default {
               },
             ],
             // select options
-            // options: [
-            //   {
-            //     value: 'Chengdu',
-            //     label: '成都',
-            //   },
-            //   {
-            //     value: 'Shenzhen',
-            //     label: '深圳',
-            //   },
-            //   {
-            //     value: 'Guangzhou',
-            //     label: '广州',
-            //   },
-            //   {
-            //     value: 'Dalian',
-            //     label: '大连',
-            //   },
-            // ],
+            options: [
+              {
+                value: 'Chengdu1',
+                label: '成都',
+              },
+              {
+                value: 'Shenzhen1',
+                label: '深圳',
+              },
+              {
+                value: 'Guangzhou1',
+                label: '广州',
+              },
+              {
+                value: 'Dalian1',
+                label: '大连',
+              },
+            ],
           },
           // 表单项事件
           on: {

@@ -26,22 +26,24 @@ export default class SelectPlus extends Vue {
       return options.map((o: any) => {
         const { value, slot } = o
         console.log(slot, '567')
-        return <el-option key={value} {...{ props: o }}>{slot({attr: o})}</el-option>
+        return <el-option key={value} {...{ props: o }}>{slot ? slot({ attr: o }) : ''}</el-option>
       })
     }
     const renderGroupOption = () => {
       const { groupOptions, options } = this.$attrs
+      let optionEl: any = []
       // groupOptions只要存在，就渲染分组select
       if (groupOptions) {
-        return (groupOptions as any).map((o: any) => {
+        (groupOptions as any).forEach((o: any) => {
           const { options: gOptions } = o
           // 除options之外的配置项均为group参数
           const restAttrs = omit(o, 'options')
 
-          return <el-option-group {...{ props: restAttrs }}>{renderOptions(gOptions)}</el-option-group>
+          const el = <el-option-group {...{ props: restAttrs }}>{renderOptions(gOptions)}</el-option-group>
+          optionEl.push(el)
         })
       }
-      return renderOptions(options)
+      return optionEl.concat(renderOptions(options))
     }
     return (
       <elSelect
