@@ -48,7 +48,6 @@ export default class SelectPlus extends Vue {
     return (
       <elSelect
         ref={this.$attrs.ref}
-        type={this.$attrs.type}
         on-input={(val: any) => {
           this.$emit('input', val)
         }}
