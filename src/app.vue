@@ -194,13 +194,21 @@ export default {
             field: 'fav',
             // 初始值
             value: 1,
-
-            // groupOptions: [{ label: '', options: [{ type: '' }] }],
-            // select options
+            size: 'mini',
+            border: true,
+            // radio group
+            // groupOptions渲染优先，该配置项只要存在且不为false,那么就优先渲染组radio
+            groupOptions: [
+              // 即可整体设置属性，也可单项设置属性(此时整体设置优先)
+              { label: '备选项1', value: 1, size: 'medium', border: true },
+              { label: '备选项2', value: 2, size: 'small', border: true },
+              { label: '备选项3', value: 3, border: true },
+            ],
+            // radio options
             options: [
-              // isBtn: false
-              { label: '备选项1', value: 1 },
-              { label: '备选项2', value: 2 },
+              // 即可整体设置属性，也可单项设置属性(此时单项设置优先)
+              { label: '备选项1', value: 1, size: 'medium', border: true },
+              { label: '备选项2', value: 2, size: 'small', border: true },
               { label: '备选项3', value: 3 },
             ],
           },
@@ -217,7 +225,7 @@ export default {
           config: {
             // vue ref属性 默认为field 利用此属性来查找某一组件
             ref: 'age',
-            label: 'select：',
+            label: 'radio：',
             // labelWidth: '120px',
           },
         },

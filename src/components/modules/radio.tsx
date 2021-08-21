@@ -15,44 +15,53 @@ export default class RadioPlus extends Vue {
 
   render(h: CreateElement): VNode {
     // 取出radio渲染数组
-    const { options } = this.$attrs
-    // 获取出除options之外的配置项
-    const attrs = omit(this.$attrs, ['options'])
-    console.log(attrs, '值')
+    const { groupOptions, options } = this.$attrs
+    // 获取出除groupOptions, options之外的配置项
+    const attrs = omit(this.$attrs, ['groupOptions', 'options'])
+
+    console.log(attrs, '配置项')
+    // 单选框组
     const renderOptions = () => {
-      // 为了保持统一，需要交换下label与value
-      const { options } = this.$attrs
       return (options as any).map((o: any) => {
         const { label, value } = o
+        const restAttrs = omit(o, ['label', 'value'])
+        console.log(restAttrs, '123')
         return (
           <el-radio
             on-input={(val: any) => {
               this.$emit('input', val)
             }}
-            value={attrs.value}
-            {...{ props: {label: value}, on: this.$listeners}}
+            {...{ props: { ...attrs, label: value, ...restAttrs }, on: this.$listeners }}
           >
             {label}
           </el-radio>
         )
       })
     }
-    // const renderGroupOption = () => {
-    //   const { groupOptions, options } = this.$attrs
-    //   let optionEl: any = []
-    //   // groupOptions只要存在，就渲染分组select
-    //   if (groupOptions) {
-    //     (groupOptions as any).forEach((o: any) => {
-    //       const { options: gOptions } = o
-    //       // 除options之外的配置项均为group参数
-    //       const restAttrs = omit(o, 'options')
 
-    //       const el = <el-radio-group {...{ props: restAttrs }}>{renderOptions(gOptions)}</el-radio-group>
-    //       optionEl.push(el)
-    //     })
-    //   }
-    //   return optionEl.concat(renderOptions(options))
-    // }
-    return <fragment>{renderOptions()}</fragment>
+    // 单选框组
+    const renderGroupOption = () => {
+      const radios = (groupOptions as any).map((o: any) => {
+        const { label, value } = o
+        const restAttrs = omit(o, ['label', 'value'])
+        return <el-radio {...{ props: { label: value, ...restAttrs } }} size="small">{label}</el-radio>
+      })
+      return (
+        <el-radio-group
+          on-input={(val: any) => {
+            this.$emit('input', val)
+          }}
+          {...{ props: { ...attrs }, on: this.$listeners }}>
+          {radios}
+        </el-radio-group>
+      )
+
+    }
+
+    const checkRenderType = () => {
+      if(groupOptions) return renderGroupOption()
+      return renderOptions()
+    }
+    return <fragment>{checkRenderType()}</fragment>
   }
 }
