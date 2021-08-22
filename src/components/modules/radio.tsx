@@ -69,10 +69,9 @@ export default class RadioPlus extends Vue {
 
     }
 
-    const checkRenderType = () => {
-      if (groupOptions) return renderGroupOption()
-      return renderOptions()
+    const renderRadios = () => {
+      return renderOptions().concat(renderGroupOption())
     }
-    return <fragment>{checkRenderType()}</fragment>
+    return <fragment>{renderRadios()}</fragment>
   }
 }
