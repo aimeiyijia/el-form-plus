@@ -18,6 +18,7 @@ export default class RadioPlus extends Vue {
     const { groupOptions, options, type } = this.$attrs
     // 获取出除groupOptions, options之外的配置项
     const attrs = omit(this.$attrs, ['groupOptions', 'options', 'type'])
+    const { groupChange, singleChange } = this.$listeners
 
     let RadioType = 'el-radio'
     if (type) RadioType = 'el-radio-' + type
@@ -38,7 +39,7 @@ export default class RadioPlus extends Vue {
             on-input={(val: any) => {
               this.$emit('input', val)
             }}
-            {...{ props: { ...attrs, label: value, ...restAttrs }, on: this.$listeners }}
+            {...{ props: { ...attrs, label: value, ...restAttrs }, on: { change: singleChange } }}
           >
             {label}
           </RadioTypeChild>
@@ -55,14 +56,14 @@ export default class RadioPlus extends Vue {
         if (type === "button") { RadioTypeChild = 'el-radio-button' }
         else if (!type) { RadioTypeChild = RadioType }
         else { RadioTypeChild = 'el-radio' }
-        return <RadioTypeChild {...{ props: { label: value, ...restAttrs } }} size="small">{label}</RadioTypeChild>
+        return <RadioTypeChild {...{ props: { label: value, ...restAttrs } }}>{label}</RadioTypeChild>
       })
       return (
         <el-radio-group
           on-input={(val: any) => {
             this.$emit('input', val)
           }}
-          {...{ props: { ...attrs }, on: this.$listeners }}>
+          {...{ props: { ...attrs }, on: { change: groupChange } }}>
           {radios}
         </el-radio-group>
       )
