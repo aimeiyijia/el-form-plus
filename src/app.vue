@@ -245,9 +245,62 @@ export default {
         //     // labelWidth: '120px',
         //   },
         // },
+        // {
+        //   // 表单项渲染类型 必需
+        //   type: 'CheckBox',
+        //   // 表单是否隐藏 默认为false（控制的是el-form-item）
+        //   hidden: false,
+        //   // 表单项的配置项
+        //   attrs: {
+        //     // 表单项绑定的值（字段名） 必需
+        //     field: 'fav',
+        //     // 初始值
+        //     value: [1],
+        //     // 具有渲染优先性
+        //     // type: 'button',
+        //     // radio group
+        //     // groupOptions渲染优先，该配置项只要存在且不为false,那么就优先渲染组radio
+        //     groupOptions: [
+        //       // 即可整体设置属性，也可单项设置属性(此时整体设置优先)
+        //       {
+        //         label: '备选项1',
+        //         value: 1,
+        //       },
+        //       {
+        //         label: '备选项2',
+        //         value: 2,
+        //       },
+        //       { label: '备选项3', value: 3 },
+        //     ],
+        //     // radio options
+        //     options: [
+        //       // 即可整体设置属性，也可单项设置属性(此时单项设置优先)
+        //       { label: '单备选项', value: 4 },
+        //     ],
+        //   },
+        //   // 表单项事件
+        //   on: {
+        //     input: () => {
+        //       console.log('input值发生变化')
+        //     },
+        //     groupChange: val => {
+        //       console.log('group change值发生变化', val)
+        //     },
+        //     singleChange: val => {
+        //       console.log('single change值发生变化', val)
+        //     },
+        //   },
+        //   // el-form-item配置项 可选
+        //   config: {
+        //     // vue ref属性 默认为field 利用此属性来查找某一组件
+        //     ref: 'age',
+        //     label: 'radio：',
+        //     // labelWidth: '120px',
+        //   },
+        // },
         {
           // 表单项渲染类型 必需
-          type: 'CheckBox',
+          type: 'InputNumber',
           // 表单是否隐藏 默认为false（控制的是el-form-item）
           hidden: false,
           // 表单项的配置项
@@ -255,47 +308,24 @@ export default {
             // 表单项绑定的值（字段名） 必需
             field: 'fav',
             // 初始值
-            value: [1],
-            // 具有渲染优先性
-            // type: 'button',
-            // radio group
-            // groupOptions渲染优先，该配置项只要存在且不为false,那么就优先渲染组radio
-            groupOptions: [
-              // 即可整体设置属性，也可单项设置属性(此时整体设置优先)
-              {
-                label: '备选项1',
-                value: 1,
-              },
-              {
-                label: '备选项2',
-                value: 2,
-              },
-              { label: '备选项3', value: 3 },
-            ],
-            // radio options
-            options: [
-              // 即可整体设置属性，也可单项设置属性(此时单项设置优先)
-              { label: '单备选项', value: 4 },
-            ],
+            value: 10,
+            controlsPosition: 'right',
           },
           // 表单项事件
           on: {
             input: () => {
               console.log('input值发生变化')
             },
-            groupChange: val => {
-              console.log('group change值发生变化', val)
-            },
-            singleChange: val => {
-              console.log('single change值发生变化', val)
+            change: () => {
+              console.log('change值发生变化')
             },
           },
           // el-form-item配置项 可选
           config: {
             // vue ref属性 默认为field 利用此属性来查找某一组件
             ref: 'age',
-            label: 'radio：',
-            // labelWidth: '120px',
+            label: 'inputnumber：',
+            labelWidth: '120px',
           },
         },
       ],
