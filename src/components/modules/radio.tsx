@@ -15,26 +15,33 @@ export default class RadioPlus extends Vue {
 
   render(h: CreateElement): VNode {
     // 取出radio渲染数组
-    const { groupOptions, options } = this.$attrs
+    const { groupOptions, options, type } = this.$attrs
     // 获取出除groupOptions, options之外的配置项
-    const attrs = omit(this.$attrs, ['groupOptions', 'options'])
+    const attrs = omit(this.$attrs, ['groupOptions', 'options', 'type'])
+
+    let RadioType = 'el-radio'
+    if (type) RadioType = 'el-radio-' + type
 
     console.log(attrs, '配置项')
-    // 单选框组
+    // 单选框
     const renderOptions = () => {
       return (options as any).map((o: any) => {
-        const { label, value } = o
-        const restAttrs = omit(o, ['label', 'value'])
+        const { label, value, type } = o
+        const restAttrs = omit(o, ['label', 'value', 'type'])
+        let RadioTypeChild = 'el-radio'
+        if (type === "button") { RadioTypeChild = 'el-radio-button' }
+        else if (!type) { RadioTypeChild = RadioType }
+        else { RadioTypeChild = 'el-radio' }
         console.log(restAttrs, '123')
         return (
-          <el-radio
+          <RadioTypeChild
             on-input={(val: any) => {
               this.$emit('input', val)
             }}
             {...{ props: { ...attrs, label: value, ...restAttrs }, on: this.$listeners }}
           >
             {label}
-          </el-radio>
+          </RadioTypeChild>
         )
       })
     }
@@ -42,9 +49,13 @@ export default class RadioPlus extends Vue {
     // 单选框组
     const renderGroupOption = () => {
       const radios = (groupOptions as any).map((o: any) => {
-        const { label, value } = o
-        const restAttrs = omit(o, ['label', 'value'])
-        return <el-radio {...{ props: { label: value, ...restAttrs } }} size="small">{label}</el-radio>
+        const { label, value, type } = o
+        const restAttrs = omit(o, ['label', 'value', 'type'])
+        let RadioTypeChild = 'el-radio'
+        if (type === "button") { RadioTypeChild = 'el-radio-button' }
+        else if (!type) { RadioTypeChild = RadioType }
+        else { RadioTypeChild = 'el-radio' }
+        return <RadioTypeChild {...{ props: { label: value, ...restAttrs } }} size="small">{label}</RadioTypeChild>
       })
       return (
         <el-radio-group
@@ -59,7 +70,7 @@ export default class RadioPlus extends Vue {
     }
 
     const checkRenderType = () => {
-      if(groupOptions) return renderGroupOption()
+      if (groupOptions) return renderGroupOption()
       return renderOptions()
     }
     return <fragment>{checkRenderType()}</fragment>

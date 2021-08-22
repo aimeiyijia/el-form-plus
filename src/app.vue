@@ -196,12 +196,25 @@ export default {
             value: 1,
             size: 'mini',
             border: true,
+            // 具有渲染优先性
+            // type: 'button',
             // radio group
             // groupOptions渲染优先，该配置项只要存在且不为false,那么就优先渲染组radio
             groupOptions: [
               // 即可整体设置属性，也可单项设置属性(此时整体设置优先)
-              { label: '备选项1', value: 1, size: 'medium', border: true },
-              { label: '备选项2', value: 2, size: 'small', border: true },
+              {
+                label: '备选项1',
+                value: 1,
+                size: 'medium',
+                border: true,
+                type: 'button'
+              },
+              {
+                label: '备选项2',
+                value: 2,
+                size: 'small',
+                border: true,
+              },
               { label: '备选项3', value: 3, border: true },
             ],
             // radio options
