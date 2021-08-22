@@ -298,9 +298,39 @@ export default {
         //     // labelWidth: '120px',
         //   },
         // },
+        // {
+        //   // 表单项渲染类型 必需
+        //   type: 'InputNumber',
+        //   // 表单是否隐藏 默认为false（控制的是el-form-item）
+        //   hidden: false,
+        //   // 表单项的配置项
+        //   attrs: {
+        //     // 表单项绑定的值（字段名） 必需
+        //     field: 'fav',
+        //     // 初始值
+        //     value: 10,
+        //     controlsPosition: 'right',
+        //   },
+        //   // 表单项事件
+        //   on: {
+        //     input: () => {
+        //       console.log('input值发生变化')
+        //     },
+        //     change: () => {
+        //       console.log('change值发生变化')
+        //     },
+        //   },
+        //   // el-form-item配置项 可选
+        //   config: {
+        //     // vue ref属性 默认为field 利用此属性来查找某一组件
+        //     ref: 'age',
+        //     label: 'inputnumber：',
+        //     labelWidth: '120px',
+        //   },
+        // },
         {
           // 表单项渲染类型 必需
-          type: 'InputNumber',
+          type: 'Cascader',
           // 表单是否隐藏 默认为false（控制的是el-form-item）
           hidden: false,
           // 表单项的配置项
@@ -308,8 +338,43 @@ export default {
             // 表单项绑定的值（字段名） 必需
             field: 'fav',
             // 初始值
-            value: 10,
-            controlsPosition: 'right',
+            value: [],
+            options: [
+              {
+                value: 'zhinan',
+                label: '指南',
+                children: [
+                  {
+                    value: 'shejiyuanze',
+                    label: '设计原则',
+                    children: [
+                      {
+                        value: 'yizhi',
+                        label: '一致',
+                      },
+                      {
+                        value: 'fankui',
+                        label: '反馈',
+                      },
+                    ],
+                  },
+                ],
+              },
+              {
+                value: 'daohang',
+                label: '导航',
+                children: [
+                  {
+                    value: 'cexiangdaohang',
+                    label: '侧向导航',
+                  },
+                  {
+                    value: 'dingbudaohang',
+                    label: '顶部导航',
+                  },
+                ],
+              },
+            ],
           },
           // 表单项事件
           on: {
@@ -324,7 +389,7 @@ export default {
           config: {
             // vue ref属性 默认为field 利用此属性来查找某一组件
             ref: 'age',
-            label: 'inputnumber：',
+            label: 'cascader：',
             labelWidth: '120px',
           },
         },

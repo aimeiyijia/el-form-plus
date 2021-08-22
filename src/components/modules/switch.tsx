@@ -4,30 +4,19 @@ import { Component, Prop, Emit, Watch } from 'vue-property-decorator'
 @Component
 export default class SwitchPlus extends Vue {
   mounted() {
-    console.log(this.$attrs, 'attrs')
-    console.log(this.$listeners, 'listeners')
+    console.log(this.$attrs, 'InputPlus attrs')
+    console.log(this.$listeners, 'InputPlus listeners')
+    console.log(this.$scopedSlots, 'InputPlus scopedSlots')
   }
 
   render(h: CreateElement): VNode {
-    const renderOptions = () => {
-      const { options } = this.$attrs
-      console.log(options)
-      return (options as any).map((o: any) => {
-        const { label, value } = o
-        return <el-option key={value} label={label} value={value}></el-option>
-      })
-    }
     return (
-      <elSelect
-        ref={this.$attrs.ref}
-        type={this.$attrs.type}
+      <el-switch
         on-input={(val: any) => {
           this.$emit('input', val)
         }}
         {...{ props: this.$attrs, on: this.$listeners }}
-      >
-        {renderOptions()}
-      </elSelect>
+      ></el-switch>
     )
   }
 }

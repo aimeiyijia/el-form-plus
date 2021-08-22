@@ -13,6 +13,7 @@ import {
   SliderPlus,
   SwitchPlus,
   TimePickerPlus,
+  TimeSelectrPlus,
   TransferPlus,
   UploadPlus,
 } from '../modules'
@@ -31,6 +32,7 @@ const vnodes = {
   Slider: SliderPlus,
   Switch: SwitchPlus,
   TimePicker: TimePickerPlus,
+  TimeSelect: TimeSelectrPlus,
   Transfer: TransferPlus,
   Upload: UploadPlus,
 }

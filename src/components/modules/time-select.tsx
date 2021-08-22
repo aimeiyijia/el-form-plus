@@ -2,7 +2,7 @@ import Vue, { VNode, CreateElement } from 'vue'
 import { Component, Prop, Emit, Watch } from 'vue-property-decorator'
 
 @Component
-export default class TimePickerPlus extends Vue {
+export default class TimeSelectPlus extends Vue {
   mounted() {
     console.log(this.$attrs, 'InputPlus attrs')
     console.log(this.$listeners, 'InputPlus listeners')
@@ -11,12 +11,12 @@ export default class TimePickerPlus extends Vue {
 
   render(h: CreateElement): VNode {
     return (
-      <el-time-picker
+      <el-time-select
         on-input={(val: any) => {
           this.$emit('input', val)
         }}
         {...{ props: this.$attrs, on: this.$listeners }}
-      ></el-time-picker>
+      ></el-time-select>
     )
   }
 }

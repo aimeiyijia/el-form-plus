@@ -12,6 +12,7 @@ import SelectPlus from './select'
 import SliderPlus from './slider'
 import SwitchPlus from './switch'
 import TimePickerPlus from './time-picker'
+import TimeSelectrPlus from './time-select'
 import TransferPlus from './transfer'
 import UploadPlus from './upload'
 
@@ -30,6 +31,7 @@ export {
   SliderPlus,
   SwitchPlus,
   TimePickerPlus,
+  TimeSelectrPlus,
   TransferPlus,
   UploadPlus,
 }
