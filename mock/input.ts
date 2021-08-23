@@ -21,7 +21,20 @@ const input = {
     },
   },
   // 插槽
-  scopedSlots: {},
+  scopedSlots: {
+    prefix: () => {
+      return '表单内头部内容'
+    },
+    suffix: () => {
+      return '表单内尾部内容'
+    },
+    prepend: () => {
+      return '表单前置插槽'
+    },
+    append: () => {
+      return '表单后置插槽'
+    },
+  },
   // el-form-item配置项 可选
   config: {
     // vue ref属性 默认为field 利用此属性来查找某一组件
