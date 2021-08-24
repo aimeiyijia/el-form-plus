@@ -22,8 +22,8 @@ const input = {
   },
   // 插槽
   scopedSlots: {
-    prefix: () => {
-      return '表单内头部内容'
+    prefix: ({ h, value }) => {
+      return h('div', '表单内头部内容')
     },
     suffix: () => {
       return '表单内尾部内容'

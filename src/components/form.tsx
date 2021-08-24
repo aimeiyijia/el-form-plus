@@ -1,5 +1,5 @@
 import Vue, { VNode, CreateElement } from 'vue'
-import { Component, Prop, Emit, Watch } from 'vue-property-decorator'
+import { Component, Prop, Model, Watch } from 'vue-property-decorator'
 import omit from 'lodash/omit'
 import isFunction from 'lodash/isFunction'
 // 样式
@@ -14,7 +14,7 @@ interface IVnodes {
 }
 
 @Component
-export default class ElTableTs extends Vue {
+export default class ElFormPlus extends Vue {
   // 表单整体配置
   @Prop({ type: Object, default: () => { } }) readonly config!: any
 
@@ -23,23 +23,47 @@ export default class ElTableTs extends Vue {
 
   private model = new Map()
 
+  private data: any[] = []
+
   created() {
     // console.log(this.config, '表单配置项')
     // console.log(this.options, '表单项配置项')
     // this.optionsChange()
     console.log(this, 'form')
+    const timer = setTimeout(() => {
+      this.model.set('input', '更新内部')
+      console.log(this.model, '12334')
+
+      // fix 无法监听Map的变更
+      this.$forceUpdate()
+      clearTimeout(timer)
+    }, 3000)
   }
+
+  @Watch('options', { immediate: true, deep: true })
+  private setData(){
+    this.data = this.options
+  }
+
   // 监听options 仅就表单项配置而言 options会是个一维数组
   // 先从option中取出所有的field字段 组成model
-  @Watch('options', { immediate: true, deep: true })
-  private optionsChange() {
-    const options = this.options
+  @Watch('data', { immediate: true, deep: true })
+  private dataChange() {
+    const options = this.data
     for (let o of options) {
       const { attrs } = o
       const { field, value } = attrs
       this.model.set(field, value)
     }
   }
+
+  // insert 增  增加一个表单项
+  // delete 删  删除一个表单项
+  // update 改，更新表单值
+  // get 查 查询到一个表单配置项，以便进行更改
+
+  private get(){}
+
 
   // 根据type 判断需要渲染的组件
   private renderEl(type: any) {
@@ -66,7 +90,7 @@ export default class ElTableTs extends Vue {
         // 因为input事件被内部拦截了，所以在此再暴露出去
         const { input } = on
         // input(val);
-        if (isFunction(input)) {
+        if (input && isFunction(input)) {
           input.call(null, val)
         } else {
           console.error(`field='${field}'中input必须是函数`)
@@ -104,8 +128,6 @@ export default class ElTableTs extends Vue {
         const { config } = o
         const { ref } = config
         const itemProp = omit(config, ['ref'])
-
-        console.log(itemProp, 'el-form-item配置项')
 
         return (
           <el-form-item {...{ props: itemProp }} ref={ref}>

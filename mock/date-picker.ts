@@ -27,12 +27,6 @@ const datepicker = {
     suffix: () => {
       return '表单内尾部内容'
     },
-    prepend: () => {
-      return <div>表单前置插槽</div>
-    },
-    append: () => {
-      return <div>表单后置插槽</div>
-    },
   },
   // el-form-item配置项 可选
   config: {
