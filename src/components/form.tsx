@@ -1,6 +1,7 @@
 import Vue, { VNode, CreateElement } from 'vue'
 import { Component, Prop, Model, Watch } from 'vue-property-decorator'
 import omit from 'lodash/omit'
+import { cloneDeep, findKey } from 'lodash'
 import isFunction from 'lodash/isFunction'
 // 样式
 import './styles/index.scss'
@@ -15,6 +16,8 @@ interface IVnodes {
 
 @Component
 export default class ElFormPlus extends Vue {
+
+  @Model('change', { type: Object }) readonly formPlusInstance!: any
   // 表单整体配置
   @Prop({ type: Object, default: () => { } }) readonly config!: any
 
@@ -26,23 +29,13 @@ export default class ElFormPlus extends Vue {
   private data: any[] = []
 
   created() {
-    // console.log(this.config, '表单配置项')
-    // console.log(this.options, '表单项配置项')
-    // this.optionsChange()
     console.log(this, 'form')
-    const timer = setTimeout(() => {
-      this.model.set('input', '更新内部')
-      console.log(this.model, '12334')
-
-      // fix 无法监听Map的变更
-      this.$forceUpdate()
-      clearTimeout(timer)
-    }, 3000)
   }
 
+  // 这一步主要是为了方便内部操作options
   @Watch('options', { immediate: true, deep: true })
-  private setData(){
-    this.data = this.options
+  private setData() {
+    this.data = cloneDeep(this.options)
   }
 
   // 监听options 仅就表单项配置而言 options会是个一维数组
@@ -55,20 +48,52 @@ export default class ElFormPlus extends Vue {
       const { field, value } = attrs
       this.model.set(field, value)
     }
+    this.getInstance()
   }
 
+  getTarget(fieldName: any) {
+    return this.data.find(o => {
+      return o.attrs.field === fieldName
+    })
+  }
+
+  // 根据field字段值来查找其所在的配置项
+  // 本质上还是变更option来达到更新目的
   // insert 增  增加一个表单项
   // delete 删  删除一个表单项
-  // update 改，更新表单值
-  // get 查 查询到一个表单配置项，以便进行更改
+  // update 改，更新表单值，更新表单项
+  // select 查 查询到一个表单配置项，以便进行更改
 
-  private get(){}
+  // 通过表单域更新表单值
+  private updateByField(fieldName: any, value: any) {
+    try {
+      const target = this.getTarget(fieldName)
+      target.attrs.value = value
+    } catch (error) {
+      console.error(error, 'updateField')
+    }
+  }
+
+  // 通过表单域更新某配置项
+  private updateOptionByField(fieldName: any, optionPath: any, singleOptionValue: any) {
+    try {
+      const target = this.getTarget(fieldName)
+      target[optionPath] = singleOptionValue
+    } catch (error) {
+      console.error(error, 'updateField')
+    }
+  }
 
 
   // 根据type 判断需要渲染的组件
-  private renderEl(type: any) {
+  private renderComponent(type: any) {
     const vnodes: IVnodes = Vnodes
     return vnodes[type]
+  }
+
+  // 将实例，model暴露出去
+  private getInstance() {
+    this.$emit('change', { updateByField: this.updateByField, updateOptionByField: this.updateOptionByField })
   }
 
   render(h: CreateElement): VNode {
@@ -106,7 +131,7 @@ export default class ElFormPlus extends Vue {
       // 取出
       const ons = omit(on, ['input'])
       // 需要渲染的组件 SuperComponent
-      const SComponent: any = this.renderEl(type)
+      const SComponent: any = this.renderComponent(type)
       return (
         <SComponent
           value={value}
@@ -119,7 +144,7 @@ export default class ElFormPlus extends Vue {
 
     // 渲染 el-form-item
     const renderFormItem = () => {
-      const options = this.options
+      const options = this.data
 
       return options.filter(o => !o.hidden).map(o => {
 

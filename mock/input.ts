@@ -1,3 +1,4 @@
+import { CreateElement } from 'vue'
 const input = {
   // 表单项渲染类型 必需
   type: 'Input',
@@ -9,7 +10,7 @@ const input = {
     // 表单项绑定的值（字段名） 必需
     field: 'input',
     // 初始值
-    value: '',
+    value: 'input初始值',
   },
   // 表单项事件
   on: {
@@ -22,7 +23,7 @@ const input = {
   },
   // 插槽
   scopedSlots: {
-    prefix: ({ h, value }) => {
+    prefix: ({ h, value }: { h: CreateElement, value: any }) => {
       return h('div', '表单内头部内容')
     },
     suffix: () => {
