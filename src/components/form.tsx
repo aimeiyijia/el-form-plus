@@ -1,8 +1,8 @@
 import Vue, { VNode, CreateElement } from 'vue'
 import { Component, Prop, Model, Watch } from 'vue-property-decorator'
 import omit from 'lodash/omit'
-import { cloneDeep, findKey } from 'lodash'
-import isFunction from 'lodash/isFunction'
+import { cloneDeep, isFunction } from 'lodash'
+import objectPath from './utils/object-path'
 // 样式
 import './styles/index.scss'
 
@@ -30,6 +30,7 @@ export default class ElFormPlus extends Vue {
 
   created() {
     console.log(this, 'form')
+    console.log(objectPath.get(this.options[0], 'type'))
   }
 
   // 这一步主要是为了方便内部操作options
@@ -51,6 +52,7 @@ export default class ElFormPlus extends Vue {
     this.getInstance()
   }
 
+  // 根据attrs中的field字段匹配到目标配置项
   getTarget(fieldName: any) {
     return this.data.find(o => {
       return o.attrs.field === fieldName
@@ -64,8 +66,11 @@ export default class ElFormPlus extends Vue {
   // update 改，更新表单值，更新表单项
   // select 查 查询到一个表单配置项，以便进行更改
 
+  private insertByField() { }
+  private insertByPosition() { }
+
   // 通过表单域更新表单值
-  private updateByField(fieldName: any, value: any) {
+  private updateByField(fieldName: any, path: string, value: any) {
     try {
       const target = this.getTarget(fieldName)
       target.attrs.value = value
@@ -75,10 +80,10 @@ export default class ElFormPlus extends Vue {
   }
 
   // 通过表单域更新某配置项
-  private updateOptionByField(fieldName: any, optionPath: any, singleOptionValue: any) {
+  private updateOptionByField(fieldName: any, path: any, singleOptionValue: any) {
     try {
       const target = this.getTarget(fieldName)
-      target[optionPath] = singleOptionValue
+      target[path] = singleOptionValue
     } catch (error) {
       console.error(error, 'updateField')
     }
