@@ -28,14 +28,6 @@ export default class ElFormPlus extends Vue {
 
   private data: any[] = []
 
-  created() {
-    console.log(this, 'form')
-    console.log(objectPath.get(this.options[0], 'type'))
-    const a = { a: () => { return 12 } }
-    objectPath.empty(a, 'a')
-    console.log(a, '测试')
-  }
-
   // 这一步主要是为了方便内部操作options
   @Watch('options', { immediate: true, deep: true })
   private setData() {
@@ -52,7 +44,7 @@ export default class ElFormPlus extends Vue {
       const { field, value } = attrs
       this.model.set(field, value)
     }
-    this.getInstance()
+    this.exportInstance()
   }
 
   // 根据attrs中的field字段匹配到目标配置项
@@ -64,7 +56,7 @@ export default class ElFormPlus extends Vue {
 
   // 根据field字段值来查找其所在的配置项
   // 本质上还是变更option来达到更新目的
-  // set
+
   // 通过表单域更新某配置项 如果不存在该path,那么将会添加进去
   private setByField(fieldName: string, path: string, value: any): void {
     try {
@@ -74,7 +66,8 @@ export default class ElFormPlus extends Vue {
       console.error(error, 'updateField')
     }
   }
-  // has
+
+  // 指定路径是否存在
   private isHasByField(fieldName: string, path: string): boolean {
     try {
       const target = this.getTarget(fieldName)
@@ -84,6 +77,7 @@ export default class ElFormPlus extends Vue {
       return false
     }
   }
+
   // insert 向指定路径中的数组插入值，该路径不存或没值就添加
   private insertByField(fieldName: string, path: string, value: any, positions: number): void {
     try {
@@ -93,7 +87,7 @@ export default class ElFormPlus extends Vue {
       console.error(error, 'insertByField')
     }
   }
-  // empty
+
   // number -> 0, boolean -> no-change, array -> [], object -> {}, Function -> null
   private emptysByField(fieldName: string, path: string) {
     try {
@@ -103,7 +97,7 @@ export default class ElFormPlus extends Vue {
       console.error(error, 'emptysByField')
     }
   }
-  // get
+
   // 获取指定路径上的值
   private getByField(fieldName: string, path: string, defaultValue: any): void {
     try {
@@ -113,7 +107,7 @@ export default class ElFormPlus extends Vue {
       console.error(error, 'getByField')
     }
   }
-  // del
+
   // 删除指定路径
   private delByField(fieldName: string, path: string): void {
     try {
@@ -126,7 +120,7 @@ export default class ElFormPlus extends Vue {
 
 
   // 将操作实例的方法暴露出去
-  private getInstance() {
+  private exportInstance() {
     this.$emit('change', {
       setByField: this.setByField,
       isHasByField: this.isHasByField,

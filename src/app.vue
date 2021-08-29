@@ -24,13 +24,9 @@ export default {
       options: formData,
     }
   },
-  created() {
-    const timer = setTimeout(() => {
-      this.model.setByField('input', 'attrs.value', 1234567890)
-      console.log(this.model)
-
-      clearTimeout(timer)
-    }, 2000)
+  mounted() {
+    console.log(this.model)
+    this.model.setByField('input', 'attrs.value', 1234567890)
   },
   methods: {},
 }
