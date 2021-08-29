@@ -132,7 +132,7 @@ class ObjectPath {
     return this.set(obj[currentPath], path.slice(1), value, doNotReplace)
   }
 
-  has(obj: IObject, path: any) {
+  has(obj: IObject, path: any): boolean {
     if (typeof path === 'number') {
       path = [path]
     } else if (typeof path === 'string') {

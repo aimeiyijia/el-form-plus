@@ -26,8 +26,7 @@ export default {
   },
   created() {
     const timer = setTimeout(() => {
-      this.model.updateByField('input', 1234567890)
-      this.model.updateOptionByField('input')
+      this.model.setByField('input', 'attrs.value', 1234567890)
       console.log(this.model)
 
       clearTimeout(timer)

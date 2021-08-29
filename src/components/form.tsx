@@ -31,6 +31,9 @@ export default class ElFormPlus extends Vue {
   created() {
     console.log(this, 'form')
     console.log(objectPath.get(this.options[0], 'type'))
+    const a = { a: () => { return 12 } }
+    objectPath.empty(a, 'a')
+    console.log(a, '测试')
   }
 
   // 这一步主要是为了方便内部操作options
@@ -61,34 +64,78 @@ export default class ElFormPlus extends Vue {
 
   // 根据field字段值来查找其所在的配置项
   // 本质上还是变更option来达到更新目的
-  // insert 增  增加一个表单项
-  // delete 删  删除一个表单项
-  // update 改，更新表单值，更新表单项
-  // select 查 查询到一个表单配置项，以便进行更改
-
-  private insertByField() { }
-  private insertByPosition() { }
-
-  // 通过表单域更新表单值
-  private updateByField(fieldName: any, path: string, value: any) {
+  // set
+  // 通过表单域更新某配置项 如果不存在该path,那么将会添加进去
+  private setByField(fieldName: string, path: string, value: any): void {
     try {
       const target = this.getTarget(fieldName)
-      target.attrs.value = value
+      objectPath.set(target, path, value)
     } catch (error) {
       console.error(error, 'updateField')
     }
   }
-
-  // 通过表单域更新某配置项
-  private updateOptionByField(fieldName: any, path: any, singleOptionValue: any) {
+  // has
+  private isHasByField(fieldName: string, path: string): boolean {
     try {
       const target = this.getTarget(fieldName)
-      target[path] = singleOptionValue
+      return objectPath.has(target, path)
     } catch (error) {
-      console.error(error, 'updateField')
+      console.error(error, 'isHasByField')
+      return false
+    }
+  }
+  // insert 向指定路径中的数组插入值，该路径不存或没值就添加
+  private insertByField(fieldName: string, path: string, value: any, positions: number): void {
+    try {
+      const target = this.getTarget(fieldName)
+      objectPath.insert(target, path, value, positions);
+    } catch (error) {
+      console.error(error, 'insertByField')
+    }
+  }
+  // empty
+  // number -> 0, boolean -> no-change, array -> [], object -> {}, Function -> null
+  private emptysByField(fieldName: string, path: string) {
+    try {
+      const target = this.getTarget(fieldName)
+      objectPath.empty(target, path)
+    } catch (error) {
+      console.error(error, 'emptysByField')
+    }
+  }
+  // get
+  // 获取指定路径上的值
+  private getByField(fieldName: string, path: string, defaultValue: any): void {
+    try {
+      const target = this.getTarget(fieldName)
+      objectPath.get(target, path, defaultValue)
+    } catch (error) {
+      console.error(error, 'getByField')
+    }
+  }
+  // del
+  // 删除指定路径
+  private delByField(fieldName: string, path: string): void {
+    try {
+      const target = this.getTarget(fieldName)
+      objectPath.del(target, path)
+    } catch (error) {
+      console.error(error, 'delByField')
     }
   }
 
+
+  // 将操作实例的方法暴露出去
+  private getInstance() {
+    this.$emit('change', {
+      setByField: this.setByField,
+      isHasByField: this.isHasByField,
+      insertByField: this.insertByField,
+      emptysByField: this.emptysByField,
+      getByField: this.getByField,
+      delByField: this.delByField,
+    })
+  }
 
   // 根据type 判断需要渲染的组件
   private renderComponent(type: any) {
@@ -96,10 +143,6 @@ export default class ElFormPlus extends Vue {
     return vnodes[type]
   }
 
-  // 将实例，model暴露出去
-  private getInstance() {
-    this.$emit('change', { updateByField: this.updateByField, updateOptionByField: this.updateOptionByField })
-  }
 
   render(h: CreateElement): VNode {
     const model = this.model
