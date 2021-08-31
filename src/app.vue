@@ -26,7 +26,7 @@ export default {
   },
   mounted() {
     console.log(this.model)
-    this.model.setByField('input', 'attrs.value', 1234567890)
+    // this.model.setByField('input', 'attrs.value', 1234567890)
   },
   methods: {},
 }

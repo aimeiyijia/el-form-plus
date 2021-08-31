@@ -18,7 +18,7 @@ import upload from './upload'
 
 const data = []
 data.push(
-  // autocomplete,
+  autocomplete,
   // cascader,
   // checkbox,
   // colorpicker,

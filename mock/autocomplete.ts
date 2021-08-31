@@ -8,25 +8,34 @@ const autocomplete = {
     // 表单项绑定的值（字段名） 必需
     field: 'autoComplete',
     // 初始值
-    value: '',
+    value: '2',
+    fetchSuggestions: (queryString, callback) => {
+      callback([
+        { value: '1', address: '1' },
+        { value: '2', address: '2' },
+        { value: '3', address: '3' },
+      ])
+    },
   },
   // 表单项事件
   on: {
-    blur: () => {
-      console.log('失去焦点')
-    },
-    input: () => {
-      console.log('input事件')
+    select: val => {
+      console.log('选中值变化', val)
     },
   },
   // 插槽
-  scopedSlots: {},
+  scopedSlots: {
+    // 默认插槽 包含 {item, value, h}
+    default(scoped) {
+      console.log(scoped, '123')
+    },
+  },
   // el-form-item配置项 可选
   config: {
     // vue ref属性 默认为field 利用此属性来查找某一组件
     ref: 'autoComplete',
     label: 'autoComplete：',
-    // labelWidth: '120px',
+    labelWidth: '120px',
   },
 }
 export default autocomplete
