@@ -38,7 +38,7 @@ const input = {
   },
   // el-form-item配置项 可选
   config: {
-    // vue ref属性 默认为field 利用此属性来查找某一组件
+    // vue ref属性 默认为[field] 利用此属性来查找某一组件
     ref: 'input',
     label: 'input：',
     // labelWidth: '120px',

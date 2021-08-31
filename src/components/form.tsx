@@ -40,6 +40,10 @@ export default class ElFormPlus extends Vue {
   private dataChange() {
     const options = this.data
     for (let o of options) {
+      const result = this.verifyRequiredParams(o)
+      if (!result) {
+        continue
+      }
       const { attrs } = o
       const { field, value } = attrs
       this.model.set(field, value)
@@ -138,6 +142,18 @@ export default class ElFormPlus extends Vue {
   }
 
 
+  // 校验必须参数
+  // 目前必须的参数为 attrs中的 field字段
+  verifyRequiredParams(attrs: any): boolean {
+    const isExist = objectPath.has(attrs, 'attrs.field')
+    if (!isExist) {
+      console.error('field字段不能为空，请检查配置项')
+      return false
+    }
+    return true
+  }
+
+
   render(h: CreateElement): VNode {
     const model = this.model
 
@@ -196,9 +212,13 @@ export default class ElFormPlus extends Vue {
         const { ref } = config
         const itemProp = omit(config, ['ref'])
 
+
+
+        const result = this.verifyRequiredParams(singleFormAttrs)
+
         return (
           <el-form-item {...{ props: itemProp }} ref={ref}>
-            {renderSingleForm(singleFormAttrs)}
+            {result && renderSingleForm(singleFormAttrs)}
           </el-form-item>
         )
       })
