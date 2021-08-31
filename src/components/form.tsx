@@ -160,7 +160,7 @@ export default class ElFormPlus extends Vue {
     // 渲染表单项
     const renderSingleForm = (singleFormAttrs: any) => {
 
-      let { type, attrs, on, scopedSlots } = singleFormAttrs
+      let { type = "", attrs = {}, on = {}, scopedSlots = {} } = singleFormAttrs
       const { field } = attrs
 
       // 剥离掉内置的配置项
@@ -170,17 +170,18 @@ export default class ElFormPlus extends Vue {
         // 设置新值
         model.set(field, val)
 
+        // fix 无法监听Map的变更
+        this.$forceUpdate()
+
         // 因为input事件被内部拦截了，所以在此再暴露出去
         const { input } = on
+        if(!input) return
         // input(val);
-        if (input && isFunction(input)) {
+        if (isFunction(input)) {
           input.call(null, val)
         } else {
           console.error(`field='${field}'中input必须是函数`)
         }
-
-        // fix 无法监听Map的变更
-        this.$forceUpdate()
       }
 
       // 取出表单初始值
@@ -200,6 +201,7 @@ export default class ElFormPlus extends Vue {
       )
     }
 
+    // todo 一个el-form-item内部可以渲染多个表单项
     // 渲染 el-form-item
     const renderFormItem = () => {
       const options = this.data
@@ -208,11 +210,9 @@ export default class ElFormPlus extends Vue {
 
         // 剥离掉el-form-item相关的配置
         const singleFormAttrs = omit(o, ['hidden', 'config'])
-        const { config } = o
+        const { config = {} } = o
         const { ref } = config
         const itemProp = omit(config, ['ref'])
-
-
 
         const result = this.verifyRequiredParams(singleFormAttrs)
 

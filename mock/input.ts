@@ -13,29 +13,29 @@ const input = {
     value: 'input初始值',
   },
   // 表单项事件
-  on: {
-    blur: () => {
-      console.log('input', '失去焦点')
-    },
-    input: () => {
-      console.log('input', 'input事件')
-    },
-  },
+  // on: {
+  //   blur: () => {
+  //     console.log('input', '失去焦点')
+  //   },
+  //   input: () => {
+  //     console.log('input', 'input事件')
+  //   },
+  // },
   // 插槽
-  scopedSlots: {
-    prefix: ({ h, value }: { h: CreateElement, value: any }) => {
-      return h('div', '表单内头部内容')
-    },
-    suffix: () => {
-      return '表单内尾部内容'
-    },
-    prepend: () => {
-      return '表单前置插槽'
-    },
-    append: () => {
-      return '表单后置插槽'
-    },
-  },
+  // scopedSlots: {
+  //   prefix: ({ h, value }: { h: CreateElement, value: any }) => {
+  //     return h('div', '表单内头部内容')
+  //   },
+  //   suffix: () => {
+  //     return '表单内尾部内容'
+  //   },
+  //   prepend: () => {
+  //     return '表单前置插槽'
+  //   },
+  //   append: () => {
+  //     return '表单后置插槽'
+  //   },
+  // },
   // el-form-item配置项 可选
   config: {
     // vue ref属性 默认为[field] 利用此属性来查找某一组件
