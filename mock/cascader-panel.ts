@@ -9,7 +9,7 @@ const cascader = {
     // 表单项绑定的值（字段名） 必需
     field: 'cascaderPanel',
     // 初始值
-    value: ['zhinan', 'shejiyuanze', 'yizhi'],
+    value: [['zhinan', 'shejiyuanze', 'yizhi']],
     props: {
       multiple: true,
       // lazy: true,
@@ -305,15 +305,14 @@ const cascader = {
     },
   },
   // 插槽
-  scopedSlots: {
-    default(a) {
-      console.log(a, 'default')
-      return a.label
-    },
-    empty(a) {
-      console.log(a, 'empty')
-    },
-  },
+  // scopedSlots: {
+  //   default(a) {
+  //     return a.h('div', 1)
+  //   },
+  //   empty(a) {
+  //     console.log(a, 'empty')
+  //   },
+  // },
   // el-form-item配置项 可选
   config: {
     // vue ref属性 默认为field 利用此属性来查找某一组件

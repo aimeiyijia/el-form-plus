@@ -306,15 +306,15 @@ const cascader = {
     },
   },
   // 插槽
-  // scopedSlots: {
-  //   default(a) {
-  //     console.log(a, 'default')
-  //     return a.label
-  //   },
-  //   empty(a) {
-  //     console.log(a, 'empty')
-  //   },
-  // },
+  scopedSlots: {
+    default(a) {
+      console.log(a, 'default')
+      return 111
+    },
+    empty(a) {
+      console.log(a, 'empty')
+    },
+  },
   // el-form-item配置项 可选
   config: {
     // vue ref属性 默认为field 利用此属性来查找某一组件

@@ -23,7 +23,7 @@ export default class CascaderPlus extends Vue {
 
       // 插槽额外增加h函数，便于生成vnode
       customScopedSlots[slot] = (item: any) => {
-        scopedSlots[slot]({ ...item, value: this.$attrs.value, h })
+        return scopedSlots[slot]({ ...item, value: this.$attrs.value, h })
       }
     }
     return (

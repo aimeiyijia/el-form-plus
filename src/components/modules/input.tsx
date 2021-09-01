@@ -21,8 +21,9 @@ export default class InputPlus extends Vue {
       // 因此这一步是骗它有插槽，然后再用scopedSlots来实现自定义渲染函数渲染插槽内容
       slots.push({ name: slot, value: [h('template')] })
       // 插槽额外增加h函数，便于生成vnode
-      customScopedSlots[slot] = () =>
-        scopedSlots[slot]({ h, value: this.$attrs.value })
+      customScopedSlots[slot] = () => {
+        return scopedSlots[slot]({ h, value: this.$attrs.value })
+      }
     }
     return (
       <el-input

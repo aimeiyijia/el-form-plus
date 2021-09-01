@@ -20,9 +20,9 @@ import upload from './upload'
 const data = []
 data.push(
   // autocomplete,
-  cascader,
+  // cascader,
   // cascaderpanel,
-  // checkbox,
+  checkbox,
   // colorpicker,
   // datepicker,
   // datetimepicker,
