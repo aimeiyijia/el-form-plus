@@ -9,7 +9,7 @@ const autocomplete = {
     field: 'autoComplete',
     // 初始值
     value: '2',
-    fetchSuggestions: (queryString, callback) => {
+    fetchSuggestions: (queryString: string, callback: Function) => {
       callback([
         { value: '1', address: '1' },
         { value: '2', address: '2' },
@@ -19,14 +19,14 @@ const autocomplete = {
   },
   // 表单项事件
   on: {
-    select: val => {
+    select: (val: any) => {
       console.log('选中值变化', val)
     },
   },
   // 插槽
   scopedSlots: {
     // 默认插槽 包含 {item, value, h}
-    default(scoped) {
+    default(scoped: any) {
       console.log(scoped, '123')
     },
   },

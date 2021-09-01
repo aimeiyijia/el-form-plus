@@ -1,6 +1,7 @@
 import {
   AutocompletePlus,
   CascaderPlus,
+  CascaderPanelPlus,
   CheckBoxPlus,
   ColorPickerPlus,
   DatePickerPlus,
@@ -20,6 +21,7 @@ import {
 const vnodes = {
   Autocomplete: AutocompletePlus,
   Cascader: CascaderPlus,
+  CascaderPanel: CascaderPanelPlus,
   CheckBox: CheckBoxPlus,
   ColorPicker: ColorPickerPlus,
   DatePicker: DatePickerPlus,

@@ -1,15 +1,15 @@
 let id = 0
 const cascader = {
   // 表单项渲染类型 必需
-  type: 'Cascader',
+  type: 'CascaderPanel',
+  // 表单是否隐藏 默认为false（控制的是el-form-item）
+  hidden: false,
   // 表单项的配置项
   attrs: {
     // 表单项绑定的值（字段名） 必需
-    field: 'cascader',
-    // 初始值 注意事项 开启多选时的value结构时[[value,value,value]]，
-    value: [['zhinan', 'shejiyuanze', 'yizhi']],
-    // 非多选时[value,value,value]
-    // value: ['zhinan', 'shejiyuanze', 'yizhi'],
+    field: 'cascaderPanel',
+    // 初始值
+    value: ['zhinan', 'shejiyuanze', 'yizhi'],
     props: {
       multiple: true,
       // lazy: true,
@@ -30,7 +30,6 @@ const cascader = {
       {
         value: 'zhinan',
         label: '指南',
-        disabled: true,
         children: [
           {
             value: 'shejiyuanze',
@@ -301,25 +300,25 @@ const cascader = {
     blur: () => {
       console.log('失去焦点')
     },
-    input: val => {
-      console.log('input事件', val)
+    input: () => {
+      console.log('input事件')
     },
   },
   // 插槽
-  // scopedSlots: {
-  //   default(a) {
-  //     console.log(a, 'default')
-  //     return a.label
-  //   },
-  //   empty(a) {
-  //     console.log(a, 'empty')
-  //   },
-  // },
+  scopedSlots: {
+    default(a) {
+      console.log(a, 'default')
+      return a.label
+    },
+    empty(a) {
+      console.log(a, 'empty')
+    },
+  },
   // el-form-item配置项 可选
   config: {
     // vue ref属性 默认为field 利用此属性来查找某一组件
     ref: 'cascader',
-    label: 'cascader：',
+    label: 'cascaderPanel：',
     labelWidth: '120px',
   },
 }

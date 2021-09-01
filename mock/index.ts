@@ -1,5 +1,6 @@
 import autocomplete from './autocomplete'
 import cascader from './cascader'
+import cascaderpanel from './cascader-panel'
 import checkbox from './check-box'
 import colorpicker from './color-picker'
 import datepicker from './date-picker'
@@ -18,14 +19,15 @@ import upload from './upload'
 
 const data = []
 data.push(
-  autocomplete,
-  // cascader,
+  // autocomplete,
+  cascader,
+  // cascaderpanel,
   // checkbox,
   // colorpicker,
   // datepicker,
   // datetimepicker,
   // inputnumber,
-  input,
+  // input,
   // radio,
   // rate,
   // select,

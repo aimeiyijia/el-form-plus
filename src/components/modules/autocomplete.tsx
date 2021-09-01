@@ -5,10 +5,10 @@ import omit from 'lodash/omit'
 @Component
 export default class AutocompletePlus extends Vue {
   mounted() {
-    console.log(this, 'AutocompletePlus实例')
-    console.log(this.$attrs, 'AutocompletePlus attrs')
-    console.log(this.$listeners, 'AutocompletePlus listeners')
-    console.log(this.$scopedSlots, 'AutocompletePlus scopedSlots')
+    // console.log(this, 'AutocompletePlus实例')
+    // console.log(this.$attrs, 'AutocompletePlus attrs')
+    // console.log(this.$listeners, 'AutocompletePlus listeners')
+    // console.log(this.$scopedSlots, 'AutocompletePlus scopedSlots')
   }
 
   render(h: CreateElement): VNode {
@@ -23,12 +23,11 @@ export default class AutocompletePlus extends Vue {
 
       // 插槽额外增加h函数，便于生成vnode
       customScopedSlots[slot] = (item: any) => {
-        scopedSlots[slot]({ item, value: this.$attrs.value, h })
+        scopedSlots[slot]({ ...item, value: this.$attrs.value, h })
       }
     }
     return (
       <el-autocomplete
-        ref="inputPlus"
         on-input={(val: any) => {
           this.$emit('input', val)
         }}

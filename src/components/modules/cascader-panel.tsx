@@ -3,12 +3,12 @@ import { Component, Prop, Emit, Watch } from 'vue-property-decorator'
 import omit from 'lodash/omit'
 
 @Component
-export default class InputPlus extends Vue {
+export default class CascaderPanelPlus extends Vue {
   mounted() {
-    // console.log(this, 'InputPlus实例')
-    // console.log(this.$attrs, 'InputPlus attrs')
-    // console.log(this.$listeners, 'InputPlus listeners')
-    // console.log(this.$scopedSlots, 'InputPlus scopedSlots')
+    console.log(this, 'CascaderPanelPlus实例')
+    console.log(this.$attrs, 'CascaderPanelPlus attrs')
+    console.log(this.$listeners, 'CascaderPanelPlus listeners')
+    console.log(this.$scopedSlots, 'CascaderPanelPlus scopedSlots')
   }
 
   render(h: CreateElement): VNode {
@@ -17,15 +17,17 @@ export default class InputPlus extends Vue {
     const slots = []
     const customScopedSlots: any = {}
     for (let slot in scopedSlots) {
-      // el-input内部使用了 v-if="$slots.[slotName]"来判断是否有插槽
+      // el-autocomplete内部使用了 v-if="$slots.[slotName]"来判断是否有插槽
       // 因此这一步是骗它有插槽，然后再用scopedSlots来实现自定义渲染函数渲染插槽内容
       slots.push({ name: slot, value: [h('template')] })
+
       // 插槽额外增加h函数，便于生成vnode
-      customScopedSlots[slot] = () =>
-        scopedSlots[slot]({ h, value: this.$attrs.value })
+      customScopedSlots[slot] = (item: any) => {
+        scopedSlots[slot]({ ...item, value: this.$attrs.value, h })
+      }
     }
     return (
-      <el-input
+      <el-cascader-panel
         on-input={(val: any) => {
           this.$emit('input', val)
         }}
@@ -35,7 +37,7 @@ export default class InputPlus extends Vue {
         {slots.map(o => {
           return <template slot={o.name}>{o.value}</template>
         })}
-      </el-input>
+      </el-cascader-panel>
     )
   }
 }

@@ -1,5 +1,6 @@
 import AutocompletePlus from './autocomplete'
 import CascaderPlus from './cascader'
+import CascaderPanelPlus from './cascader-panel'
 import CheckBoxPlus from './check-box'
 import ColorPickerPlus from './color-picker'
 import DatePickerPlus from './date-picker'
@@ -19,6 +20,7 @@ import UploadPlus from './upload'
 export {
   AutocompletePlus,
   CascaderPlus,
+  CascaderPanelPlus,
   CheckBoxPlus,
   ColorPickerPlus,
   DatePickerPlus,
