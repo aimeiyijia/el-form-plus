@@ -15,7 +15,7 @@ export default class RadioPlus extends Vue {
 
   render(h: CreateElement): VNode {
     // 取出radio渲染数组
-    const { groupOptions, options, type } = this.$attrs
+    const { groupOptions = [], options = [], type = '' } = this.$attrs
     // 获取出除groupOptions, options之外的配置项
     const attrs = omit(this.$attrs, ['groupOptions', 'options', 'type'])
     const { groupChange, singleChange } = this.$listeners

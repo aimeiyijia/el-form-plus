@@ -8,15 +8,25 @@ const radio = {
     // 表单项绑定的值（字段名） 必需
     field: 'radio',
     // 初始值
-    value: '',
+    value: 1,
+    options: [
+      {
+        lable: 1,
+        value: 1,
+      },
+      {
+        lable: 2,
+        value: 2,
+      },
+    ],
   },
   // 表单项事件
   on: {
-    blur: () => {
-      console.log('失去焦点')
+    singleChange: () => {
+      console.log('singleChange')
     },
-    input: () => {
-      console.log('input事件')
+    groupChange: () => {
+      console.log('groupChange')
     },
   },
   // 插槽
