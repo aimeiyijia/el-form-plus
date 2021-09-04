@@ -4,9 +4,9 @@ import { Component, Prop, Emit, Watch } from 'vue-property-decorator'
 @Component
 export default class RatePlus extends Vue {
   mounted() {
-    console.log(this.$attrs, 'InputPlus attrs')
-    console.log(this.$listeners, 'InputPlus listeners')
-    console.log(this.$scopedSlots, 'InputPlus scopedSlots')
+    console.log(this.$attrs, 'RatePlus attrs')
+    console.log(this.$listeners, 'RatePlus listeners')
+    console.log(this.$scopedSlots, 'RatePlus scopedSlots')
   }
 
   render(h: CreateElement): VNode {
