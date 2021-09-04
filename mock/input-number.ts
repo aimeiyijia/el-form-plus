@@ -9,6 +9,10 @@ const inputnumber = {
     field: 'inputNumber',
     // 初始值
     value: '',
+    controlsPosition: 'right',
+    precision: 2,
+    step: 0.1,
+    max: 10,
   },
   // 表单项事件
   on: {
@@ -26,7 +30,7 @@ const inputnumber = {
     // vue ref属性 默认为field 利用此属性来查找某一组件
     ref: 'inputNumber',
     label: 'inputNumber：',
-    // labelWidth: '120px',
+    labelWidth: '120px',
   },
 }
 export default inputnumber
