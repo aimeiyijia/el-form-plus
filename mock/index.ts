@@ -34,8 +34,8 @@ data.push(
   // slider,
   // switchdata,
   // timepicker,
-  timeselect,
-  // transfer,
+  // timeselect,
+  transfer,
   // upload
 )
 
