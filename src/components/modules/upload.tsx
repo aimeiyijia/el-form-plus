@@ -16,8 +16,6 @@ export default class UploadPlus extends Vue {
     const scopedSlots: any = this.$scopedSlots
     const slots = []
     for (let slot in scopedSlots) {
-      // el-input内部使用了 v-if="$slots.[slotName]"来判断是否有插槽
-      // 因此这一步是骗它有插槽，然后再用scopedSlots来实现自定义渲染函数渲染插槽内容
       slots.push({
         name: slot,
         value: scopedSlots[slot]({ h, value: this.$attrs.value }),
@@ -26,7 +24,6 @@ export default class UploadPlus extends Vue {
 
     // 拦截onChange事件，捕获到变更的文件列表
     const onChange = (file: object, fileList: object[]) => {
-      console.log(fileList, '参数')
       const origOnChangeF = this.$attrs.onChange
       if (!origOnChangeF) return
       if (isFunction(origOnChangeF)) {
@@ -36,7 +33,6 @@ export default class UploadPlus extends Vue {
       }
       this.$emit('input', fileList)
     }
-    // todo 添加input事件 value为当前的文件列表
     return (
       <el-upload
         {...{
