@@ -1,26 +1,36 @@
 const slider = {
   // 表单项渲染类型 必需
   type: 'Slider',
-  // 表单是否隐藏 默认为false（控制的是el-form-item）
-  hidden: false,
   // 表单项的配置项
   attrs: {
     // 表单项绑定的值（字段名） 必需
     field: 'slider',
     // 初始值
-    value: '',
+    value: [4, 60],
+    range: true,
+    showStops: true,
+    max: 100,
+    marks: {
+      0: '0°C',
+      8: '8°C',
+      37: '37°C',
+      50: {
+        style: {
+          color: '#1989FA',
+        },
+        label: '20%',
+      },
+    },
   },
   // 表单项事件
   on: {
-    blur: () => {
-      console.log('失去焦点')
+    change: () => {
+      console.log('change事件')
     },
     input: () => {
       console.log('input事件')
     },
   },
-  // 插槽
-  scopedSlots: {},
   // el-form-item配置项 可选
   config: {
     // vue ref属性 默认为field 利用此属性来查找某一组件

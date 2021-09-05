@@ -4,9 +4,9 @@ import { Component, Prop, Emit, Watch } from 'vue-property-decorator'
 @Component
 export default class SliderPlus extends Vue {
   mounted() {
-    console.log(this.$attrs, 'InputPlus attrs')
-    console.log(this.$listeners, 'InputPlus listeners')
-    console.log(this.$scopedSlots, 'InputPlus scopedSlots')
+    console.log(this.$attrs, 'SliderPlus attrs')
+    console.log(this.$listeners, 'SliderPlus listeners')
+    console.log(this.$scopedSlots, 'SliderPlus scopedSlots')
   }
 
   render(h: CreateElement): VNode {
