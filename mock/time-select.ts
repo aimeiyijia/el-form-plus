@@ -9,6 +9,11 @@ const timeselect = {
     field: 'timeSelect',
     // 初始值
     value: '',
+    pickerOptions: {
+      start: '08:30',
+      step: '00:15',
+      end: '18:30',
+    },
   },
   // 表单项事件
   on: {
@@ -26,7 +31,7 @@ const timeselect = {
     // vue ref属性 默认为field 利用此属性来查找某一组件
     ref: 'timeSelect',
     label: 'timeSelect：',
-    // labelWidth: '120px',
+    labelWidth: '120px',
   },
 }
 export default timeselect

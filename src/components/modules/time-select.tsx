@@ -4,9 +4,9 @@ import { Component, Prop, Emit, Watch } from 'vue-property-decorator'
 @Component
 export default class TimeSelectPlus extends Vue {
   mounted() {
-    console.log(this.$attrs, 'InputPlus attrs')
-    console.log(this.$listeners, 'InputPlus listeners')
-    console.log(this.$scopedSlots, 'InputPlus scopedSlots')
+    console.log(this.$attrs, 'TimeSelectPlus attrs')
+    console.log(this.$listeners, 'TimeSelectPlus listeners')
+    console.log(this.$scopedSlots, 'TimeSelectPlus scopedSlots')
   }
 
   render(h: CreateElement): VNode {
