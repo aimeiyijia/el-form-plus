@@ -4,9 +4,9 @@ import { Component, Prop, Emit, Watch } from 'vue-property-decorator'
 @Component
 export default class SwitchPlus extends Vue {
   mounted() {
-    console.log(this.$attrs, 'InputPlus attrs')
-    console.log(this.$listeners, 'InputPlus listeners')
-    console.log(this.$scopedSlots, 'InputPlus scopedSlots')
+    console.log(this.$attrs, 'SwitchPlus attrs')
+    console.log(this.$listeners, 'SwitchPlus listeners')
+    console.log(this.$scopedSlots, 'SwitchPlus scopedSlots')
   }
 
   render(h: CreateElement): VNode {

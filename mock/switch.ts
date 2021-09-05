@@ -8,12 +8,16 @@ const switchdata = {
     // 表单项绑定的值（字段名） 必需
     field: 'switch',
     // 初始值
-    value: '',
+    value: false,
+    activeColor: '#13ce66',
+    inactiveColor: '#ff4949',
+    activeText: '按月付费',
+    inactiveText: '按年付费',
   },
   // 表单项事件
   on: {
-    blur: () => {
-      console.log('失去焦点')
+    change: () => {
+      console.log('change事件')
     },
     input: () => {
       console.log('input事件')
