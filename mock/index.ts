@@ -35,8 +35,8 @@ data.push(
   // switchdata,
   // timepicker,
   // timeselect,
-  transfer,
-  // upload
+  // transfer,
+  upload
 )
 
 export default data
