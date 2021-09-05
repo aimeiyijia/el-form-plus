@@ -9,6 +9,11 @@ const timepicker = {
     field: 'timePicker',
     // 初始值
     value: '',
+    isRange: true,
+    rangeSeparator: '至',
+    startPlaceholder: '开始时间',
+    endPlaceholder: '结束时间',
+    placeholder: '选择时间范围',
   },
   // 表单项事件
   on: {
@@ -26,7 +31,9 @@ const timepicker = {
     // vue ref属性 默认为field 利用此属性来查找某一组件
     ref: 'timePicker',
     label: 'timePicker：',
-    // labelWidth: '120px',
+    labelWidth: '120px',
   },
+  // todo 在一个el-form-item中渲染其它类型的表单
+  more: []
 }
 export default timepicker

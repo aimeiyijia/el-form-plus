@@ -32,8 +32,8 @@ data.push(
   // rate,
   // select,
   // slider,
-  switchdata,
-  // timepicker,
+  // switchdata,
+  timepicker,
   // timeselect,
   // transfer,
   // upload

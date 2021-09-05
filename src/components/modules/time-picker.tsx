@@ -4,9 +4,9 @@ import { Component, Prop, Emit, Watch } from 'vue-property-decorator'
 @Component
 export default class TimePickerPlus extends Vue {
   mounted() {
-    console.log(this.$attrs, 'InputPlus attrs')
-    console.log(this.$listeners, 'InputPlus listeners')
-    console.log(this.$scopedSlots, 'InputPlus scopedSlots')
+    console.log(this.$attrs, 'TimePickerPlus attrs')
+    console.log(this.$listeners, 'TimePickerPluss listeners')
+    console.log(this.$scopedSlots, 'TimePickerPlus scopedSlots')
   }
 
   render(h: CreateElement): VNode {
