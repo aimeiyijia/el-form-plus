@@ -4,6 +4,7 @@
       v-model="model"
       :config="config"
       :options="options"
+      @validate="validate"
     ></el-form-plus>
   </div>
 </template>
@@ -15,7 +16,8 @@ export default {
   data() {
     return {
       model: null,
-      // 表单整体配置
+
+      // el-form 表单整体配置
       config: {
         labelWidth: '60px',
         // rules: {
@@ -31,7 +33,7 @@ export default {
         // },
       },
 
-      // 表单项配置
+      // 表单项生成配置
       options: formData,
       // 表单校验规则
     }
@@ -40,7 +42,11 @@ export default {
     console.log(this.model)
     // this.model.setByField('input', 'attrs.value', 1234567890)
   },
-  methods: {},
+  methods: {
+    validate(){
+      console.log(1)
+    }
+  },
 }
 </script>
 <style lang="scss">

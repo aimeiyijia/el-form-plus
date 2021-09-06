@@ -208,10 +208,11 @@ export default class ElFormPlus extends Vue {
 
       return options.filter(o => !o.hidden).map(o => {
 
-        // 剥离掉el-form-item相关的配置
+        // 剥离掉表单项不需要的配置项
         const singleFormAttrs = omit(o, ['hidden', 'config'])
+
         const { config = {}, attrs = {} } = o
-        const { field } = attrs
+        const { field = '' } = attrs
 
         const result = this.verifyRequiredParams(singleFormAttrs)
 
@@ -230,7 +231,8 @@ export default class ElFormPlus extends Vue {
           props: {
             ...this.config,
             model: Object.fromEntries(this.model),
-          }
+          },
+          on: this.$listeners
         }}>
         {renderFormItem()}
       </el-form>

@@ -36,6 +36,8 @@ const input = {
   //     return '表单后置插槽'
   //   },
   // },
+
+
   // el-form-item配置项 可选
   config: {
     // vue ref属性 默认为[field] 利用此属性来查找某一组件
