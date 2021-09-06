@@ -13,6 +13,10 @@ interface IVnodes {
   [key: string]: any;
   [index: number]: any;
 }
+interface IModel {
+  [key: string]: any;
+  [index: number]: any;
+}
 
 @Component
 export default class ElFormPlus extends Vue {
@@ -24,7 +28,7 @@ export default class ElFormPlus extends Vue {
   // 单个表单配置项组成的表单项渲染规则
   @Prop({ type: Array, default: () => [] }) readonly options!: any[]
 
-  private model = new Map()
+  private model: IModel = {}
 
   private data: any[] = []
 
@@ -46,9 +50,17 @@ export default class ElFormPlus extends Vue {
       }
       const { attrs } = o
       const { field, value } = attrs
-      this.model.set(field, value)
+      this.$set(this.model, field, value)
     }
     this.exportInstance()
+  }
+
+  created(){
+    // 检验双向绑定方法
+    setInterval(() =>{
+      this.model['input'] = (new Date()).getMilliseconds()
+      console.log(this.model, '更新')
+    }, 3000)
   }
 
   // 根据attrs中的field字段匹配到目标配置项
@@ -167,11 +179,10 @@ export default class ElFormPlus extends Vue {
       const otherAttrs = omit(attrs, ['field', 'value'])
       // 表单input event
       const onInput = (val: any) => {
-        // 设置新值
-        model.set(field, val)
 
-        // fix 无法监听Map的变更
-        this.$forceUpdate()
+        console.log(val, 'input')
+        // 设置新值
+        this.$set(model, field, val)
 
         // 因为input事件被内部拦截了，所以在此再暴露出去
         const { input } = on
@@ -185,7 +196,7 @@ export default class ElFormPlus extends Vue {
       }
 
       // 取出表单初始值
-      const value = model.get(field)
+      const value = model[field]
 
       // 取出
       const ons = omit(on, ['input'])
@@ -230,7 +241,7 @@ export default class ElFormPlus extends Vue {
         {...{
           props: {
             ...this.config,
-            model: Object.fromEntries(this.model),
+            model: model,
           },
           on: this.$listeners
         }}>
