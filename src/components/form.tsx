@@ -217,7 +217,7 @@ export default class ElFormPlus extends Vue {
     }
 
     // todo 一个el-form-item内部可以渲染多个表单项
-    // todo 支持el-col el-row自适应布局
+    // todo 对于el-form-item 支持el-col el-row自适应布局
     // 渲染 el-form-item
     const renderFormItem = () => {
       const options = this.data
@@ -225,16 +225,22 @@ export default class ElFormPlus extends Vue {
       return options.filter(o => !o.hidden).map(o => {
 
         // 剥离掉表单项不需要的配置项
-        const singleFormAttrs = omit(o, ['hidden', 'config'])
+        const singleFormAttrs = omit(o, ['hidden', 'config', 'more'])
 
-        const { config = {}, attrs = {} } = o
+        const { config = {}, attrs = {}, more = [] } = o
         const { field = '' } = attrs
 
         const result = this.verifyRequiredParams(singleFormAttrs)
 
+        const moreForm = () => {
+          return more.map((o: object) => {
+            return renderSingleForm(o)
+          })
+        }
+
         return (
           <el-form-item {...{ props: { prop: field, ...config } }}>
-            {result && renderSingleForm(singleFormAttrs)}
+            {result && [renderSingleForm(singleFormAttrs)].concat(moreForm())}
           </el-form-item>
         )
       })

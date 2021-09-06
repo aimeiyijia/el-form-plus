@@ -12,6 +12,23 @@ const input = {
     // 初始值
     value: 'input初始值',
   },
+  // 渲染更多的表单项
+  // 配置项相同，但是无config配置
+  more: [
+    {
+      type: 'Input',
+      // 表单是否隐藏 默认为false（控制的是el-form-item）
+      hidden: false,
+      // 表单项的配置项
+      attrs: {
+        type: 'text',
+        // 表单项绑定的值（字段名） 必需
+        field: 'input',
+        // 初始值
+        value: 'input初始值',
+      },
+    },
+  ],
   // 表单项事件
   // on: {
   //   blur: () => {
@@ -36,7 +53,6 @@ const input = {
   //     return '表单后置插槽'
   //   },
   // },
-
 
   // el-form-item配置项 可选
   config: {
