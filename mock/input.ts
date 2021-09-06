@@ -42,6 +42,9 @@ const input = {
     ref: 'input',
     label: 'input：',
     // labelWidth: '120px',
+
+    // 外部的config中的rules会失效
+    rules: [{ required: true, message: '请输入活动名称', trigger: 'blur' }],
   },
 }
 

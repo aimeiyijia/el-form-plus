@@ -18,10 +18,22 @@ export default {
       // 表单整体配置
       config: {
         labelWidth: '60px',
+        // rules: {
+        //   input: [
+        //     { required: true, message: '请输入活动名称12', trigger: 'blur' },
+        //     {
+        //       min: 3,
+        //       max: 5,
+        //       message: '长度在 3 到 5 个字符',
+        //       trigger: 'blur',
+        //     },
+        //   ],
+        // },
       },
 
       // 表单项配置
       options: formData,
+      // 表单校验规则
     }
   },
   mounted() {

@@ -5,10 +5,9 @@ import omit from 'lodash/omit'
 @Component
 export default class InputPlus extends Vue {
   mounted() {
-    // console.log(this, 'InputPlus实例')
-    // console.log(this.$attrs, 'InputPlus attrs')
-    // console.log(this.$listeners, 'InputPlus listeners')
-    // console.log(this.$scopedSlots, 'InputPlus scopedSlots')
+    console.log(this.$attrs, 'InputPlus attrs')
+    console.log(this.$listeners, 'InputPlus listeners')
+    console.log(this.$scopedSlots, 'InputPlus scopedSlots')
   }
 
   render(h: CreateElement): VNode {

@@ -175,7 +175,7 @@ export default class ElFormPlus extends Vue {
 
         // 因为input事件被内部拦截了，所以在此再暴露出去
         const { input } = on
-        if(!input) return
+        if (!input) return
         // input(val);
         if (isFunction(input)) {
           input.call(null, val)
@@ -210,14 +210,13 @@ export default class ElFormPlus extends Vue {
 
         // 剥离掉el-form-item相关的配置
         const singleFormAttrs = omit(o, ['hidden', 'config'])
-        const { config = {} } = o
-        const { ref } = config
-        const itemProp = omit(config, ['ref'])
+        const { config = {}, attrs = {} } = o
+        const { field } = attrs
 
         const result = this.verifyRequiredParams(singleFormAttrs)
 
         return (
-          <el-form-item {...{ props: itemProp }} ref={ref}>
+          <el-form-item {...{ props: { prop: field, ...config } }}>
             {result && renderSingleForm(singleFormAttrs)}
           </el-form-item>
         )

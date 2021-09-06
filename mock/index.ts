@@ -27,7 +27,7 @@ data.push(
   // datepicker,
   // datetimepicker,
   // inputnumber,
-  // input,
+  input,
   // radio,
   // rate,
   // select,
@@ -36,7 +36,7 @@ data.push(
   // timepicker,
   // timeselect,
   // transfer,
-  upload
+  // upload
 )
 
 export default data
