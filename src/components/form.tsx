@@ -55,12 +55,12 @@ export default class ElFormPlus extends Vue {
     this.exportInstance()
   }
 
-  created(){
+  created() {
     // 检验双向绑定方法
-    setInterval(() =>{
-      this.model['input'] = (new Date()).getMilliseconds()
-      console.log(this.model, '更新')
-    }, 3000)
+    // setInterval(() =>{
+    //   this.model['input'] = (new Date()).getMilliseconds()
+    //   console.log(this.model, '更新')
+    // }, 3000)
   }
 
   // 根据attrs中的field字段匹配到目标配置项
@@ -147,11 +147,7 @@ export default class ElFormPlus extends Vue {
     })
   }
 
-  // 根据type 判断需要渲染的组件
-  private renderComponent(type: any) {
-    const vnodes: IVnodes = Vnodes
-    return vnodes[type]
-  }
+
 
 
   // 校验必须参数
@@ -169,6 +165,12 @@ export default class ElFormPlus extends Vue {
   render(h: CreateElement): VNode {
     const model = this.model
 
+    // 根据type 判断需要渲染的组件
+    const renderWhatComponent = (type: any) => {
+      const vnodes: IVnodes = Vnodes
+      return vnodes[type]
+    }
+
     // 渲染表单项
     const renderSingleForm = (singleFormAttrs: any) => {
 
@@ -185,6 +187,8 @@ export default class ElFormPlus extends Vue {
         this.$set(model, field, val)
 
         // 因为input事件被内部拦截了，所以在此再暴露出去
+        // 所有的组件应自行实现input方法以达到统一目的（也可以不实现）
+        // input基本对应表单的input事件，但也可能是change事件，以实际开发为准
         const { input } = on
         if (!input) return
         // input(val);
@@ -201,7 +205,7 @@ export default class ElFormPlus extends Vue {
       // 取出
       const ons = omit(on, ['input'])
       // 需要渲染的组件 SuperComponent
-      const SComponent: any = this.renderComponent(type)
+      const SComponent: any = renderWhatComponent(type)
       return (
         <SComponent
           value={value}
@@ -213,6 +217,7 @@ export default class ElFormPlus extends Vue {
     }
 
     // todo 一个el-form-item内部可以渲染多个表单项
+    // todo 支持el-col el-row自适应布局
     // 渲染 el-form-item
     const renderFormItem = () => {
       const options = this.data

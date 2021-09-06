@@ -20,6 +20,7 @@ export default {
       // el-form 表单整体配置
       config: {
         labelWidth: '60px',
+        // 整体form设置
         // rules: {
         //   input: [
         //     { required: true, message: '请输入活动名称12', trigger: 'blur' },
