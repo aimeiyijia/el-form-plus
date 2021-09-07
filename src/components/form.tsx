@@ -46,18 +46,26 @@ export default class ElFormPlus extends Vue {
   @Watch('data', { immediate: true, deep: true })
   private dataChange() {
     const options = this.data
-    for (let o of options) {
+    this.buildModel(options)
+    // 将组装好的model对外暴露出去
+    this.$emit('change', this.model)
+    // this.exportInstance()
+  }
+
+  private buildModel(data: any){
+    for (let o of data) {
       const result = this.verifyRequiredParams(o)
       if (!result) {
         continue
       }
-      const { attrs } = o
+      const { attrs, more } = o
       const { field, value } = attrs
       this.$set(this.model, field, value)
+      if(more){
+        this.buildModel(more)
+      }
+      // this.buildModel(more)
     }
-    // 将组装好的model对外暴露出去
-    this.$emit('change', this.model)
-    // this.exportInstance()
   }
 
   created() {

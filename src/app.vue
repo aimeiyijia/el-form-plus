@@ -43,10 +43,11 @@ export default {
     console.log(this.model, '双向绑定值')
     // this.model.input = '123'
     // this.model.setByField('input', 'attrs.value', 1234567890)
-    // setInterval(() => {
-    //   console.log(this.model, '双向绑定值')
-    //   this.model.input = new Date().getSeconds()
-    // }, 2000)
+    setInterval(() => {
+      console.log(this.model, '双向绑定值')
+      this.model.input = new Date().getSeconds()
+      this.model.moreinput = new Date().getSeconds() + 100
+    }, 2000)
   },
   methods: {
     validate() {

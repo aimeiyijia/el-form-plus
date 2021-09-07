@@ -1,4 +1,5 @@
 import { CreateElement } from 'vue'
+// todo 将attrs 中的filed value 提到一级属性配置中
 const input = {
   // 表单项渲染类型 必需
   type: 'Input',
@@ -21,9 +22,8 @@ const input = {
       hidden: false,
       // 表单项的配置项
       attrs: {
-        type: 'text',
         // 表单项绑定的值（字段名） 必需
-        field: 'input',
+        field: 'moreinput',
         // 初始值
         value: 'input初始值',
       },
