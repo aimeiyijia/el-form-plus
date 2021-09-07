@@ -21,7 +21,10 @@ interface IModel {
 @Component
 export default class ElFormPlus extends Vue {
 
-  @Model('change', { type: Object }) readonly formPlusInstance!: any
+  // 因为内部的model数据全部从options中组装而来，所以初始化时modelData并没有实际作用
+  // el-form-plus初始化完成之后则为组装后的model(同一引用)
+  @Model('change', { type: Object }) readonly modelData!: any
+
   // 表单整体配置
   @Prop({ type: Object, default: () => { } }) readonly config!: any
 
@@ -52,7 +55,9 @@ export default class ElFormPlus extends Vue {
       const { field, value } = attrs
       this.$set(this.model, field, value)
     }
-    this.exportInstance()
+    // 将组装好的model对外暴露出去
+    this.$emit('change', this.model)
+    // this.exportInstance()
   }
 
   created() {
@@ -136,7 +141,7 @@ export default class ElFormPlus extends Vue {
 
 
   // 将操作实例的方法暴露出去
-  private exportInstance() {
+  private exportMethods() {
     this.$emit('change', {
       setByField: this.setByField,
       isHasByField: this.isHasByField,
@@ -182,7 +187,6 @@ export default class ElFormPlus extends Vue {
       // 表单input event
       const onInput = (val: any) => {
 
-        console.log(val, 'input')
         // 设置新值
         this.$set(model, field, val)
 
@@ -191,7 +195,6 @@ export default class ElFormPlus extends Vue {
         // input基本对应表单的input事件，但也可能是change事件，以实际开发为准
         const { input } = on
         if (!input) return
-        // input(val);
         if (isFunction(input)) {
           input.call(null, val)
         } else {
