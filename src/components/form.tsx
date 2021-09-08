@@ -1,5 +1,6 @@
 import Vue, { VNode, CreateElement } from 'vue'
 import { Component, Prop, Model, Watch } from 'vue-property-decorator'
+import { Fragment } from 'vue-fragment'
 import omit from 'lodash/omit'
 import { cloneDeep, isFunction } from 'lodash'
 import objectPath from './utils/object-path'
@@ -18,14 +19,19 @@ interface IModel {
   [index: number]: any;
 }
 
-@Component
+@Component({
+  components: { Fragment },
+})
 export default class ElFormPlus extends Vue {
 
   // 因为内部的model数据全部从options中组装而来，所以初始化时modelData并没有实际作用
   // el-form-plus初始化完成之后则为组装后的model(同一引用)
   @Model('change', { type: Object }) readonly modelData!: any
 
-  // 表单整体配置
+  // 表单布局配置项 https://element.eleme.cn/#/zh-CN/component/layout#row-attributes
+  @Prop({ type: Object, default: () => { } }) readonly layout?: any
+
+  // 表单整体配置 https://element.eleme.cn/#/zh-CN/component/form#form-attributes
   @Prop({ type: Object, default: () => { } }) readonly config!: any
 
   // 单个表单配置项组成的表单项渲染规则
@@ -52,7 +58,7 @@ export default class ElFormPlus extends Vue {
     // this.exportInstance()
   }
 
-  private buildModel(data: any){
+  private buildModel(data: any) {
     for (let o of data) {
       const result = this.verifyRequiredParams(o)
       if (!result) {
@@ -61,7 +67,7 @@ export default class ElFormPlus extends Vue {
       const { attrs, more } = o
       const { field, value } = attrs
       this.$set(this.model, field, value)
-      if(more){
+      if (more) {
         this.buildModel(more)
       }
       // this.buildModel(more)
@@ -227,7 +233,7 @@ export default class ElFormPlus extends Vue {
       )
     }
 
-    // todo 一个el-form-item内部可以渲染多个表单项
+    // todo 一个el-form-item内部可以渲染多个表单项，同时支持el-col布局
     // todo 对于el-form-item 支持el-col el-row自适应布局
     // 渲染 el-form-item
     const renderFormItem = () => {
@@ -236,13 +242,21 @@ export default class ElFormPlus extends Vue {
       return options.filter(o => !o.hidden).map(o => {
 
         // 剥离掉表单项不需要的配置项
-        const singleFormAttrs = omit(o, ['hidden', 'config', 'more'])
+        const singleFormAttrs = omit(o, ['hidden', 'config', 'more', 'col'])
 
-        const { config = {}, attrs = {}, more = [] } = o
+        const { config = {}, attrs = {}, more = [], col = { span: 24 } } = o
         const { field = '' } = attrs
 
         const result = this.verifyRequiredParams(singleFormAttrs)
 
+        const renderRowEl = () => {
+          if (this.layout) return 'el-col'
+          return 'fragment'
+        }
+
+        const RowEl = renderRowEl()
+
+        // 更多表单项
         const moreForm = () => {
           return more.map((o: object) => {
             return renderSingleForm(o)
@@ -250,12 +264,22 @@ export default class ElFormPlus extends Vue {
         }
 
         return (
-          <el-form-item {...{ props: { prop: field, ...config } }}>
-            {result && [renderSingleForm(singleFormAttrs)].concat(moreForm())}
-          </el-form-item>
+          <RowEl  {...{ props: { ...col } }}>
+            <el-form-item {...{ props: { prop: field, ...config } }}>
+              {result && [renderSingleForm(singleFormAttrs)].concat(moreForm())}
+            </el-form-item>
+          </RowEl>
         )
       })
     }
+
+    const renderLayoutEl = () => {
+      if (this.layout) return 'el-row'
+      return 'fragment'
+    }
+
+    const LayoutEl = renderLayoutEl()
+
 
     // 渲染el-form
     return (
@@ -267,7 +291,9 @@ export default class ElFormPlus extends Vue {
           },
           on: this.$listeners
         }}>
-        {renderFormItem()}
+        <LayoutEl>
+          {renderFormItem()}
+        </LayoutEl>
       </el-form>
     )
   }

@@ -3,6 +3,7 @@
     <el-form-plus
       v-model="model"
       :config="config"
+      :layout="layout"
       :options="options"
       @validate="validate"
     ></el-form-plus>
@@ -17,10 +18,13 @@ export default {
     return {
       model: null,
 
-      // el-form 表单整体配置
+      // layout布局配置项 同element-ui中Layout 中 Row Attributes
+      // layout只要存在，不管是不是{}，都会去按照el-row el-col去布局
+      layout: {},
+
+      // el-form 表单整体配置（除model配置项，因为内部已拦截）
       config: {
         labelWidth: '60px',
-        // 整体form设置
         // rules: {
         //   input: [
         //     { required: true, message: '请输入活动名称12', trigger: 'blur' },
@@ -47,7 +51,7 @@ export default {
       console.log(this.model, '双向绑定值')
       this.model.input = new Date().getSeconds()
       this.model.moreinput = new Date().getSeconds() + 100
-    }, 2000)
+    }, 10000)
   },
   methods: {
     validate() {

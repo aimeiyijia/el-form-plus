@@ -14,7 +14,7 @@ const input = {
     value: 'input初始值',
   },
   // 渲染更多的表单项
-  // 配置项相同，但是无config配置
+  // 配置项相同，因为是渲染在同一个el-form-item中所以无config配置，也不支持
   more: [
     {
       type: 'Input',
@@ -29,6 +29,10 @@ const input = {
       },
     },
   ],
+  // layout布局中el-col配置项
+  col: {
+    span: 12
+  },
   // 表单项事件
   // on: {
   //   blur: () => {
