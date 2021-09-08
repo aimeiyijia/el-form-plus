@@ -30,8 +30,9 @@ const input = {
     },
   ],
   // layout布局中el-col配置项
+  // 值el-form-item所占据的空间
   col: {
-    span: 12
+    span: 12,
   },
   // 表单项事件
   // on: {

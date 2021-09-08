@@ -242,7 +242,6 @@ export default class ElFormPlus extends Vue {
     }
 
     // todo 一个el-form-item内部可以渲染多个表单项，同时支持el-col布局
-    // todo 对于el-form-item 支持el-col el-row自适应布局
     // 渲染 el-form-item
     const renderFormItem = () => {
       const options = this.data
