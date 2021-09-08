@@ -181,6 +181,8 @@ export default class ElFormPlus extends Vue {
   }
 
 
+
+
   render(h: CreateElement): VNode {
     const model = this.model
 
@@ -188,6 +190,12 @@ export default class ElFormPlus extends Vue {
     const renderWhatComponent = (type: any) => {
       const vnodes: IVnodes = Vnodes
       return vnodes[type]
+    }
+
+    // 渲染layout元素
+    const renderLayoutEl = (rEl: string) => {
+      if (this.layout) return rEl
+      return 'fragment'
     }
 
     // 渲染表单项
@@ -249,12 +257,8 @@ export default class ElFormPlus extends Vue {
 
         const result = this.verifyRequiredParams(singleFormAttrs)
 
-        const renderRowEl = () => {
-          if (this.layout) return 'el-col'
-          return 'fragment'
-        }
-
-        const RowEl = renderRowEl()
+        // 是否渲染el-col元素
+        const RowEl = renderLayoutEl('el-col')
 
         // 更多表单项
         const moreForm = () => {
@@ -273,12 +277,8 @@ export default class ElFormPlus extends Vue {
       })
     }
 
-    const renderLayoutEl = () => {
-      if (this.layout) return 'el-row'
-      return 'fragment'
-    }
-
-    const LayoutEl = renderLayoutEl()
+    // 是否渲染el-row元素
+    const LayoutEl = renderLayoutEl('el-row')
 
 
     // 渲染el-form
