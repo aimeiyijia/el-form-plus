@@ -37,7 +37,7 @@ const input = {
   // 在有more配置项时的el-form-item的内部布局方式
   inLayout: {},
   // el-form-item内的布局的某col
-  inCol: {}
+  inCol: {},
   // 表单项事件
   // on: {
   //   blur: () => {
