@@ -30,10 +30,14 @@ const input = {
     },
   ],
   // layout布局中el-col配置项
-  // 值el-form-item所占据的空间
+  // el-form-item所占据的空间
   col: {
     span: 12,
   },
+  // 在有more配置项时的el-form-item的内部布局方式
+  inLayout: {},
+  // el-form-item内的布局的某col
+  inCol: {}
   // 表单项事件
   // on: {
   //   blur: () => {
