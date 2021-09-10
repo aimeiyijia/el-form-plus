@@ -201,9 +201,7 @@ export default class ElFormPlus extends Vue {
     // 渲染表单项
     const renderSingleForm = (singleFormAttrs: any) => {
 
-
-
-      let { type = "", col = { span: 24 }, attrs = {}, on = {}, scopedSlots = {} } = singleFormAttrs
+      let { type = "", col = { span: 11 }, attrs = {}, on = {}, scopedSlots = {} } = singleFormAttrs
       const { field } = attrs
 
       // 剥离掉内置的配置项
@@ -260,7 +258,7 @@ export default class ElFormPlus extends Vue {
         // 剥离掉表单项不需要的配置项
         const singleFormAttrs = omit(o, ['hidden', 'config', 'more'])
 
-        const { config = {}, attrs = {}, more = [], layout = {}, } = o
+        const { config = {}, attrs = {}, more = [], layout = { gutter: 20 }, } = o
         const { field = '' } = attrs
         const { col = { span: 24 } } = config
 
