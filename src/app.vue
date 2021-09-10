@@ -16,7 +16,8 @@ export default {
   name: 'app',
   data() {
     return {
-      model: null,
+      // 除了在option配置项中的value字段中设置初始值，也可以直接传递model对象赋初值
+      model: { input: 12356 },
 
       // layout布局配置项 同element-ui中Layout 中 Row Attributes
       // layout只要存在，不管是不是{}，都会去按照el-row el-col去布局

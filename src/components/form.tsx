@@ -41,7 +41,13 @@ export default class ElFormPlus extends Vue {
 
   private data: any[] = []
 
+  created() {
+    // 绑定初值
+    this.bindData(this.modelData)
+  }
+
   // 这一步主要是为了方便内部操作options
+  // 深拷贝保存为内部状态
   @Watch('options', { immediate: true, deep: true })
   private setData() {
     this.data = cloneDeep(this.options)
@@ -56,6 +62,16 @@ export default class ElFormPlus extends Vue {
     // 将组装好的model对外暴露出去
     this.$emit('change', this.model)
     // this.exportInstance()
+  }
+
+  // 深度绑定数据
+  private bindData(data: any) {
+    for (let o in data) {
+      if(Object.prototype.toString.call(data[o]) === '[object Object]'){
+        this.bindData(data[o])
+      }
+      this.$set(this.model, o, data[o])
+    }
   }
 
   private buildModel(data: any) {
@@ -74,16 +90,10 @@ export default class ElFormPlus extends Vue {
     }
   }
 
-  created() {
-    // 检验双向绑定方法
-    // setInterval(() =>{
-    //   this.model['input'] = (new Date()).getMilliseconds()
-    //   console.log(this.model, '更新')
-    // }, 3000)
-  }
+
 
   // 根据attrs中的field字段匹配到目标配置项
-  getTarget(fieldName: any) {
+  private getTarget(fieldName: any) {
     return this.data.find(o => {
       return o.attrs.field === fieldName
     })
@@ -248,7 +258,6 @@ export default class ElFormPlus extends Vue {
       )
     }
 
-    // todo 一个el-form-item内部可以渲染多个表单项，同时支持el-col布局
     // 渲染 el-form-item
     const renderFormItem = () => {
       const options = this.data
