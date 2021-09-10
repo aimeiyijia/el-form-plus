@@ -27,17 +27,19 @@ const input = {
         // 初始值
         value: 'input初始值',
       },
+      col: {
+        span: 11,
+      },
     },
   ],
-  // layout布局中el-col配置项
-  // el-form-item所占据的空间
-  col: {
-    span: 12,
-  },
   // 在有more配置项时的el-form-item的内部布局方式
-  inLayout: {},
-  // el-form-item内的布局的某col
-  inCol: {},
+  layout: {
+    gutter: 20,
+  },
+  // 该表单项在el-form-item占据的空间
+  col: {
+    span: 11,
+  },
   // 表单项事件
   // on: {
   //   blur: () => {
@@ -69,6 +71,11 @@ const input = {
     ref: 'input',
     label: 'input：',
     // labelWidth: '120px',
+
+    // el-form-item所占据的空间
+    col: {
+      span: 24,
+    },
 
     // 外部的config中的rules会失效
     rules: [{ required: true, message: '请输入活动名称', trigger: 'blur' }],

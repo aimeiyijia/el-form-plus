@@ -201,7 +201,9 @@ export default class ElFormPlus extends Vue {
     // 渲染表单项
     const renderSingleForm = (singleFormAttrs: any) => {
 
-      let { type = "", attrs = {}, on = {}, scopedSlots = {} } = singleFormAttrs
+
+
+      let { type = "", col = { span: 24 }, attrs = {}, on = {}, scopedSlots = {} } = singleFormAttrs
       const { field } = attrs
 
       // 剥离掉内置的配置项
@@ -229,15 +231,22 @@ export default class ElFormPlus extends Vue {
 
       // 取出
       const ons = omit(on, ['input'])
+
+      // 是否渲染el-col元素
+      // 一个el-form-item内部某表单项占据的空间
+      const RowEl = renderLayoutEl('el-col')
       // 需要渲染的组件 SuperComponent
       const SComponent: any = renderWhatComponent(type)
       return (
-        <SComponent
-          value={value}
-          on-input={onInput}
-          {...{ scopedSlots }}
-          {...{ attrs: otherAttrs }}
-          {...{ on: ons }} />
+        <RowEl  {...{ props: { ...col } }}>
+          <SComponent
+            value={value}
+            on-input={onInput}
+            {...{ scopedSlots }}
+            {...{ attrs: otherAttrs }}
+            {...{ on: ons }} />
+        </RowEl>
+
       )
     }
 
@@ -249,27 +258,36 @@ export default class ElFormPlus extends Vue {
       return options.filter(o => !o.hidden).map(o => {
 
         // 剥离掉表单项不需要的配置项
-        const singleFormAttrs = omit(o, ['hidden', 'config', 'more', 'col'])
+        const singleFormAttrs = omit(o, ['hidden', 'config', 'more'])
 
-        const { config = {}, attrs = {}, more = [], col = { span: 24 } } = o
+        const { config = {}, attrs = {}, more = [], layout = {}, } = o
         const { field = '' } = attrs
+        const { col = { span: 24 } } = config
 
         const result = this.verifyRequiredParams(singleFormAttrs)
 
+        // 是否渲染el-row元素
+        // 一个el-form-item内部的布局
+        const LayoutEl = renderLayoutEl('el-row')
+
         // 是否渲染el-col元素
+        // 一个el-form-item占据的空间
         const RowEl = renderLayoutEl('el-col')
 
         // 更多表单项
         const moreForm = () => {
           return more.map((o: object) => {
-            return renderSingleForm(o)
+            const props = omit(o, ['layout'])
+            return renderSingleForm(props)
           })
         }
 
         return (
           <RowEl  {...{ props: { ...col } }}>
             <el-form-item {...{ props: { prop: field, ...config } }}>
-              {result && [renderSingleForm(singleFormAttrs)].concat(moreForm())}
+              <LayoutEl {...{ props: { ...layout } }}>
+                {result && [renderSingleForm(singleFormAttrs)].concat(moreForm())}
+              </LayoutEl>
             </el-form-item>
           </RowEl>
         )
@@ -290,7 +308,7 @@ export default class ElFormPlus extends Vue {
           },
           on: this.$listeners
         }}>
-        <LayoutEl>
+        <LayoutEl {...{ props: { ...this.layout } }}>
           {renderFormItem()}
         </LayoutEl>
       </el-form>
