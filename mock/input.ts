@@ -5,13 +5,13 @@ const input = {
   type: 'Input',
   // 表单是否隐藏 默认为false（控制的是el-form-item）
   hidden: false,
+  // 表单项绑定的值（字段名） 必需
+  field: 'input',
+  // 初始值
+  value: 'input初始值',
   // 表单项的配置项
   attrs: {
     type: 'text',
-    // 表单项绑定的值（字段名） 必需
-    field: 'input',
-    // 初始值
-    value: 'input初始值',
   },
   // 渲染更多的表单项
   // 配置项相同，因为是渲染在同一个el-form-item中所以无config配置，也不支持
@@ -20,13 +20,12 @@ const input = {
       type: 'Input',
       // 表单是否隐藏 默认为false（控制的是el-form-item）
       hidden: false,
+      // 表单项绑定的值（字段名） 必需
+      field: 'moreinput',
+      // 初始值
+      value: 'input初始值',
       // 表单项的配置项
-      attrs: {
-        // 表单项绑定的值（字段名） 必需
-        field: 'moreinput',
-        // 初始值
-        value: 'input初始值',
-      },
+      attrs: {},
       col: {
         span: 11,
       },

@@ -67,7 +67,7 @@ export default class ElFormPlus extends Vue {
   // 深度绑定数据
   private bindData(data: any) {
     for (let o in data) {
-      if(Object.prototype.toString.call(data[o]) === '[object Object]'){
+      if (Object.prototype.toString.call(data[o]) === '[object Object]') {
         this.bindData(data[o])
       }
       this.$set(this.model, o, data[o])
@@ -76,17 +76,15 @@ export default class ElFormPlus extends Vue {
 
   private buildModel(data: any) {
     for (let o of data) {
-      const result = this.verifyRequiredParams(o)
+      const result = this.isFieldExist(o)
       if (!result) {
         continue
       }
-      const { attrs, more } = o
-      const { field, value } = attrs
+      const { field, value, more } = o
       this.$set(this.model, field, value)
       if (more) {
         this.buildModel(more)
       }
-      // this.buildModel(more)
     }
   }
 
@@ -95,7 +93,7 @@ export default class ElFormPlus extends Vue {
   // 根据attrs中的field字段匹配到目标配置项
   private getTarget(fieldName: any) {
     return this.data.find(o => {
-      return o.attrs.field === fieldName
+      return o.field === fieldName
     })
   }
 
@@ -181,8 +179,8 @@ export default class ElFormPlus extends Vue {
 
   // 校验必须参数
   // 目前必须的参数为 attrs中的 field字段
-  verifyRequiredParams(attrs: any): boolean {
-    const isExist = objectPath.has(attrs, 'attrs.field')
+  isFieldExist(attrs: any): boolean {
+    const isExist = objectPath.has(attrs, 'field')
     if (!isExist) {
       console.error('field字段不能为空，请检查配置项')
       return false
@@ -211,11 +209,8 @@ export default class ElFormPlus extends Vue {
     // 渲染表单项
     const renderSingleForm = (singleFormAttrs: any) => {
 
-      let { type = "", col = { span: 11 }, attrs = {}, on = {}, scopedSlots = {} } = singleFormAttrs
-      const { field } = attrs
+      let { type = "", col = { span: 11 }, field = "", attrs = {}, on = {}, scopedSlots = {} } = singleFormAttrs
 
-      // 剥离掉内置的配置项
-      const otherAttrs = omit(attrs, ['field', 'value'])
       // 表单input event
       const onInput = (val: any) => {
 
@@ -251,7 +246,7 @@ export default class ElFormPlus extends Vue {
             value={value}
             on-input={onInput}
             {...{ scopedSlots }}
-            {...{ attrs: otherAttrs }}
+            {...{ attrs }}
             {...{ on: ons }} />
         </RowEl>
 
@@ -267,11 +262,10 @@ export default class ElFormPlus extends Vue {
         // 剥离掉表单项不需要的配置项
         const singleFormAttrs = omit(o, ['hidden', 'config', 'more'])
 
-        const { config = {}, attrs = {}, more = [], layout = { gutter: 20 }, } = o
-        const { field = '' } = attrs
+        const { field = '', config = {}, more = [], layout = { gutter: 20 }, } = o
         const { col = { span: 24 } } = config
 
-        const result = this.verifyRequiredParams(singleFormAttrs)
+        const result = this.isFieldExist(singleFormAttrs)
 
         // 是否渲染el-row元素
         // 一个el-form-item内部的布局
@@ -284,6 +278,7 @@ export default class ElFormPlus extends Vue {
         // 更多表单项
         const moreForm = () => {
           return more.map((o: object) => {
+            // 不接受layout配置
             const props = omit(o, ['layout'])
             return renderSingleForm(props)
           })
