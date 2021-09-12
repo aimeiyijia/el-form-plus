@@ -209,7 +209,7 @@ export default class ElFormPlus extends Vue {
     // 渲染表单项
     const renderSingleForm = (singleFormAttrs: any) => {
 
-      let { type = "", col = { span: 11 }, field = "", attrs = {}, on = {}, scopedSlots = {} } = singleFormAttrs
+      let { type = "", col = { span: 11 }, field = "", customNode, attrs = {}, on = {}, scopedSlots = {} } = singleFormAttrs
 
       // 表单input event
       const onInput = (val: any) => {
@@ -247,6 +247,7 @@ export default class ElFormPlus extends Vue {
             on-input={onInput}
             {...{ scopedSlots }}
             {...{ attrs }}
+            customNode={customNode}
             {...{ on: ons }} />
         </RowEl>
 

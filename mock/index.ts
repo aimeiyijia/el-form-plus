@@ -3,6 +3,7 @@ import cascader from './cascader'
 import cascaderpanel from './cascader-panel'
 import checkbox from './check-box'
 import colorpicker from './color-picker'
+import custom from './custom'
 import datepicker from './date-picker'
 import datetimepicker from './date-time-picker'
 import inputnumber from './input-number'
@@ -24,10 +25,11 @@ data.push(
   // cascaderpanel,
   // checkbox,
   // colorpicker,
+  custom
   // datepicker,
   // datetimepicker,
   // inputnumber,
-  input,
+  // input,
   // radio,
   // rate,
   // select,

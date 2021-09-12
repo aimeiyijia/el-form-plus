@@ -3,6 +3,7 @@ import CascaderPlus from './cascader'
 import CascaderPanelPlus from './cascader-panel'
 import CheckBoxPlus from './check-box'
 import ColorPickerPlus from './color-picker'
+import CustomPlus from './custom'
 import DatePickerPlus from './date-picker'
 import DateTimePickerPlus from './date-time-picker'
 import InputNumberPlus from './input-number'
@@ -23,6 +24,7 @@ export {
   CascaderPanelPlus,
   CheckBoxPlus,
   ColorPickerPlus,
+  CustomPlus,
   DatePickerPlus,
   DateTimePickerPlus,
   InputNumberPlus,

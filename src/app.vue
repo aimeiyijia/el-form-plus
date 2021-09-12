@@ -17,7 +17,7 @@ export default {
   data() {
     return {
       // 除了在option配置项中的value字段中设置初始值，也可以直接传递model对象赋初值
-      model: { input: 12356 },
+      model: { input: 1 },
 
       // layout布局配置项 同element-ui中Layout 中 Row Attributes
       // layout只要存在，不管是不是{}，都会去按照el-row el-col去布局
@@ -49,11 +49,11 @@ export default {
     console.log(this.model, '双向绑定值')
     // this.model.input = '123'
     // this.model.setByField('input', 'attrs.value', 1234567890)
-    setInterval(() => {
-      console.log(this.model, '双向绑定值')
-      this.model.input = new Date().getSeconds()
-      this.model.moreinput = new Date().getSeconds() + 100
-    }, 10000)
+    // setInterval(() => {
+    //   console.log(this.model, '双向绑定值')
+    //   this.model.input = new Date().getSeconds()
+    // this.model.moreinput = new Date().getSeconds() + 100
+    // }, 2000)
   },
   methods: {
     validate() {
