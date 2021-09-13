@@ -25,7 +25,7 @@ data.push(
   // cascaderpanel,
   // checkbox,
   // colorpicker,
-  custom
+  custom,
   // datepicker,
   // datetimepicker,
   // inputnumber,

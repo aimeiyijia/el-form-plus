@@ -19,6 +19,8 @@ interface IModel {
   [index: number]: any;
 }
 
+// todo 内置 重置 提交 按钮 采用更改配置项方式（语法糖）
+// todo 允许组件被包裹
 @Component({
   components: { Fragment },
 })

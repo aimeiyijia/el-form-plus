@@ -18,9 +18,32 @@ export default class CustomPlus extends Vue {
     // console.log(this.$scopedSlots, 'CustomPlus scopedSlots')
   }
 
+  @Watch('$attrs.value', { immediate: true, deep: true })
+  private dataChange(val: any) {
+    this.dispatch('ElFormItem', 'el.form.change', [val])
+  }
+
+  private dispatch(componentName: string, eventName: string, params: any[]) {
+    var parent = this.$parent || this.$root;
+    var name = (parent.$options as any).componentName;
+
+    while (parent && (!name || name !== componentName)) {
+      parent = parent.$parent;
+
+      if (parent) {
+        name = (parent.$options as any).componentName;
+      }
+    }
+    if (parent) {
+      const arg: any = [eventName].concat(params)
+      parent.$emit.apply(parent, arg);
+    }
+  }
+
   render(h: CreateElement): VNode {
     const { customNode } = this.$attrs as IAttrs
     const node = customNode({ h, instance: this })
+
     return <fragment>{node}</fragment>
   }
 }

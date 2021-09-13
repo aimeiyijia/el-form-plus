@@ -1,4 +1,3 @@
-import vue from 'vue'
 const custom = {
   // 表单项渲染类型 必需
   type: 'Custom',
@@ -11,7 +10,7 @@ const custom = {
       {
         on: {
           click: () => {
-            instance.$emit('input', '自定义组件值')
+            instance.$emit('input', '')
           },
         },
       },
@@ -21,9 +20,9 @@ const custom = {
   // 表单是否隐藏 默认为false（控制的是el-form-item）
   hidden: false,
   // 表单项绑定的值（字段名） 必需
-  field: 'input',
+  field: 'custom',
   // 初始值
-  value: '自定义表单',
+  value: '123456',
   // 表单项的配置项
   attrs: {},
 
@@ -40,7 +39,8 @@ const custom = {
     },
 
     // 外部的config中的rules会失效
-    rules: [{ required: true, message: '请输入活动名称', trigger: 'blur' }],
+    // 自定义组件校验目前仅支持change事件
+    rules: [{ required: true, message: '请输入自定义表单值', trigger: 'change' }],
   },
 }
 
