@@ -84,7 +84,7 @@ export default class ElFormPlus extends Vue {
       }
       const { field, value, more } = o
       this.$set(this.model, field, value)
-      if (more) {
+      if (more && Array.isArray(more)) {
         this.buildModel(more)
       }
     }
