@@ -1,5 +1,3 @@
-import { CreateElement } from 'vue'
-// todo 将attrs 中的filed value 提到一级属性配置中
 const input = {
   // 表单项渲染类型 必需
   type: 'Input',
@@ -23,7 +21,7 @@ const input = {
       // 表单项绑定的值（字段名） 必需
       field: 'moreinput',
       // 初始值
-      value: 'input初始值',
+      value: 'moreinput初始值',
       // 表单项的配置项
       attrs: {},
       col: {
@@ -38,6 +36,12 @@ const input = {
   // 该表单项在el-form-item占据的空间
   col: {
     span: 11,
+  },
+
+  // 某表单项的包裹组件
+  container: a => {
+    console.log(a, '123')
+    return 'div'
   },
   // 表单项事件
   // on: {
@@ -74,6 +78,14 @@ const input = {
     // el-form-item所占据的空间
     col: {
       span: 24,
+    },
+
+    // 包裹el-form-item的组件
+    // 组件名/标签名
+    // 请确保该组件存在可用插槽
+    // string / Function
+    container: a => {
+      return 'div'
     },
 
     // 外部的config中的rules会失效

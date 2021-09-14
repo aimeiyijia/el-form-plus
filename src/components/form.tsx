@@ -2,7 +2,7 @@ import Vue, { VNode, CreateElement } from 'vue'
 import { Component, Prop, Model, Watch } from 'vue-property-decorator'
 import { Fragment } from 'vue-fragment'
 import omit from 'lodash/omit'
-import { cloneDeep, isFunction } from 'lodash'
+import { cloneDeep, isFunction, isString } from 'lodash'
 import objectPath from './utils/object-path'
 // 样式
 import './styles/index.scss'
@@ -208,10 +208,22 @@ export default class ElFormPlus extends Vue {
       return 'fragment'
     }
 
+    const renderContainerEl = (c: string) => {
+      if (c) {
+        if (isFunction(c)) {
+          return c.call(null, this)
+        }
+        if (isString(c)) {
+          return c
+        }
+      }
+      return 'fragment'
+    }
+
     // 渲染表单项
     const renderSingleForm = (singleFormAttrs: any) => {
 
-      let { type = "", col = { span: 11 }, field = "", customNode, attrs = {}, on = {}, scopedSlots = {} } = singleFormAttrs
+      let { type = "", col = { span: 11 }, field = "", customNode, attrs = {}, container, on = {}, scopedSlots = {} } = singleFormAttrs
 
       // 表单input event
       const onInput = (val: any) => {
@@ -240,17 +252,23 @@ export default class ElFormPlus extends Vue {
       // 是否渲染el-col元素
       // 一个el-form-item内部某表单项占据的空间
       const RowEl = renderLayoutEl('el-col')
+
+      // 渲染container
+      const ContainerEl = renderContainerEl(container)
+
       // 需要渲染的组件 SuperComponent
       const SComponent: any = renderWhatComponent(type)
       return (
         <RowEl  {...{ props: { ...col } }}>
-          <SComponent
-            value={value}
-            on-input={onInput}
-            {...{ scopedSlots }}
-            {...{ attrs }}
-            customNode={customNode}
-            {...{ on: ons }} />
+          <ContainerEl>
+            <SComponent
+              value={value}
+              on-input={onInput}
+              {...{ scopedSlots }}
+              {...{ attrs }}
+              customNode={customNode}
+              {...{ on: ons }} />
+          </ContainerEl>
         </RowEl>
 
       )
@@ -266,7 +284,7 @@ export default class ElFormPlus extends Vue {
         const singleFormAttrs = omit(o, ['hidden', 'config', 'more'])
 
         const { field = '', config = {}, more = [], layout = { gutter: 20 }, } = o
-        const { col = { span: 24 } } = config
+        const { col = { span: 24 }, container } = config
 
         const result = this.isFieldExist(singleFormAttrs)
 
@@ -277,6 +295,9 @@ export default class ElFormPlus extends Vue {
         // 是否渲染el-col元素
         // 一个el-form-item占据的空间
         const RowEl = renderLayoutEl('el-col')
+
+        // 渲染container
+        const ContainerEl = renderContainerEl(container)
 
         // 更多表单项
         const moreForm = () => {
@@ -289,11 +310,14 @@ export default class ElFormPlus extends Vue {
 
         return (
           <RowEl  {...{ props: { ...col } }}>
-            <el-form-item {...{ props: { prop: field, ...config } }}>
-              <LayoutEl {...{ props: { ...layout } }}>
-                {result && [renderSingleForm(singleFormAttrs)].concat(moreForm())}
-              </LayoutEl>
-            </el-form-item>
+            <ContainerEl>
+              <el-form-item {...{ props: { prop: field, ...config } }}>
+                <LayoutEl {...{ props: { ...layout } }}>
+                  {result && [renderSingleForm(singleFormAttrs)].concat(moreForm())}
+                </LayoutEl>
+              </el-form-item>
+            </ContainerEl>
+
           </RowEl>
         )
       })
