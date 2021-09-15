@@ -1,3 +1,22 @@
+function findElFormComponent(instance) {
+  console.log(instance, '实例')
+  const componentName = 'ElForm'
+  let parent = instance.$parent || instance.$root;
+  let name = (parent.$options as any).componentName;
+
+  while (parent && (!name || name !== componentName)) {
+    parent = parent.$parent;
+
+    if (parent) {
+      name = (parent.$options as any).componentName;
+    }
+  }
+  if (parent) {
+    console.log(parent, '父组件')
+    return parent
+  }
+}
+
 // 默认的提交 重置按钮
 // 用内置的Custom类型生成
 const buttons = {
@@ -8,11 +27,30 @@ const buttons = {
   attrs: {
     type: 'primary',
   },
+  on: {
+    click: ({ e, instance }) => {
+      const elForm = findElFormComponent(instance)
+      elForm.validate((valid) => {
+        if (valid) {
+          alert('submit!');
+        } else {
+          alert('error submit!!');
+          return false;
+        }
+      });
+    }
+  },
   more: [
     {
       type: 'Button',
       field: 'reset',
       value: '重置',
+      on: {
+        click: ({ e, instance }) => {
+          const elForm = findElFormComponent(instance)
+          elForm.resetFields();
+        },
+      },
     },
   ],
   config: {

@@ -14,7 +14,21 @@ export default class ButtonPlus extends Vue {
     const { value } = this.$attrs
     const attrs = omit(this.$attrs, ['value'])
     return (
-      <el-button {...{ props: attrs, on: this.$listeners }}>{value}</el-button>
+      <el-button
+        {...{
+          props: attrs,
+          on: {
+            click: (e: Event) => {
+              if (this.$listeners.click) {
+                (this.$listeners as any).click({ e, instance: this })
+              }
+              e.preventDefault()
+            },
+          },
+        }}
+      >
+        {value}
+      </el-button>
     )
   }
 }
