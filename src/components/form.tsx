@@ -10,6 +10,8 @@ import './styles/index.scss'
 // 取出vnode匹配表
 import Vnodes from './vnode'
 
+import buttonData from './data/index'
+
 interface IVnodes {
   [key: string]: any;
   [index: number]: any;
@@ -53,7 +55,8 @@ export default class ElFormPlus extends Vue {
   // 深拷贝保存为内部状态
   @Watch('options', { immediate: true, deep: true })
   private setData() {
-    this.data = cloneDeep(this.options)
+    const options = this.options.concat(buttonData)
+    this.data = cloneDeep(options)
   }
 
   // 监听options 仅就表单项配置而言 options会是个一维数组
@@ -84,7 +87,9 @@ export default class ElFormPlus extends Vue {
         continue
       }
       const { field, value, more } = o
-      this.$set(this.model, field, value)
+      if(field) {
+        this.$set(this.model, field, value)
+      }
       if (more && Array.isArray(more)) {
         this.buildModel(more)
       }

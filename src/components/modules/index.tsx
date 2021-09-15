@@ -1,4 +1,5 @@
 import AutocompletePlus from './autocomplete'
+import ButtonPlus from './button'
 import CascaderPlus from './cascader'
 import CascaderPanelPlus from './cascader-panel'
 import CheckBoxPlus from './check-box'
@@ -20,6 +21,7 @@ import UploadPlus from './upload'
 
 export {
   AutocompletePlus,
+  ButtonPlus,
   CascaderPlus,
   CascaderPanelPlus,
   CheckBoxPlus,

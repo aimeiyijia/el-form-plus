@@ -39,10 +39,10 @@ const input = {
   },
 
   // 某表单项的包裹组件
-  container: a => {
-    console.log(a, '123')
-    return 'div'
-  },
+  // container: a => {
+  //   console.log(a, '123')
+  //   return 'div'
+  // },
   // 表单项事件
   // on: {
   //   blur: () => {
@@ -77,7 +77,7 @@ const input = {
 
     // el-form-item所占据的空间
     col: {
-      span: 24,
+      span: 12,
     },
 
     // 包裹el-form-item的组件
