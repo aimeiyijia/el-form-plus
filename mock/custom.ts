@@ -19,7 +19,7 @@ const custom = {
   },
   // 表单是否隐藏 默认为false（控制的是el-form-item）
   hidden: false,
-  // 表单项绑定的值（字段名） 必需
+  // 表单项绑定的值（字段名） 必需（为了不破坏内部的更新逻辑）
   field: 'custom',
   // 初始值
   value: '123456',

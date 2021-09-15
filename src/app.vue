@@ -27,6 +27,7 @@ export default {
       // el-form 表单整体配置（除model配置项，因为内部已拦截）
       config: {
         labelWidth: '60px',
+        inline: true,
         // rules: {
         //   input: [
         //     { required: true, message: '请输入活动名称12', trigger: 'blur' },
@@ -38,6 +39,7 @@ export default {
         //     },
         //   ],
         // },
+        // 拓展内置按钮配置
       },
 
       // 表单项生成配置

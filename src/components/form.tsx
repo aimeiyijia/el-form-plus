@@ -22,6 +22,7 @@ interface IModel {
 // todo 内置 重置 提交 按钮 采用更改配置项方式（语法糖）
 // todo 允许组件被包裹
 @Component({
+  name: 'ElFormPlus',
   components: { Fragment },
 })
 export default class ElFormPlus extends Vue {
@@ -317,7 +318,6 @@ export default class ElFormPlus extends Vue {
                 </LayoutEl>
               </el-form-item>
             </ContainerEl>
-
           </RowEl>
         )
       })
@@ -329,7 +329,7 @@ export default class ElFormPlus extends Vue {
 
     // 渲染el-form
     return (
-      <el-form ref="form"
+      <el-form ref="ElForm"
         {...{
           props: {
             ...this.config,
