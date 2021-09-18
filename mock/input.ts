@@ -39,6 +39,7 @@ const input = {
   },
 
   // 某表单项的包裹组件
+  // 如果是个组件需要Vue.use(ElFormPlus, {components: {someComponents}})注册
   // container: a => {
   //   console.log(a, '123')
   //   return 'div'

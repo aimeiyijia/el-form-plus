@@ -9,11 +9,17 @@ const Components: { [key: string]: VueConstructor } = {
   ElFormPlus: ElFormPlus,
 }
 
-const install: InstallFunction = (Vue: typeof _Vue) => {
+const install: InstallFunction = (Vue: typeof _Vue, options = {}) => {
   if (install.installed) return
+
+  const { components = {} } = options
 
   Object.keys(Components).forEach((name: any) => {
     Vue.component(name, Components[name])
+  })
+
+  Object.keys(components).forEach((name: any) => {
+    Vue.component(name, options[name])
   })
 
   install.installed = true
