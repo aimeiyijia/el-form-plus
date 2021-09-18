@@ -99,8 +99,6 @@ export default class ElFormPlus extends Vue {
     }
   }
 
-
-
   // 根据attrs中的field字段匹配到目标配置项
   private getTarget(fieldName: any) {
     return this.data.find(o => {
@@ -195,31 +193,32 @@ export default class ElFormPlus extends Vue {
     return true
   }
 
+  // 根据type 判断需要渲染的组件
+  private renderWhatComponent(type: any) {
+    const vnodes: IVnodes = Vnodes
+    return vnodes[type]
+  }
+
+  // 判断需要渲染的containerEl
+  private renderContainerEl(c: string) {
+    if (c) {
+      if (isFunction(c)) {
+        return c.call(null, this)
+      }
+      if (isString(c)) {
+        return c
+      }
+    }
+    return 'fragment'
+  }
+
   render(h: CreateElement): VNode {
     const model = this.model
-
-    // 根据type 判断需要渲染的组件
-    const renderWhatComponent = (type: any) => {
-      const vnodes: IVnodes = Vnodes
-      return vnodes[type]
-    }
-
-    const renderContainerEl = (c: string) => {
-      if (c) {
-        if (isFunction(c)) {
-          return c.call(null, this)
-        }
-        if (isString(c)) {
-          return c
-        }
-      }
-      return 'fragment'
-    }
 
     // 渲染表单项
     const renderSingleForm = (singleFormAttrs: any) => {
 
-      let { type = "",layout, col = { span: 12 }, field = "", customNode, attrs = {}, container, on = {}, scopedSlots = {} } = singleFormAttrs
+      let { type = "", layout, col = { span: 12 }, field = "", customNode, attrs = {}, container, on = {}, scopedSlots = {} } = singleFormAttrs
 
       // 表单input event
       const onInput = (val: any) => {
@@ -250,10 +249,10 @@ export default class ElFormPlus extends Vue {
       const ColEl = layout ? 'el-col' : 'fragment'
 
       // 渲染container
-      const ContainerEl = renderContainerEl(container)
+      const ContainerEl = this.renderContainerEl(container)
 
       // 需要渲染的组件 SuperComponent
-      const SComponent: any = renderWhatComponent(type)
+      const SComponent: any = this.renderWhatComponent(type)
       return (
         <ColEl  {...{ props: { ...col } }}>
           <ContainerEl>
@@ -284,13 +283,11 @@ export default class ElFormPlus extends Vue {
 
         const result = this.isFieldExist(singleFormAttrs)
 
-        // 是否渲染el-row元素
-        // 一个el-form-item内部的布局
-        const RowEl = layout ? 'el-row' : 'fragment'
-
-        // 是否渲染el-col元素
         // 一个el-form-item占据的空间
         const ColEl = this.layout ? 'el-col' : 'fragment'
+
+        // 一个el-form-item内部的布局
+        const RowEl = layout ? 'el-row' : 'fragment'
 
         // 渲染container
         const ContainerEl = renderContainerEl(container)
@@ -321,7 +318,6 @@ export default class ElFormPlus extends Vue {
 
     // 是否渲染el-row元素
     const RowEl = this.layout ? 'el-row' : 'fragment'
-
 
     // 渲染el-form
     return (
