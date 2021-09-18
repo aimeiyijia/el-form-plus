@@ -90,7 +90,7 @@ export default class ElFormPlus extends Vue {
         continue
       }
       const { field, value, more } = o
-      if(field) {
+      if (field) {
         this.$set(this.model, field, value)
       }
       if (more && Array.isArray(more)) {
@@ -204,12 +204,6 @@ export default class ElFormPlus extends Vue {
       return vnodes[type]
     }
 
-    // 渲染layout元素
-    const renderLayoutEl = (rEl: string) => {
-      if (this.layout) return rEl
-      return 'fragment'
-    }
-
     const renderContainerEl = (c: string) => {
       if (c) {
         if (isFunction(c)) {
@@ -225,7 +219,7 @@ export default class ElFormPlus extends Vue {
     // 渲染表单项
     const renderSingleForm = (singleFormAttrs: any) => {
 
-      let { type = "", col = { span: 11 }, field = "", customNode, attrs = {}, container, on = {}, scopedSlots = {} } = singleFormAttrs
+      let { type = "",layout, col = { span: 12 }, field = "", customNode, attrs = {}, container, on = {}, scopedSlots = {} } = singleFormAttrs
 
       // 表单input event
       const onInput = (val: any) => {
@@ -253,7 +247,7 @@ export default class ElFormPlus extends Vue {
 
       // 是否渲染el-col元素
       // 一个el-form-item内部某表单项占据的空间
-      const RowEl = renderLayoutEl('el-col')
+      const ColEl = layout ? 'el-col' : 'fragment'
 
       // 渲染container
       const ContainerEl = renderContainerEl(container)
@@ -261,7 +255,7 @@ export default class ElFormPlus extends Vue {
       // 需要渲染的组件 SuperComponent
       const SComponent: any = renderWhatComponent(type)
       return (
-        <RowEl  {...{ props: { ...col } }}>
+        <ColEl  {...{ props: { ...col } }}>
           <ContainerEl>
             <SComponent
               value={value}
@@ -271,7 +265,7 @@ export default class ElFormPlus extends Vue {
               customNode={customNode}
               {...{ on: ons }} />
           </ContainerEl>
-        </RowEl>
+        </ColEl>
 
       )
     }
@@ -285,18 +279,18 @@ export default class ElFormPlus extends Vue {
         // 剥离掉表单项不需要的配置项
         const singleFormAttrs = omit(o, ['hidden', 'config', 'more'])
 
-        const { field = '', config = {}, more = [], layout = { gutter: 20 }, } = o
-        const { col = { span: 24 }, container } = config
+        const { field = '', config = {}, more = [], layout, } = o
+        const { col, container } = config
 
         const result = this.isFieldExist(singleFormAttrs)
 
         // 是否渲染el-row元素
         // 一个el-form-item内部的布局
-        const LayoutEl = renderLayoutEl('el-row')
+        const RowEl = layout ? 'el-row' : 'fragment'
 
         // 是否渲染el-col元素
         // 一个el-form-item占据的空间
-        const RowEl = renderLayoutEl('el-col')
+        const ColEl = this.layout ? 'el-col' : 'fragment'
 
         // 渲染container
         const ContainerEl = renderContainerEl(container)
@@ -304,28 +298,29 @@ export default class ElFormPlus extends Vue {
         // 更多表单项
         const moreForm = () => {
           return more.map((o: object) => {
-            // 不接受layout配置
-            const props = omit(o, ['layout'])
+            // 不接受layout配置，一定会被more同级的layout配置项覆盖
+            const props: any = o
+            props.layout = layout
             return renderSingleForm(props)
           })
         }
 
         return (
-          <RowEl  {...{ props: { ...col } }}>
+          <ColEl  {...{ props: { ...col } }}>
             <ContainerEl>
               <el-form-item {...{ props: { prop: field, ...config } }}>
-                <LayoutEl {...{ props: { ...layout } }}>
+                <RowEl {...{ props: { ...layout } }}>
                   {result && [renderSingleForm(singleFormAttrs)].concat(moreForm())}
-                </LayoutEl>
+                </RowEl>
               </el-form-item>
             </ContainerEl>
-          </RowEl>
+          </ColEl>
         )
       })
     }
 
     // 是否渲染el-row元素
-    const LayoutEl = renderLayoutEl('el-row')
+    const RowEl = this.layout ? 'el-row' : 'fragment'
 
 
     // 渲染el-form
@@ -338,9 +333,9 @@ export default class ElFormPlus extends Vue {
           },
           on: this.$listeners
         }}>
-        <LayoutEl {...{ props: { ...this.layout } }}>
+        <RowEl {...{ props: { ...this.layout } }}>
           {renderFormItem()}
-        </LayoutEl>
+        </RowEl>
       </el-form>
     )
   }

@@ -62,6 +62,10 @@ const buttons = {
       },
     },
   ],
+  // layout: {
+  //   gutter: 20
+  // },
+  col: {span: 10},
   config: {
     // el-form-item所占据的空间
     col: {

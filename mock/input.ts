@@ -85,9 +85,9 @@ const input = {
     // 组件名/标签名
     // 请确保该组件存在可用插槽
     // string / Function
-    container: (a: any) => {
-      return 'div'
-    },
+    // container: (a: any) => {
+    //   return 'div'
+    // },
 
     // 外部的config中的rules会失效
     rules: [{ required: true, message: '请输入活动名称', trigger: 'blur' }],
