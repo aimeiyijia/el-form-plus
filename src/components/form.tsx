@@ -21,16 +21,16 @@ interface IModel {
   [index: number]: any;
 }
 
-// todo 内置 重置 提交 按钮 采用更改配置项方式（语法糖）
-// todo 允许组件被包裹
+// TODO 全局设置包裹组件
+// TODO 布局配置优化
+// TODO
 @Component({
   name: 'ElFormPlus',
   components: { Fragment },
 })
 export default class ElFormPlus extends Vue {
 
-  // 因为内部的model数据全部从options中组装而来，所以初始化时modelData并没有实际作用
-  // el-form-plus初始化完成之后则为组装后的model(同一引用)
+  // 双向绑定的formData
   @Model('change', { type: Object }) readonly modelData!: any
 
   // 表单布局配置项 https://element.eleme.cn/#/zh-CN/component/layout#row-attributes
@@ -48,6 +48,8 @@ export default class ElFormPlus extends Vue {
 
   created() {
     // 绑定初值
+    // Watch immediate为true时的执行时机会先于created
+    // 利用这个就做到了modelData（晚渲染）比options（早渲染）优先级更高
     this.bindData(this.modelData)
   }
 
@@ -59,7 +61,7 @@ export default class ElFormPlus extends Vue {
     this.data = cloneDeep(options)
   }
 
-  // 监听options 仅就表单项配置而言 options会是个一维数组
+  // 监听options
   // 先从option中取出所有的field字段 组成model
   @Watch('data', { immediate: true, deep: true })
   private dataChange() {
@@ -80,6 +82,7 @@ export default class ElFormPlus extends Vue {
     }
   }
 
+  // 构建model
   private buildModel(data: any) {
     for (let o of data) {
       const result = this.isFieldExist(o)
@@ -169,7 +172,6 @@ export default class ElFormPlus extends Vue {
     }
   }
 
-
   // 将操作实例的方法暴露出去
   private exportMethods() {
     this.$emit('change', {
@@ -182,12 +184,9 @@ export default class ElFormPlus extends Vue {
     })
   }
 
-
-
-
   // 校验必须参数
   // 目前必须的参数为 attrs中的 field字段
-  isFieldExist(attrs: any): boolean {
+  private isFieldExist(attrs: any): boolean {
     const isExist = objectPath.has(attrs, 'field')
     if (!isExist) {
       console.error('field字段不能为空，请检查配置项')
@@ -195,9 +194,6 @@ export default class ElFormPlus extends Vue {
     }
     return true
   }
-
-
-
 
   render(h: CreateElement): VNode {
     const model = this.model
