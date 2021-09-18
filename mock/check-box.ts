@@ -33,7 +33,7 @@ const checkbox = {
   },
   // 表单项事件
   on: {
-    change: val => {
+    change: (val: any) => {
       console.log('groupChange', val)
     },
   },

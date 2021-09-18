@@ -39,7 +39,7 @@ const transfer = {
     input: () => {
       console.log('input事件')
     },
-    'left-check-change'(val) {
+    'left-check-change'(val: any) {
       console.log(val, '左侧树事件')
     },
   },

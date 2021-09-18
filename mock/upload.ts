@@ -1,23 +1,25 @@
-function handleRemove(file, fileList) {
+import Vue, { VNode, CreateElement } from 'vue'
+import { Message, MessageBox } from 'element-ui'
+function handleRemove(file: any[], fileList: any[]) {
   console.log(file, '移除的文件')
   console.log(fileList, '剩余的文件')
 }
-function handleChange(file, fileList) {
+function handleChange(file: any[], fileList: any[]) {
   console.log(file, '变化的文件')
   console.log(fileList, '剩余的文件')
 }
-function handlePreview(file) {
+function handlePreview(file: any) {
   console.log(file)
 }
-function handleExceed(files, fileList) {
-  this.$message.warning(
+function handleExceed(files: any[], fileList: any[]) {
+  Message.warning(
     `当前限制选择 3 个文件，本次选择了 ${
       files.length
     } 个文件，共选择了 ${files.length + fileList.length} 个文件`
   )
 }
-function beforeRemove(file, fileList) {
-  return this.$confirm(`确定移除 ${file.name}？`)
+function beforeRemove(file: any) {
+  return MessageBox.confirm(`确定移除 ${file.name}？`)
 }
 const fileList = [
   {
@@ -52,16 +54,16 @@ const upload = {
   },
   // 表单项事件
   on: {
-    input: val => {
+    input: (val: any) => {
       console.log('input事件', val)
     },
   },
   // 插槽
   scopedSlots: {
-    default({ h }) {
+    default({ h }: { h: CreateElement }) {
       return h('el-button', '点击上传')
     },
-    tip({ h }) {
+    tip({ h }: { h: CreateElement }) {
       console.log('tip插槽')
       return '只能上传jpg/png文件，且不超过500kb'
     },

@@ -84,7 +84,7 @@ const input = {
     // 组件名/标签名
     // 请确保该组件存在可用插槽
     // string / Function
-    container: a => {
+    container: (a: any) => {
       return 'div'
     },
 

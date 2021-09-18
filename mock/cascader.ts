@@ -301,17 +301,17 @@ const cascader = {
     blur: () => {
       console.log('失去焦点')
     },
-    input: val => {
+    input: (val: any) => {
       console.log('input事件', val)
     },
   },
   // 插槽
   scopedSlots: {
-    default(a) {
+    default(a: any) {
       console.log(a, 'default')
       return 111
     },
-    empty(a) {
+    empty(a: any) {
       console.log(a, 'empty')
     },
   },

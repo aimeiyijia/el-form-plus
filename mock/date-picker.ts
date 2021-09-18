@@ -1,3 +1,4 @@
+import Vue from 'vue'
 const datepicker = {
   // 表单项渲染类型 必需
   type: 'DatePicker',
@@ -19,7 +20,7 @@ const datepicker = {
       shortcuts: [
         {
           text: '最近一周',
-          onClick(picker) {
+          onClick(picker: Vue) {
             const end = new Date()
             const start = new Date()
             start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
@@ -28,7 +29,7 @@ const datepicker = {
         },
         {
           text: '最近一个月',
-          onClick(picker) {
+          onClick(picker: Vue) {
             const end = new Date()
             const start = new Date()
             start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
@@ -37,7 +38,7 @@ const datepicker = {
         },
         {
           text: '最近三个月',
-          onClick(picker) {
+          onClick(picker: Vue) {
             const end = new Date()
             const start = new Date()
             start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
@@ -55,7 +56,7 @@ const datepicker = {
     focus: () => {
       console.log('focus事件')
     },
-    change(val){
+    change(val: any){
       console.log('change事件', val)
     }
   },

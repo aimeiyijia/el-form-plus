@@ -1,9 +1,10 @@
+import Vue from 'vue'
 const custom = {
   // 表单项渲染类型 必需
   type: 'Custom',
   // jsx或h
   // 这样就可以实现自定义组件的双向绑定
-  customNode: ({ instance }) => {
+  customNode: ({ instance }: { instance: Vue }) => {
     console.log(instance)
     return instance.$createElement(
       'span',
@@ -40,7 +41,9 @@ const custom = {
 
     // 外部的config中的rules会失效
     // 自定义组件校验目前仅支持change事件
-    rules: [{ required: true, message: '请输入自定义表单值', trigger: 'change' }],
+    rules: [
+      { required: true, message: '请输入自定义表单值', trigger: 'change' },
+    ],
   },
 }
 

@@ -1,12 +1,13 @@
-export function isString(obj) {
+import Vue from 'vue'
+export function isString(obj: any): boolean {
   return Object.prototype.toString.call(obj) === '[object String]'
 }
 
-export function isObject(obj) {
+export function isObject(obj: any): boolean {
   return Object.prototype.toString.call(obj) === '[object Object]'
 }
 
-export function isHtmlElement(node) {
+export function isHtmlElement(node: any): boolean {
   return node && node.nodeType === Node.ELEMENT_NODE
 }
 
@@ -14,8 +15,8 @@ export function isHtmlElement(node) {
  *  - Inspired:
  *    https://github.com/jashkenas/underscore/blob/master/modules/isFunction.js
  */
-let isFunction = functionToCheck => {
-  var getType = {}
+let isFunction = (functionToCheck: any) => {
+  const getType = {}
   return (
     functionToCheck &&
     getType.toString.call(functionToCheck) === '[object Function]'
@@ -34,15 +35,15 @@ if (
 
 export { isFunction }
 
-export const isUndefined = val => {
-  return val === void 0
+export const isUndefined = (val: any) => {
+  return typeof val === 'undefined'
 }
 
-export const isDefined = val => {
+export const isDefined = (val: any) => {
   return val !== undefined && val !== null
 }
 
-export const isEmpty = function(val) {
+export const isEmpty = function(val: any) {
   // null or undefined
   if (val == null) return true
 
@@ -73,7 +74,7 @@ export const isEmpty = function(val) {
   return false
 }
 
-export const kebabCase = function(str) {
+export const kebabCase = function(str: string): string {
   const hyphenateRE = /([^-])([A-Z])/g
   return str
     .replace(hyphenateRE, '$1-$2')
@@ -81,7 +82,7 @@ export const kebabCase = function(str) {
     .toLowerCase()
 }
 
-export const capitalize = function(str) {
+export const capitalize = function(str: string): string {
   if (!isString(str)) return str
   return str.charAt(0).toUpperCase() + str.slice(1)
 }

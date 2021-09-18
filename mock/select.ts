@@ -20,12 +20,12 @@ const select = {
             // value做key
             value: 'Chengdu',
             label: '成都',
-            slot: o => {
+            slot: (o: any) => {
               const { attr } = o
               console.log()
               // return h(<span style="float: left">{attr.label}</span>)
               return 23
-            }
+            },
           },
           {
             value: 'Shenzhen',
@@ -90,5 +90,5 @@ const select = {
     label: 'select：',
     // labelWidth: '120px',
   },
-},
+}
 export default select

@@ -1,4 +1,5 @@
-function findElFormComponent(instance) {
+import Vue, { VNode, CreateElement } from 'vue'
+function findElFormComponent(instance: Vue): any {
   console.log(instance, '实例')
   const componentName = 'ElForm'
   let parent = instance.$parent || instance.$root;
@@ -15,6 +16,7 @@ function findElFormComponent(instance) {
     console.log(parent, '父组件')
     return parent
   }
+  return false
 }
 
 // 默认的提交 重置按钮
@@ -29,17 +31,20 @@ const buttons = {
     type: 'primary',
   },
   on: {
-    click: ({ e, instance }) => {
+    click: ({ instance }: { instance: Vue }) => {
       const elForm = findElFormComponent(instance)
-      elForm.validate((valid) => {
-        if (valid) {
-          alert('submit!');
-          return true
-        } else {
-          alert('error submit!!');
-          return false;
-        }
-      });
+      if (elForm) {
+        elForm.validate((valid: boolean) => {
+          if (valid) {
+            alert('submit!');
+            return true
+          } else {
+            alert('error submit!!');
+            return false;
+          }
+        });
+      }
+
     }
   },
   more: [
@@ -48,9 +53,11 @@ const buttons = {
       field: 'reset',
       value: '重置',
       on: {
-        click: ({ e, instance }) => {
+        click: ({ instance }: { instance: Vue }) => {
           const elForm = findElFormComponent(instance)
-          elForm.resetFields();
+          if(elForm){
+            elForm.resetFields();
+          }
         },
       },
     },
