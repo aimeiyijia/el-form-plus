@@ -23,6 +23,7 @@ const buttons = {
   // 表单项渲染类型 必需
   type: 'Button',
   field: 'submit',
+  // 按钮的value就是它的提示
   value: '提交',
   attrs: {
     type: 'primary',
@@ -33,6 +34,7 @@ const buttons = {
       elForm.validate((valid) => {
         if (valid) {
           alert('submit!');
+          return true
         } else {
           alert('error submit!!');
           return false;

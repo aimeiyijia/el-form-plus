@@ -77,9 +77,10 @@
   "keywords": [
     "vue",
     "typescript",
-    "el-table-ts",
+    "el-form-plus",
     "template",
-    "element-ui"
+    "element-ui",
+    "el-form"
   ],
   "description": "[组件使用文档](https://ame.cool/pages/28073c/)",
   "directories": {
@@ -87,11 +88,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/aimeiyijia/el-table-ts.git"
+    "url": "git+https://github.com/aimeiyijia/el-form-plus.git"
   },
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/aimeiyijia/el-table-ts/issues"
+    "url": "https://github.com/aimeiyijia/el-form-plus/issues"
   },
-  "homepage": "https://github.com/aimeiyijia/el-table-ts#readme"
+  "homepage": "https://github.com/aimeiyijia/el-form-plus#readme"
 }
