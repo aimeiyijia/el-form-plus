@@ -24,19 +24,19 @@ const input = {
       value: 'moreinput初始值',
       // 表单项的配置项
       attrs: {},
-      col: {
-        span: 11,
-      },
+      // col: {
+      //   span: 11,
+      // },
     },
   ],
   // 在有more配置项时的el-form-item的内部布局方式
-  layout: {
-    gutter: 20,
-  },
-  // 该表单项在el-form-item占据的空间
-  col: {
-    span: 11,
-  },
+  // layout: {
+  //   gutter: 20,
+  // },
+  // // 该表单项在el-form-item占据的空间
+  // col: {
+  //   span: 11,
+  // },
 
   // 某表单项的包裹组件
   // 如果是个组件需要Vue.use(ElFormPlus, {components: {someComponents}})注册

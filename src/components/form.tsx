@@ -276,15 +276,18 @@ export default class ElFormPlus extends Vue {
       return (
         <ColEl  {...{ props: { ...col } }}>
           <ContainerEl>
-            <span class="prepend">{PrependEl}</span>
-            <SComponent
-              value={value}
-              on-input={onInput}
-              {...{ scopedSlots }}
-              {...{ attrs }}
-              customNode={customNode}
-              {...{ on: ons }} />
-            <span class="append">{AppendEl}</span>
+            <div class="form-plus-item">
+              <span class="prepend">{PrependEl}</span>
+              <SComponent
+                value={value}
+                on-input={onInput}
+                {...{ scopedSlots }}
+                {...{ attrs }}
+                customNode={customNode}
+                {...{ on: ons }} />
+              <span class="append">{AppendEl}</span>
+            </div>
+
           </ContainerEl>
         </ColEl>
 

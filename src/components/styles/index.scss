@@ -9,3 +9,12 @@
 .prepend,.append {
   // float: left;
 }
+
+.form-plus-item {
+  display: flex;
+  align-items: center;
+}
+.el-input {
+  width: auto;
+  flex-grow: 1;
+}
