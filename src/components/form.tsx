@@ -200,7 +200,7 @@ export default class ElFormPlus extends Vue {
   }
 
   // 判断需要渲染的containerEl
-  private renderContainerEl(c: string) {
+  private renderContainerEl(c: any) {
     if (c) {
       if (isFunction(c)) {
         return c.call(null, this)
@@ -212,13 +212,26 @@ export default class ElFormPlus extends Vue {
     return 'fragment'
   }
 
+  // 判断需要渲染的前置后置元素
+  private renderPendEl(c: any) {
+    if (c) {
+      if (isFunction(c)) {
+        return c.call(null, this)
+      }
+      if (isString(c)) {
+        return c
+      }
+    }
+    return ''
+  }
+
   render(h: CreateElement): VNode {
     const model = this.model
 
     // 渲染表单项
     const renderSingleForm = (singleFormAttrs: any) => {
 
-      let { type = "", layout, col = { span: 12 }, field = "", customNode, attrs = {}, container, on = {}, scopedSlots = {} } = singleFormAttrs
+      let { type = "", layout, col = { span: 12 }, field = "", customNode, attrs = {}, container, on = {}, scopedSlots = {}, prepend, append } = singleFormAttrs
 
       // 表单input event
       const onInput = (val: any) => {
@@ -251,11 +264,19 @@ export default class ElFormPlus extends Vue {
       // 渲染container
       const ContainerEl = this.renderContainerEl(container)
 
+
+      // 前置
+      const PrependEl = this.renderPendEl(prepend)
+
+      // 后置
+      const AppendEl = this.renderPendEl(append)
+
       // 需要渲染的组件 SuperComponent
       const SComponent: any = this.renderWhatComponent(type)
       return (
         <ColEl  {...{ props: { ...col } }}>
           <ContainerEl>
+            <span class="prepend">{PrependEl}</span>
             <SComponent
               value={value}
               on-input={onInput}
@@ -263,6 +284,7 @@ export default class ElFormPlus extends Vue {
               {...{ attrs }}
               customNode={customNode}
               {...{ on: ons }} />
+            <span class="append">{AppendEl}</span>
           </ContainerEl>
         </ColEl>
 
@@ -278,8 +300,8 @@ export default class ElFormPlus extends Vue {
         // 剥离掉表单项不需要的配置项
         const singleFormAttrs = omit(o, ['hidden', 'config', 'more'])
 
-        const { field = '', config = {}, more = [], layout, } = o
-        const { col, container } = config
+        const { field = '', config = {}, more = [], layout } = o
+        const { col, container, cancelrule = false } = config
 
         const result = this.isFieldExist(singleFormAttrs)
 
@@ -305,7 +327,7 @@ export default class ElFormPlus extends Vue {
         return (
           <ColEl  {...{ props: { ...col } }}>
             <ContainerEl>
-              <el-form-item {...{ props: { prop: field, ...config } }}>
+              <el-form-item {...{ props: { ...config, prop: cancelrule ? '' : field } }}>
                 <RowEl {...{ props: { ...layout } }}>
                   {result && [renderSingleForm(singleFormAttrs)].concat(moreForm())}
                 </RowEl>

@@ -54,20 +54,27 @@ const input = {
   //   },
   // },
   // 插槽
-  // scopedSlots: {
-  //   prefix: ({ h, value }: { h: CreateElement, value: any }) => {
-  //     return h('div', '表单内头部内容')
-  //   },
-  //   suffix: () => {
-  //     return '表单内尾部内容'
-  //   },
-  //   prepend: () => {
-  //     return '表单前置插槽'
-  //   },
-  //   append: () => {
-  //     return '表单后置插槽'
-  //   },
-  // },
+  scopedSlots: {
+    // prefix: ({ h, value }: { h: CreateElement, value: any }) => {
+    //   return h('div', '表单内头部内容')
+    // },
+    // suffix: () => {
+    //   return '表单内尾部内容'
+    // },
+    // prepend: () => {
+    //   return '前置'
+    // },
+    // append: () => {
+    //   return '后置'
+    // },
+  },
+
+  prepend() {
+    return '外前置'
+  },
+  append: () => {
+    return '外后置'
+  },
 
   // el-form-item配置项 可选
   config: {
@@ -78,7 +85,7 @@ const input = {
 
     // el-form-item所占据的空间
     col: {
-      span: 12,
+      span: 24,
     },
 
     // 包裹el-form-item的组件
@@ -91,6 +98,8 @@ const input = {
 
     // 外部的config中的rules会失效
     rules: [{ required: true, message: '请输入活动名称', trigger: 'blur' }],
+    // 是否取消校验
+    cancelrule: false,
   },
 }
 
