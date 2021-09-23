@@ -290,7 +290,7 @@ export default class ElFormPlus extends Vue {
         const RowEl = layout ? 'el-row' : 'fragment'
 
         // 渲染container
-        const ContainerEl = renderContainerEl(container)
+        const ContainerEl = this.renderContainerEl(container)
 
         // 更多表单项
         const moreForm = () => {
