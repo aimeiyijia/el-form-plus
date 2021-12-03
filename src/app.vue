@@ -3,7 +3,6 @@
     <el-form-plus
       v-model="model"
       :config="config"
-      :layout="layout"
       :options="options"
       @validate="validate"
     ></el-form-plus>

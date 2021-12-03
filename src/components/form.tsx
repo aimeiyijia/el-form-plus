@@ -231,7 +231,18 @@ export default class ElFormPlus extends Vue {
     // 渲染表单项
     const renderSingleForm = (singleFormAttrs: any) => {
 
-      let { type = "", layout, col = { span: 12 }, field = "", customNode, attrs = {}, container, on = {}, scopedSlots = {}, prepend, append } = singleFormAttrs
+      let {
+        type = "",
+        layout,
+        col = { span: 12 },
+        field = "",
+        customNode,
+        attrs = {},
+        container,
+        on = {},
+        scopedSlots = {},
+        prepend,
+        append } = singleFormAttrs
 
       // 表单input event
       const onInput = (val: any) => {
@@ -287,7 +298,6 @@ export default class ElFormPlus extends Vue {
                 {...{ on: ons }} />
               <span class="append">{AppendEl}</span>
             </div>
-
           </ContainerEl>
         </ColEl>
 
@@ -299,6 +309,11 @@ export default class ElFormPlus extends Vue {
       const options = this.data
 
       return options.filter(o => !o.hidden).map(o => {
+
+        // 如果是超级自定义组件，那么就直接接管渲染，完全自定义
+        if(o.type === 'SuperCustom'){
+          return 'div'
+        }
 
         // 剥离掉表单项不需要的配置项
         const singleFormAttrs = omit(o, ['hidden', 'config', 'more'])
