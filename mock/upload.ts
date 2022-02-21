@@ -36,12 +36,12 @@ const fileList = [
 const upload = {
   // 表单项渲染类型 必需
   type: 'Upload',
+  // 表单项绑定的值（字段名） 必需
+  field: 'upload',
+  // 初始值
+  value: '',
   // 表单项的配置项
   attrs: {
-    // 表单项绑定的值（字段名） 必需
-    field: 'upload',
-    // 初始值
-    value: '',
     action: 'https://jsonplaceholder.typicode.com/posts/',
     onPreview: handlePreview,
     onRemove: handleRemove,

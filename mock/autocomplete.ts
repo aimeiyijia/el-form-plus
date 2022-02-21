@@ -3,12 +3,12 @@ const autocomplete = {
   type: 'Autocomplete',
   // 表单是否隐藏 默认为false（控制的是el-form-item）
   hidden: false,
+  // 表单项绑定的值（字段名） 必需
+  field: 'autoComplete',
+  // 初始值
+  value: '2',
   // 表单项的配置项
   attrs: {
-    // 表单项绑定的值（字段名） 必需
-    field: 'autoComplete',
-    // 初始值
-    value: '2',
     fetchSuggestions: (queryString: string, callback: Function) => {
       callback([
         { value: '1', address: '1' },

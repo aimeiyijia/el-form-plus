@@ -3,12 +3,12 @@ const datetimepicker = {
   type: 'DateTimePicker',
   // 表单是否隐藏 默认为false（控制的是el-form-item）
   hidden: false,
+  // 表单项绑定的值（字段名） 必需
+  field: 'dateTimePicker',
+  // 初始值
+  value: [new Date(2000, 10, 10, 10, 10), new Date(2000, 10, 11, 10, 10)],
   // 表单项的配置项
   attrs: {
-    // 表单项绑定的值（字段名） 必需
-    field: 'dateTimePicker',
-    // 初始值
-    value: [new Date(2000, 10, 10, 10, 10), new Date(2000, 10, 11, 10, 10)],
     type: 'datetimerange',
     startPlaceholder: '开始日期',
     endPlaceholder: '结束日期',

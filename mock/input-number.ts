@@ -10,17 +10,15 @@ const inputnumber = {
   // 表单项的配置项
   attrs: {
     controlsPosition: 'right',
-    precision: 2,
-    step: 0.1,
     max: 10,
   },
   // 表单项事件
   on: {
     blur: () => {
-      console.log('失去焦点')
+      console.log('input-number失去焦点')
     },
-    input: () => {
-      console.log('input事件')
+    change: () => {
+      console.log('change-number事件')
     },
   },
   // 插槽

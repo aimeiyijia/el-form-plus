@@ -2,12 +2,12 @@ let id = 0
 const cascader = {
   // 表单项渲染类型 必需
   type: 'Cascader',
+  // 表单项绑定的值（字段名） 必需
+  field: 'cascader',
+  // 初始值 注意事项 开启多选时的value结构时[[value,value,value]]，
+  value: [['zhinan', 'shejiyuanze', 'yizhi']],
   // 表单项的配置项
   attrs: {
-    // 表单项绑定的值（字段名） 必需
-    field: 'cascader',
-    // 初始值 注意事项 开启多选时的value结构时[[value,value,value]]，
-    value: [['zhinan', 'shejiyuanze', 'yizhi']],
     // 非多选时[value,value,value]
     // value: ['zhinan', 'shejiyuanze', 'yizhi'],
     props: {

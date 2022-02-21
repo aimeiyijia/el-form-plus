@@ -3,12 +3,12 @@ const rate = {
   type: 'Rate',
   // 表单是否隐藏 默认为false（控制的是el-form-item）
   hidden: false,
+  // 表单项绑定的值（字段名） 必需
+  field: 'rate',
+  // 初始值
+  value: null,
   // 表单项的配置项
   attrs: {
-    // 表单项绑定的值（字段名） 必需
-    field: 'rate',
-    // 初始值
-    value: null,
     // 等同于 { 2: 'icon-rate-face-1', 4: { value: 'icon-rate-face-2', excluded: true }, 5: 'icon-rate-face-3' }
     iconClasses: [
       'el-icon-cloudy',

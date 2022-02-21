@@ -3,12 +3,12 @@ const timepicker = {
   type: 'TimePicker',
   // 表单是否隐藏 默认为false（控制的是el-form-item）
   hidden: false,
+  // 表单项绑定的值（字段名） 必需
+  field: 'timePicker',
+  // 初始值
+  value: '',
   // 表单项的配置项
   attrs: {
-    // 表单项绑定的值（字段名） 必需
-    field: 'timePicker',
-    // 初始值
-    value: '',
     isRange: true,
     rangeSeparator: '至',
     startPlaceholder: '开始时间',
@@ -34,6 +34,6 @@ const timepicker = {
     labelWidth: '120px',
   },
   // todo 在一个el-form-item中渲染其它类型的表单
-  more: []
+  more: [],
 }
 export default timepicker

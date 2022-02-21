@@ -3,12 +3,12 @@ const select = {
   type: 'Select',
   // 表单是否隐藏 默认为false（控制的是el-form-item）
   hidden: false,
+  // 表单项绑定的值（字段名） 必需
+  field: 'city',
+  // 初始值
+  value: 'Chengdu',
   // 表单项的配置项
   attrs: {
-    // 表单项绑定的值（字段名） 必需
-    field: 'city',
-    // 初始值
-    value: 'Chengdu',
     clearable: true,
 
     groupOptions: [

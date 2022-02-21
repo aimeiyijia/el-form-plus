@@ -46,11 +46,15 @@ export default class ElFormPlus extends Vue {
 
   private data: any[] = []
 
+  private listeners: any = null
+
   created() {
     // 绑定初值
     // Watch immediate为true时的执行时机会先于created
     // 利用这个就做到了modelData（晚渲染）比options（早渲染）优先级更高
     this.bindData(this.modelData)
+
+    this.listeners = this.$listeners
   }
 
   // 这一步主要是为了方便内部操作options
@@ -227,6 +231,7 @@ export default class ElFormPlus extends Vue {
   }
 
   render(h: CreateElement): VNode {
+    console.log('渲染')
     const model = this.model
 
     // 渲染表单项
@@ -248,7 +253,6 @@ export default class ElFormPlus extends Vue {
       // 表单input event
       const onInput = (val: any) => {
 
-        // 设置新值
         this.$set(model, field, val)
 
         // 因为input事件被内部拦截了，所以在此再暴露出去
@@ -293,11 +297,15 @@ export default class ElFormPlus extends Vue {
               <span class="prepend">{PrependEl}</span>
               <SComponent
                 value={value}
-                on-input={onInput}
                 {...{ scopedSlots }}
                 {...{ attrs }}
                 customNode={customNode}
-                {...{ on: ons }} />
+                {...{
+                  on: {
+                    ...ons,
+                    input: onInput
+                  }
+                }} />
               <span class="append">{AppendEl}</span>
             </div>
           </ContainerEl>
@@ -313,7 +321,7 @@ export default class ElFormPlus extends Vue {
       return options.filter(o => !o.hidden).map(o => {
 
         // 如果是超级自定义组件，那么就直接接管渲染，完全自定义
-        if(o.type === 'SuperCustom'){
+        if (o.type === 'SuperCustom') {
           return 'div'
         }
 
@@ -369,7 +377,7 @@ export default class ElFormPlus extends Vue {
             ...this.config,
             model: model,
           },
-          on: this.$listeners
+          on: this.listeners
         }}>
         <RowEl {...{ props: { ...this.layout } }}>
           {renderFormItem()}

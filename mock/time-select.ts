@@ -3,12 +3,12 @@ const timeselect = {
   type: 'TimeSelect',
   // 表单是否隐藏 默认为false（控制的是el-form-item）
   hidden: false,
+  // 表单项绑定的值（字段名） 必需
+  field: 'timeSelect',
+  // 初始值
+  value: '',
   // 表单项的配置项
   attrs: {
-    // 表单项绑定的值（字段名） 必需
-    field: 'timeSelect',
-    // 初始值
-    value: '',
     pickerOptions: {
       start: '08:30',
       step: '00:15',

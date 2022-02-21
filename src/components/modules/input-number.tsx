@@ -4,17 +4,20 @@ import omit from 'lodash/omit'
 
 @Component
 export default class InputNumberPlus extends Vue {
-  mounted() {
-    console.log(this, 'InputNumberPlus实例')
-    console.log(this.$attrs, 'InputNumberPlus attrs')
-    console.log(this.$listeners, 'InputNumberPlus listeners')
-    console.log(this.$scopedSlots, 'InputNumberPlus scopedSlots')
-  }
 
   render(h: CreateElement): VNode {
     return (
       <el-input-number
-        {...{ props: this.$attrs, on: this.$listeners }}
+        {...{
+          props: this.$attrs,
+          on: {
+            ...this.$listeners,
+            change: (currentValue: number, oldValue: number) => {
+              this.$emit('input', currentValue)
+              this.$emit('change', currentValue, oldValue)
+            },
+          },
+        }}
       ></el-input-number>
     )
   }

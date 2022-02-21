@@ -1,12 +1,12 @@
 const colorpicker = {
   // 表单项渲染类型 必需
   type: 'ColorPicker',
+  // 表单项绑定的值（字段名） 必需
+  field: 'colorPicker',
+  // 初始值
+  value: '#409EFF',
   // 表单项的配置项
   attrs: {
-    // 表单项绑定的值（字段名） 必需
-    field: 'colorPicker',
-    // 初始值
-    value: '#409EFF',
     showAlpha: true,
     predefine: [
       '#ff4500',

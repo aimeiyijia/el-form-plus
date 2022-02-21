@@ -4,12 +4,12 @@ const cascader = {
   type: 'CascaderPanel',
   // 表单是否隐藏 默认为false（控制的是el-form-item）
   hidden: false,
+  // 表单项绑定的值（字段名） 必需
+  field: 'cascaderPanel',
+  // 初始值
+  value: [['zhinan', 'shejiyuanze', 'yizhi']],
   // 表单项的配置项
   attrs: {
-    // 表单项绑定的值（字段名） 必需
-    field: 'cascaderPanel',
-    // 初始值
-    value: [['zhinan', 'shejiyuanze', 'yizhi']],
     props: {
       multiple: true,
       // lazy: true,

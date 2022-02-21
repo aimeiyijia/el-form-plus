@@ -3,12 +3,12 @@ const switchdata = {
   type: 'Switch',
   // 表单是否隐藏 默认为false（控制的是el-form-item）
   hidden: false,
+  // 表单项绑定的值（字段名） 必需
+  field: 'switch',
+  // 初始值
+  value: false,
   // 表单项的配置项
   attrs: {
-    // 表单项绑定的值（字段名） 必需
-    field: 'switch',
-    // 初始值
-    value: false,
     activeColor: '#13ce66',
     inactiveColor: '#ff4949',
     activeText: '按月付费',

@@ -4,12 +4,12 @@ const datepicker = {
   type: 'DatePicker',
   // 表单是否隐藏 默认为false（控制的是el-form-item）
   hidden: false,
+  // 表单项绑定的值（字段名） 必需
+  field: 'datePicker',
+  // 初始值
+  value: '',
   // 表单项的配置项
   attrs: {
-    // 表单项绑定的值（字段名） 必需
-    field: 'datePicker',
-    // 初始值
-    value: '',
     type: 'daterange',
     align: 'right',
     unlinkPanels: true,
@@ -56,9 +56,9 @@ const datepicker = {
     focus: () => {
       console.log('focus事件')
     },
-    change(val: any){
+    change(val: any) {
       console.log('change事件', val)
-    }
+    },
   },
   // el-form-item配置项 可选
   config: {

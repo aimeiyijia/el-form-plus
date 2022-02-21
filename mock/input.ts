@@ -13,22 +13,22 @@ const input = {
   },
   // 渲染更多的表单项
   // 配置项相同，因为是渲染在同一个el-form-item中所以无config配置，也不支持
-  more: [
-    {
-      type: 'Input',
-      // 表单是否隐藏 默认为false（控制的是el-form-item）
-      hidden: false,
-      // 表单项绑定的值（字段名） 必需
-      field: 'moreinput',
-      // 初始值
-      value: 'moreinput初始值',
-      // 表单项的配置项
-      attrs: {},
-      // col: {
-      //   span: 11,
-      // },
-    },
-  ],
+  // more: [
+  //   {
+  //     type: 'Input',
+  //     // 表单是否隐藏 默认为false（控制的是el-form-item）
+  //     hidden: false,
+  //     // 表单项绑定的值（字段名） 必需
+  //     field: 'moreinput',
+  //     // 初始值
+  //     value: 'moreinput初始值',
+  //     // 表单项的配置项
+  //     attrs: {},
+  //     // col: {
+  //     //   span: 11,
+  //     // },
+  //   },
+  // ],
   // 在有more配置项时的el-form-item的内部布局方式
   // layout: {
   //   gutter: 20,
@@ -45,14 +45,14 @@ const input = {
   //   return 'div'
   // },
   // 表单项事件
-  // on: {
-  //   blur: () => {
-  //     console.log('input', '失去焦点')
-  //   },
-  //   input: () => {
-  //     console.log('input', 'input事件')
-  //   },
-  // },
+  on: {
+    blur: () => {
+      console.log('input', '失去焦点')
+    },
+    input: () => {
+      console.log('input', 'input事件')
+    },
+  },
   // 插槽
   scopedSlots: {
     // prefix: ({ h, value }: { h: CreateElement, value: any }) => {

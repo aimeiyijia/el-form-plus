@@ -26,9 +26,6 @@ export default class InputPlus extends Vue {
     }
     return (
       <el-input
-        on-input={(val: any) => {
-          this.$emit('input', val)
-        }}
         {...{ props: this.$attrs, on: this.$listeners }}
         {...{ scopedSlots: customScopedSlots }}
       >

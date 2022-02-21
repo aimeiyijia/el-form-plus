@@ -14,12 +14,12 @@ const transfer = {
   type: 'Transfer',
   // 表单是否隐藏 默认为false（控制的是el-form-item）
   hidden: false,
+  // 表单项绑定的值（字段名） 必需
+  field: 'transfer',
+  // 初始值
+  value: [1],
   // 表单项的配置项
   attrs: {
-    // 表单项绑定的值（字段名） 必需
-    field: 'transfer',
-    // 初始值
-    value: [1],
     filterable: true,
     leftDefaultChecked: [2, 3],
     rightDefaultChecked: [1],
@@ -45,9 +45,9 @@ const transfer = {
   },
   // 插槽
   scopedSlots: {
-    'left-footer'(){
+    'left-footer'() {
       return '左侧底部自定义'
-    }
+    },
   },
   // el-form-item配置项 可选
   config: {

@@ -20,25 +20,25 @@ import upload from './upload'
 
 const data = []
 data.push(
-  // autocomplete,
-  // cascader,
-  // cascaderpanel,
-  // checkbox,
-  // colorpicker,
-  // custom,
-  // datepicker,
-  // datetimepicker,
+  autocomplete,
+  cascader,
+  cascaderpanel,
+  checkbox,
+  colorpicker,
+  custom,
+  datepicker,
+  datetimepicker,
   inputnumber,
-  // input,
-  // radio,
-  // rate,
-  // select,
-  // slider,
-  // switchdata,
-  // timepicker,
-  // timeselect,
-  // transfer,
-  // upload
+  input,
+  radio,
+  rate,
+  select,
+  slider,
+  switchdata,
+  timepicker,
+  timeselect,
+  transfer,
+  upload
 )
 
 export default data

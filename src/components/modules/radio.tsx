@@ -23,7 +23,6 @@ export default class RadioPlus extends Vue {
     let RadioType = 'el-radio'
     if (type) RadioType = 'el-radio-' + type
 
-    console.log(attrs, '配置项')
     // 单选框
     const renderOptions = () => {
       return (options as any).map((o: any) => {
@@ -33,7 +32,6 @@ export default class RadioPlus extends Vue {
         if (type === "button") { RadioTypeChild = 'el-radio-button' }
         else if (!type) { RadioTypeChild = RadioType }
         else { RadioTypeChild = 'el-radio' }
-        console.log(restAttrs, '123')
         return (
           <RadioTypeChild
             on-input={(val: any) => {
@@ -60,9 +58,6 @@ export default class RadioPlus extends Vue {
       })
       return (
         <el-radio-group
-          on-input={(val: any) => {
-            this.$emit('input', val)
-          }}
           {...{ props: { ...attrs }, on: { change: groupChange } }}>
           {radios}
         </el-radio-group>
