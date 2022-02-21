@@ -1,15 +1,8 @@
 import Vue, { VNode, CreateElement } from 'vue'
-import { Component, Prop, Emit, Watch } from 'vue-property-decorator'
-import omit from 'lodash/omit'
+import { Component } from 'vue-property-decorator'
 
 @Component
 export default class InputPlus extends Vue {
-  mounted() {
-    console.log(this.$attrs, 'InputPlus attrs')
-    console.log(this.$listeners, 'InputPlus listeners')
-    console.log(this.$scopedSlots, 'InputPlus scopedSlots')
-  }
-
   render(h: CreateElement): VNode {
     // 组装插槽及作用域插槽
     const scopedSlots: any = this.$scopedSlots
@@ -26,8 +19,11 @@ export default class InputPlus extends Vue {
     }
     return (
       <el-input
-        {...{ props: this.$attrs, on: this.$listeners }}
-        {...{ scopedSlots: customScopedSlots }}
+        {...{
+          props: this.$attrs,
+          on: this.$listeners,
+          scopedSlots: customScopedSlots,
+        }}
       >
         {slots.map(o => {
           return <template slot={o.name}>{o.value}</template>

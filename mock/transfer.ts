@@ -44,11 +44,15 @@ const transfer = {
     },
   },
   // 插槽
-  scopedSlots: {
-    'left-footer'() {
-      return '左侧底部自定义'
-    },
-  },
+  // scopedSlots: {
+  //   default(option){
+  //     console.log(option)
+  //     return 123
+  //   },
+  //   'left-footer'() {
+  //     return '左侧底部自定义'
+  //   },
+  // },
   // el-form-item配置项 可选
   config: {
     // vue ref属性 默认为field 利用此属性来查找某一组件

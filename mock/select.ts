@@ -75,14 +75,14 @@ const select = {
     },
   },
   // 插槽
-  scopedSlots: {
-    // prefix: () => {
-    //   return '表单内头部内容'
-    // },
-    // empty: () => {
-    //   return '空'
-    // },
-  },
+  // scopedSlots: {
+  //   prefix: () => {
+  //     return '表单内头部内容'
+  //   },
+  //   empty: () => {
+  //     return '空'
+  //   },
+  // },
   // el-form-item配置项 可选
   config: {
     // vue ref属性 默认为field 利用此属性来查找某一组件

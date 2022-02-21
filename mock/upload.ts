@@ -61,7 +61,7 @@ const upload = {
   // 插槽
   scopedSlots: {
     default({ h }: { h: CreateElement }) {
-      return h('el-button', '点击上传')
+      return h('el-button', '插槽点击上传')
     },
     tip({ h }: { h: CreateElement }) {
       console.log('tip插槽')

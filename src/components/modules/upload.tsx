@@ -1,15 +1,13 @@
 import Vue, { VNode, CreateElement } from 'vue'
-import { Component, Prop, Emit, Watch } from 'vue-property-decorator'
+import { Component, Emit } from 'vue-property-decorator'
 import { omit, isFunction } from 'lodash'
 
 @Component
 export default class UploadPlus extends Vue {
-  mounted() {
-    console.log(this.$attrs, 'UploadPlus attrs')
-    console.log(this.$listeners, 'UploadPlus listeners')
-    console.log(this.$scopedSlots, 'UploadPlus scopedSlots')
+  @Emit('input')
+  changeToInputEvent(fileList: object[]) {
+    return fileList
   }
-
   render(h: CreateElement): VNode {
     const attrs = omit(this.$attrs, 'onChange')
     // 组装插槽及作用域插槽
@@ -31,13 +29,12 @@ export default class UploadPlus extends Vue {
       } else {
         console.error(`onChange必须是函数`)
       }
-      this.$emit('input', fileList)
+      this.changeToInputEvent(fileList)
     }
     return (
       <el-upload
         {...{
           props: { ...attrs, onChange: onChange },
-          on: this.$listeners,
         }}
       >
         {slots.map(o => {

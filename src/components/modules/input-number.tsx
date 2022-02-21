@@ -4,7 +4,6 @@ import omit from 'lodash/omit'
 
 @Component
 export default class InputNumberPlus extends Vue {
-
   render(h: CreateElement): VNode {
     return (
       <el-input-number
@@ -18,7 +17,7 @@ export default class InputNumberPlus extends Vue {
             },
           },
         }}
-      ></el-input-number>
+      />
     )
   }
 }
