@@ -12,7 +12,6 @@ import radio from './radio'
 import rate from './rate'
 import select from './select'
 import slider from './slider'
-import supercustom from './super-custom'
 import switchdata from './switch'
 import timepicker from './time-picker'
 import timeselect from './time-select'
@@ -29,13 +28,12 @@ data.push(
   // custom,
   // datepicker,
   // datetimepicker,
-  // inputnumber,
+  inputnumber,
   // input,
   // radio,
   // rate,
   // select,
   // slider,
-  supercustom,
   // switchdata,
   // timepicker,
   // timeselect,

@@ -14,9 +14,6 @@ export default class InputNumberPlus extends Vue {
   render(h: CreateElement): VNode {
     return (
       <el-input-number
-        on-input={(val: any) => {
-          this.$emit('input', val)
-        }}
         {...{ props: this.$attrs, on: this.$listeners }}
       ></el-input-number>
     )

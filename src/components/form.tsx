@@ -57,7 +57,8 @@ export default class ElFormPlus extends Vue {
   // 深拷贝保存为内部状态
   @Watch('options', { immediate: true, deep: true })
   private setData() {
-    const options = this.options.concat(buttonData)
+    // const options = this.options.concat(buttonData)
+    const options = this.options
     this.data = cloneDeep(options)
   }
 
@@ -284,6 +285,7 @@ export default class ElFormPlus extends Vue {
 
       // 需要渲染的组件 SuperComponent
       const SComponent: any = this.renderWhatComponent(type)
+
       return (
         <ColEl  {...{ props: { ...col } }}>
           <ContainerEl>
