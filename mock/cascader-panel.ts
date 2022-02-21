@@ -303,14 +303,18 @@ const cascader = {
     input: () => {
       console.log('input事件')
     },
+    change: () => {
+      console.log('change事件')
+    },
+    'expand-change': () => {
+      console.log('expandChange事件')
+    },
   },
   // 插槽
   // scopedSlots: {
   //   default(a) {
-  //     return a.h('div', 1)
-  //   },
-  //   empty(a) {
-  //     console.log(a, 'empty')
+  //     console.log(a, '插槽')
+  //     return 123
   //   },
   // },
   // el-form-item配置项 可选

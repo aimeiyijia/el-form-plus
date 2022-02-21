@@ -22,14 +22,20 @@ const autocomplete = {
     select: (val: any) => {
       console.log('选中值变化', val)
     },
-  },
-  // 插槽
-  scopedSlots: {
-    // 默认插槽 包含 {item, value, h}
-    default(scoped: any) {
-      console.log(scoped, '123')
+    change: (val: any) => {
+      console.log('Input 值改变并失去焦点', val)
+    },
+    input: (val: any) => {
+      console.log('Input 值改变', val)
     },
   },
+  // 插槽
+  // scopedSlots: {
+  //   // 默认插槽 包含 {item, value, h}
+  //   default(scoped: any) {
+  //     console.log(scoped, '123')
+  //   },
+  // },
   // el-form-item配置项 可选
   config: {
     // vue ref属性 默认为field 利用此属性来查找某一组件

@@ -1,14 +1,13 @@
 import Vue, { VNode, CreateElement } from 'vue'
-import { Component, Prop, Emit, Watch } from 'vue-property-decorator'
-import omit from 'lodash/omit'
+import { Component, Emit } from 'vue-property-decorator'
 
 @Component
 export default class AutocompletePlus extends Vue {
-  mounted() {
-    // console.log(this, 'AutocompletePlus实例')
-    // console.log(this.$attrs, 'AutocompletePlus attrs')
-    // console.log(this.$listeners, 'AutocompletePlus listeners')
-    // console.log(this.$scopedSlots, 'AutocompletePlus scopedSlots')
+
+  @Emit('input')
+  @Emit('change')
+  private changeEvent(value: string | number) {
+    return value
   }
 
   render(h: CreateElement): VNode {
@@ -28,11 +27,14 @@ export default class AutocompletePlus extends Vue {
     }
     return (
       <el-autocomplete
-        on-input={(val: any) => {
-          this.$emit('input', val)
+        {...{
+          props: this.$attrs,
+          on: {
+            ...this.$listeners,
+            change: this.changeEvent,
+          },
+          scopedSlots: customScopedSlots,
         }}
-        {...{ props: this.$attrs, on: this.$listeners }}
-        {...{ scopedSlots: customScopedSlots }}
       >
         {slots.map(o => {
           return <template slot={o.name}>{o.value}</template>

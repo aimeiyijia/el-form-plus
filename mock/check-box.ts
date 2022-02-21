@@ -5,27 +5,18 @@ const checkbox = {
   hidden: false,
   // 表单项绑定的值（字段名） 必需
   field: 'checkBox',
-
-  // 只需要渲染一个checkbox时，设置label属性 value初始值为boolean类型
-  // 注意 只要有options此配置项，那么就只能渲染checkbox组了
-  label: '就一个',
+  value: [2],
   // 表单项的配置项
   attrs: {
-    // value: true,
     // disabled: true,
-    // 设置全局的checkbox类型，优先级低于options内部的type属性（el-checkbox-button）
-    type: 'button',
-    // 初始值
-    value: [1],
     options: [
       {
         label: '1',
         value: 1,
-        // 只要这个属性存在,该项就渲染为el-checkbox
-        type: '',
+        // 该项就渲染为el-checkbox-button
+        // type: 'button',
       },
       {
-        // 还是 el-checkbox-button
         label: '2',
         value: 2,
       },

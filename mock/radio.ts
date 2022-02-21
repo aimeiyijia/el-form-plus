@@ -9,6 +9,8 @@ const radio = {
   value: 1,
   // 表单项的配置项
   attrs: {
+    // 是否渲染成组
+    isGroup: true,
     options: [
       {
         lable: 1,
@@ -22,11 +24,8 @@ const radio = {
   },
   // 表单项事件
   on: {
-    singleChange: () => {
+    change: () => {
       console.log('singleChange')
-    },
-    groupChange: () => {
-      console.log('groupChange')
     },
   },
   // 插槽

@@ -231,7 +231,7 @@ export default class ElFormPlus extends Vue {
   }
 
   render(h: CreateElement): VNode {
-    console.log('渲染')
+
     const model = this.model
 
     // 渲染表单项
@@ -255,9 +255,7 @@ export default class ElFormPlus extends Vue {
 
         this.$set(model, field, val)
 
-        // 因为input事件被内部拦截了，所以在此再暴露出去
-        // 所有的组件应自行实现input方法以达到统一目的（也可以不实现）
-        // input基本对应表单的input事件，但也可能是change事件，以实际开发为准
+        // 拦截input事件以达到更新model的目的，然后再触发
         const { input } = on
         if (!input) return
         if (isFunction(input)) {

@@ -6,10 +6,11 @@ const cascader = {
   field: 'cascader',
   // 初始值 注意事项 开启多选时的value结构时[[value,value,value]]，
   value: [['zhinan', 'shejiyuanze', 'yizhi']],
+  // 非多选时[value,value,value]
+  // value: ['zhinan', 'shejiyuanze', 'yizhi'],
   // 表单项的配置项
   attrs: {
-    // 非多选时[value,value,value]
-    // value: ['zhinan', 'shejiyuanze', 'yizhi'],
+    // filterable: true,
     props: {
       multiple: true,
       // lazy: true,
@@ -30,7 +31,6 @@ const cascader = {
       {
         value: 'zhinan',
         label: '指南',
-        disabled: true,
         children: [
           {
             value: 'shejiyuanze',
@@ -304,17 +304,21 @@ const cascader = {
     input: (val: any) => {
       console.log('input事件', val)
     },
+    'expand-change': (val: any) => {
+      console.log('expand-change事件', val)
+    },
   },
   // 插槽
-  scopedSlots: {
-    default(a: any) {
-      console.log(a, 'default')
-      return 111
-    },
-    empty(a: any) {
-      console.log(a, 'empty')
-    },
-  },
+  // scopedSlots: {
+  //   default(a: any) {
+  //     console.log(a, 'default')
+  //     return 111
+  //   },
+  //   empty(a: any) {
+  //     console.log(a, 'empty')
+  //     return '没有数据'
+  //   },
+  // },
   // el-form-item配置项 可选
   config: {
     // vue ref属性 默认为field 利用此属性来查找某一组件

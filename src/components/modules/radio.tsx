@@ -7,67 +7,49 @@ import { Fragment } from 'vue-fragment'
   components: { Fragment },
 })
 export default class RadioPlus extends Vue {
-  mounted() {
-    console.log(this.$attrs, 'attrs')
-    console.log(this.$listeners, 'listeners')
-    console.log(this.$scopedSlots, 'scopedSlots')
-  }
 
   render(h: CreateElement): VNode {
-    // 取出radio渲染数组
-    const { groupOptions = [], options = [], type = '' } = this.$attrs
-    // 获取出除groupOptions, options之外的配置项
-    const attrs = omit(this.$attrs, ['groupOptions', 'options', 'type'])
-    const { groupChange, singleChange } = this.$listeners
-
-    let RadioType = 'el-radio'
-    if (type) RadioType = 'el-radio-' + type
+    // 取出Radio渲染数组
+    const { options = [], isGroup = false } = this.$attrs
+    // 获取出除options, options之外的配置项
+    const attrs = omit(this.$attrs, ['options', 'type'])
 
     // 单选框
-    const renderOptions = () => {
-      return (options as any).map((o: any) => {
+    const renderSingleRadio = () => {
+      const Radios = (options as any).map((o: any) => {
         const { label, value, type } = o
         const restAttrs = omit(o, ['label', 'value', 'type'])
         let RadioTypeChild = 'el-radio'
-        if (type === "button") { RadioTypeChild = 'el-radio-button' }
-        else if (!type) { RadioTypeChild = RadioType }
-        else { RadioTypeChild = 'el-radio' }
+        if (type === "button") { RadioTypeChild = 'el-Radio-button' }
         return (
           <RadioTypeChild
-            on-input={(val: any) => {
-              this.$emit('input', val)
-            }}
-            {...{ props: { ...attrs, label: value, ...restAttrs }, on: { change: singleChange } }}
+            {...{ props: { ...attrs, label: value, ...restAttrs }, on: this.$listeners }}
           >
             {label}
           </RadioTypeChild>
         )
       })
+      return Radios
     }
 
     // 单选框组
-    const renderGroupOption = () => {
-      const radios = (groupOptions as any).map((o: any) => {
-        const { label, value, type } = o
-        const restAttrs = omit(o, ['label', 'value', 'type'])
-        let RadioTypeChild = 'el-radio'
-        if (type === "button") { RadioTypeChild = 'el-radio-button' }
-        else if (!type) { RadioTypeChild = RadioType }
-        else { RadioTypeChild = 'el-radio' }
-        return <RadioTypeChild {...{ props: { label: value, ...restAttrs } }}>{label}</RadioTypeChild>
-      })
+    const renderGroupRadios = () => {
       return (
-        <el-radio-group
-          {...{ props: { ...attrs }, on: { change: groupChange } }}>
-          {radios}
-        </el-radio-group>
+        <el-Radio-group
+          {...{ props: { ...attrs }, on: this.$listeners }}>
+          {renderSingleRadio()}
+        </el-Radio-group>
       )
-
     }
 
     const renderRadios = () => {
-      return renderOptions().concat(renderGroupOption())
+      // 如果value为数组类型，则渲染为多选框组
+      if (isGroup) {
+        return renderGroupRadios()
+      }
+      return renderSingleRadio()
     }
+
     return <fragment>{renderRadios()}</fragment>
   }
 }

@@ -7,6 +7,14 @@ export function isObject(obj: any): boolean {
   return Object.prototype.toString.call(obj) === '[object Object]'
 }
 
+export function isArray(val: any): boolean {
+  return Object.prototype.toString.call(val) === '[object Array]'
+}
+
+export function isBoolean(val: any): boolean {
+  return Object.prototype.toString.call(val) === '[object Boolean]'
+}
+
 export function isHtmlElement(node: any): boolean {
   return node && node.nodeType === Node.ELEMENT_NODE
 }
