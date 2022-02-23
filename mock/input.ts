@@ -30,11 +30,6 @@ const input = {
       col: {
         span: 6,
       },
-      more: [
-        {
-          field: 'moreinput111',
-        }
-      ]
     },
   ],
   // 在有more配置项时的el-form-item的内部布局方式

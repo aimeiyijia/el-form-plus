@@ -46,6 +46,8 @@ export default class ElFormPlus extends Vue {
 
   private data: any[] = []
 
+  private cachedDataArr: any[] = []
+
   private listeners: any = null
 
   created() {
@@ -56,8 +58,19 @@ export default class ElFormPlus extends Vue {
 
     // 防止事件注入时再次触发render
     this.listeners = this.$listeners
+  }
 
-    console.log(this.getTarget({ fieldName: 'moreinput111' }), '取到的值')
+  // 将数据存储起来，便于后续的查询操作
+  setCachedData() {
+    // 扁平化为一维数组
+    let oneDemArr: any = []
+    this.data.forEach(o => {
+      oneDemArr.push(o)
+      if (o.more && isArray(o.more)) {
+        oneDemArr = oneDemArr.concat(o.more)
+      }
+    })
+    this.cachedDataArr = oneDemArr
   }
 
   // 这一步主要是为了方便内部操作options
@@ -67,6 +80,7 @@ export default class ElFormPlus extends Vue {
     // const options = this.options.concat(buttonData)
     const options = this.options
     this.data = cloneDeep(options)
+    this.setCachedData()
   }
 
   // 监听options
@@ -108,17 +122,8 @@ export default class ElFormPlus extends Vue {
   }
 
   // 根据attrs中的field字段匹配到目标配置项
-  private getTarget({ data = this.data, fieldName }: { data?: any, fieldName: string }): any {
-    let target: any = null
-    data.find((o: any) => {
-      if (o.field === fieldName) target = o
-      if (o.more && isArray(o.more)) {
-        if(target){
-          target = o
-        }
-        this.getTarget({ data: o.more, fieldName })
-      }
-    })
+  private getTarget(fieldName: string): any {
+    return this.cachedDataArr.find((o: any) => o.field === fieldName)
   }
 
   // 根据field字段值来查找其所在的配置项
@@ -127,7 +132,7 @@ export default class ElFormPlus extends Vue {
   // 通过表单域更新某配置项 如果不存在该path,那么将会添加进去
   private setByField(fieldName: string, path: string, value: any): void {
     try {
-      const target = this.getTarget({ fieldName })
+      const target = this.getTarget(fieldName)
       objectPath.set(target, path, value)
     } catch (error) {
       console.error(error, 'updateField')
@@ -137,7 +142,7 @@ export default class ElFormPlus extends Vue {
   // 指定路径是否存在
   private isHasByField(fieldName: string, path: string): boolean {
     try {
-      const target = this.getTarget({ fieldName })
+      const target = this.getTarget(fieldName)
       return objectPath.has(target, path)
     } catch (error) {
       console.error(error, 'isHasByField')
@@ -148,7 +153,7 @@ export default class ElFormPlus extends Vue {
   // insert 向指定路径中的数组插入值，该路径不存或没值就添加
   private insertByField(fieldName: string, path: string, value: any, positions: number): void {
     try {
-      const target = this.getTarget({ fieldName })
+      const target = this.getTarget(fieldName)
       objectPath.insert(target, path, value, positions);
     } catch (error) {
       console.error(error, 'insertByField')
@@ -158,7 +163,7 @@ export default class ElFormPlus extends Vue {
   // number -> 0, boolean -> no-change, array -> [], object -> {}, Function -> null
   private emptysByField(fieldName: string, path: string) {
     try {
-      const target = this.getTarget({ fieldName })
+      const target = this.getTarget(fieldName)
       objectPath.empty(target, path)
     } catch (error) {
       console.error(error, 'emptysByField')
@@ -168,7 +173,7 @@ export default class ElFormPlus extends Vue {
   // 获取指定路径上的值
   private getByField(fieldName: string, path: string, defaultValue: any): void {
     try {
-      const target = this.getTarget({ fieldName })
+      const target = this.getTarget(fieldName)
       objectPath.get(target, path, defaultValue)
     } catch (error) {
       console.error(error, 'getByField')
@@ -178,7 +183,7 @@ export default class ElFormPlus extends Vue {
   // 删除指定路径
   private delByField(fieldName: string, path: string): void {
     try {
-      const target = this.getTarget({ fieldName })
+      const target = this.getTarget(fieldName)
       objectPath.del(target, path)
     } catch (error) {
       console.error(error, 'delByField')
