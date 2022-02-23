@@ -22,7 +22,12 @@ export default {
       // layout布局配置项 同element-ui中Layout 中 Row Attributes
       // layout只要存在，不管是不是{}，都会去按照el-row el-col去布局
       // 对el-form-item进行的布局
-      layout: {},
+      layout: {
+        // 全局性的el-row属性
+        row: {},
+        // 全局性的el-col属性，优先级低于option中的各表单项配置
+        col: {}
+      },
 
       // el-form 表单整体配置（除model配置项，因为内部已拦截）
       config: {

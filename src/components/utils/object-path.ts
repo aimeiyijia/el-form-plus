@@ -1,11 +1,11 @@
 //  https://github.com/mariocasciaro/object-path  by @mariocasciaro
 // 主要是为了方便维护 所以将源码直接拷贝过来，改了改，并且加了些其它的工具类
-var toStr = Object.prototype.toString
+const toStr = Object.prototype.toString
 function hasOwnProperty(obj: object, prop: string | number): boolean {
   if (obj == null) {
     return false
   }
-  //to handle objects with null prototypes (too edge case?)
+  // to handle objects with null prototypes (too edge case?)
   return Object.prototype.hasOwnProperty.call(obj, prop)
 }
 
@@ -16,7 +16,7 @@ function isEmpty(value: any): boolean {
   if (isArray(value) && value.length === 0) {
     return true
   } else if (typeof value !== 'string') {
-    for (var i in value) {
+    for (const i in value) {
       if (hasOwnProperty(value, i)) {
         return false
       }
@@ -45,7 +45,7 @@ function isBoolean(obj: boolean): boolean {
 }
 
 function getKey(key: string): number | string {
-  var intKey = parseInt(key)
+  const intKey = parseInt(key)
   if (intKey.toString() === key) {
     return intKey
   }
@@ -58,11 +58,11 @@ function getKey(key: string): number | string {
 // export default mod
 
 interface IOption {
-  includeInheritedProps?: boolean;
+  includeInheritedProps?: boolean
 }
 
 interface IObject {
-  [key: string]: any;
+  [key: string]: any
 }
 
 class ObjectPath {
@@ -72,6 +72,7 @@ class ObjectPath {
     this.options = options
     this.hasShallowProperty = this.createShallowPropertyFunc()
   }
+
   createShallowPropertyFunc(): Function {
     if (this.options.includeInheritedProps) return () => true
 
@@ -99,11 +100,11 @@ class ObjectPath {
     if (typeof path === 'string') {
       return this.set(obj, path.split('.').map(getKey), value, doNotReplace)
     }
-    var currentPath = path[0]
+    let currentPath = path[0]
     if (typeof currentPath !== 'string' && typeof currentPath !== 'number') {
       currentPath = String(currentPath)
     }
-    var currentValue = this.getShallowProperty(obj, currentPath)
+    const currentValue = this.getShallowProperty(obj, currentPath)
     if (
       this.options.includeInheritedProps &&
       (currentPath === '__proto__' ||
@@ -121,7 +122,7 @@ class ObjectPath {
     }
 
     if (currentValue === void 0) {
-      //check if we assume an array
+      // check if we assume an array
       if (typeof path[1] === 'number') {
         obj[currentPath] = []
       } else {
@@ -143,8 +144,8 @@ class ObjectPath {
       return !!obj
     }
 
-    for (var i = 0; i < path.length; i++) {
-      var j = getKey(path[i])
+    for (let i = 0; i < path.length; i++) {
+      const j = getKey(path[i])
 
       if (
         (typeof j === 'number' && isArray(obj) && j < obj.length) ||
@@ -166,7 +167,7 @@ class ObjectPath {
   }
 
   insert(obj: object, path: any, value: any, at: any) {
-    var arr = this.get(obj, path)
+    let arr = this.get(obj, path)
     at = ~~at
     if (!isArray(arr)) {
       arr = []
@@ -183,7 +184,7 @@ class ObjectPath {
       return void 0
     }
 
-    var value, i
+    let value, i
     if (!(value = this.get(obj, path))) {
       return void 0
     }
@@ -208,7 +209,7 @@ class ObjectPath {
   }
 
   push(obj: object, path: any /*, values */) {
-    var arr = this.get(obj, path)
+    let arr = this.get(obj, path)
     if (!isArray(arr)) {
       arr = []
       this.set(obj, path, arr)
@@ -218,9 +219,9 @@ class ObjectPath {
   }
 
   coalesce(obj: object, paths: any, defaultValue: any) {
-    var value
+    let value
 
-    for (var i = 0, len = paths.length; i < len; i++) {
+    for (let i = 0, len = paths.length; i < len; i++) {
       if ((value = this.get(obj, paths[i])) !== void 0) {
         return value
       }
@@ -243,8 +244,8 @@ class ObjectPath {
       return this.get(obj, path.split('.'), defaultValue)
     }
 
-    var currentPath: any = getKey(path[0])
-    var nextObj = this.getShallowProperty(obj, currentPath)
+    const currentPath: any = getKey(path[0])
+    const nextObj = this.getShallowProperty(obj, currentPath)
     if (nextObj === void 0) {
       return defaultValue
     }
@@ -272,7 +273,7 @@ class ObjectPath {
       return this.del(obj, path.split('.'))
     }
 
-    var currentPath: any = getKey(path[0])
+    const currentPath: any = getKey(path[0])
     if (!this.hasShallowProperty(obj, currentPath)) {
       return obj
     }

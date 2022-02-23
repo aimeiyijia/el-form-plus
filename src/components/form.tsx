@@ -2,7 +2,7 @@ import Vue, { VNode, CreateElement } from 'vue'
 import { Component, Prop, Model, Watch } from 'vue-property-decorator'
 import { Fragment } from 'vue-fragment'
 import omit from 'lodash/omit'
-import { cloneDeep, isFunction, isString } from 'lodash'
+import { cloneDeep, isFunction, isString, isArray } from 'lodash'
 import objectPath from './utils/object-path'
 // 样式
 import './styles/index.scss'
@@ -54,7 +54,10 @@ export default class ElFormPlus extends Vue {
     // 利用这个就做到了modelData（晚渲染）比options（早渲染）优先级更高
     this.bindData(this.modelData)
 
+    // 防止事件注入时再次触发render
     this.listeners = this.$listeners
+
+    console.log(this.getTarget({ fieldName: 'moreinput111' }), '取到的值')
   }
 
   // 这一步主要是为了方便内部操作options
@@ -98,16 +101,23 @@ export default class ElFormPlus extends Vue {
       if (field) {
         this.$set(this.model, field, value)
       }
-      if (more && Array.isArray(more)) {
+      if (more && isArray(more)) {
         this.buildModel(more)
       }
     }
   }
 
   // 根据attrs中的field字段匹配到目标配置项
-  private getTarget(fieldName: any) {
-    return this.data.find(o => {
-      return o.field === fieldName
+  private getTarget({ data = this.data, fieldName }: { data?: any, fieldName: string }): any {
+    let target: any = null
+    data.find((o: any) => {
+      if (o.field === fieldName) target = o
+      if (o.more && isArray(o.more)) {
+        if(target){
+          target = o
+        }
+        this.getTarget({ data: o.more, fieldName })
+      }
     })
   }
 
@@ -117,7 +127,7 @@ export default class ElFormPlus extends Vue {
   // 通过表单域更新某配置项 如果不存在该path,那么将会添加进去
   private setByField(fieldName: string, path: string, value: any): void {
     try {
-      const target = this.getTarget(fieldName)
+      const target = this.getTarget({ fieldName })
       objectPath.set(target, path, value)
     } catch (error) {
       console.error(error, 'updateField')
@@ -127,7 +137,7 @@ export default class ElFormPlus extends Vue {
   // 指定路径是否存在
   private isHasByField(fieldName: string, path: string): boolean {
     try {
-      const target = this.getTarget(fieldName)
+      const target = this.getTarget({ fieldName })
       return objectPath.has(target, path)
     } catch (error) {
       console.error(error, 'isHasByField')
@@ -138,7 +148,7 @@ export default class ElFormPlus extends Vue {
   // insert 向指定路径中的数组插入值，该路径不存或没值就添加
   private insertByField(fieldName: string, path: string, value: any, positions: number): void {
     try {
-      const target = this.getTarget(fieldName)
+      const target = this.getTarget({ fieldName })
       objectPath.insert(target, path, value, positions);
     } catch (error) {
       console.error(error, 'insertByField')
@@ -148,7 +158,7 @@ export default class ElFormPlus extends Vue {
   // number -> 0, boolean -> no-change, array -> [], object -> {}, Function -> null
   private emptysByField(fieldName: string, path: string) {
     try {
-      const target = this.getTarget(fieldName)
+      const target = this.getTarget({ fieldName })
       objectPath.empty(target, path)
     } catch (error) {
       console.error(error, 'emptysByField')
@@ -158,7 +168,7 @@ export default class ElFormPlus extends Vue {
   // 获取指定路径上的值
   private getByField(fieldName: string, path: string, defaultValue: any): void {
     try {
-      const target = this.getTarget(fieldName)
+      const target = this.getTarget({ fieldName })
       objectPath.get(target, path, defaultValue)
     } catch (error) {
       console.error(error, 'getByField')
@@ -168,7 +178,7 @@ export default class ElFormPlus extends Vue {
   // 删除指定路径
   private delByField(fieldName: string, path: string): void {
     try {
-      const target = this.getTarget(fieldName)
+      const target = this.getTarget({ fieldName })
       objectPath.del(target, path)
     } catch (error) {
       console.error(error, 'delByField')
@@ -221,6 +231,8 @@ export default class ElFormPlus extends Vue {
 
     const model = this.model
 
+    const { row: globalRowConfig, col: globalColConfig = { span: 12 } } = this.layout
+
     // 渲染表单项
     const renderSingleForm = (singleFormAttrs: any) => {
 
@@ -233,16 +245,14 @@ export default class ElFormPlus extends Vue {
         attrs = {},
         container,
         on = {},
-        scopedSlots = {},
-        prepend,
-        append } = singleFormAttrs
+        scopedSlots = {}
+      } = singleFormAttrs
 
-      // 表单input event
-      const onInput = (val: any) => {
+      // 拦截原生input事件，以便触发数据更新
+      const customInputEvent = (val: any) => {
 
-        this.$set(model, field, val)
+        if (field) this.$set(model, field, val)
 
-        // 拦截input事件以达到更新model的目的，然后再触发
         const { input } = on
         if (!input) return
         if (isFunction(input)) {
@@ -255,8 +265,8 @@ export default class ElFormPlus extends Vue {
       // 取出表单初始值
       const value = model[field]
 
-      // 取出
-      const ons = omit(on, ['input'])
+      // 取出除input事件之外的事件
+      const extraEvents = omit(on, ['input'])
 
       // 是否渲染el-col元素
       // 一个el-form-item内部某表单项占据的空间
@@ -266,22 +276,23 @@ export default class ElFormPlus extends Vue {
       const ContainerEl = this.renderContainerEl(container)
 
       // 需要渲染的组件 SuperComponent
-      const SComponent: any = this.renderWhatComponent(type)
+      const TrueComponent: any = this.renderWhatComponent(type)
 
       return (
-        <ColEl  {...{ props: { ...col } }}>
+        <ColEl  {...{ props: { ...globalColConfig, ...col } }}>
           <ContainerEl>
-              <SComponent
-                value={value}
-                {...{ scopedSlots }}
-                {...{ attrs }}
-                customNode={customNode}
-                {...{
-                  on: {
-                    ...ons,
-                    input: onInput
-                  }
-                }} />
+            <TrueComponent
+              {...{
+                scopedSlots,
+                attrs,
+                on: {
+                  ...extraEvents,
+                  input: customInputEvent
+                }
+              }}
+              value={value}
+              customNode={customNode}
+            />
           </ContainerEl>
         </ColEl>
 
@@ -289,15 +300,10 @@ export default class ElFormPlus extends Vue {
     }
 
     // 渲染 el-form-item
-    const renderFormItem = () => {
+    const renderElFormItem = () => {
       const options = this.data
 
       return options.filter(o => !o.hidden).map(o => {
-
-        // 如果是超级自定义组件，那么就直接接管渲染，完全自定义
-        if (o.type === 'SuperCustom') {
-          return 'div'
-        }
 
         // 剥离掉表单项不需要的配置项
         const singleFormAttrs = omit(o, ['hidden', 'config', 'more'])
@@ -327,10 +333,10 @@ export default class ElFormPlus extends Vue {
         }
 
         return (
-          <ColEl  {...{ props: { ...col } }}>
+          <ColEl  {...{ props: { ...globalColConfig, ...col } }}>
             <ContainerEl>
               <el-form-item {...{ props: { ...config, prop: cancelrule ? '' : field } }}>
-                <RowEl {...{ props: { ...layout } }}>
+                <RowEl {...{ props: { ...globalRowConfig, ...layout } }}>
                   {result && [renderSingleForm(singleFormAttrs)].concat(moreForm())}
                 </RowEl>
               </el-form-item>
@@ -353,8 +359,8 @@ export default class ElFormPlus extends Vue {
           },
           on: this.listeners
         }}>
-        <RowEl {...{ props: { ...this.layout } }}>
-          {renderFormItem()}
+        <RowEl {...{ props: { ...globalRowConfig } }}>
+          {renderElFormItem()}
         </RowEl>
       </el-form>
     )

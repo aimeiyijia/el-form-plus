@@ -12,34 +12,39 @@ const input = {
     type: 'text',
     // 控件支持的原生属性也可以写在这里
     class: '1234',
-    style:"color: red"
+    style: 'color: red',
   },
   // 渲染更多的表单项
   // 配置项相同，因为是渲染在同一个el-form-item中所以无config配置，也不支持
-  // more: [
-  //   {
-  //     type: 'Input',
-  //     // 表单是否隐藏 默认为false（控制的是el-form-item）
-  //     hidden: false,
-  //     // 表单项绑定的值（字段名） 必需
-  //     field: 'moreinput',
-  //     // 初始值
-  //     value: 'moreinput初始值',
-  //     // 表单项的配置项
-  //     attrs: {},
-  //     // col: {
-  //     //   span: 11,
-  //     // },
-  //   },
-  // ],
+  more: [
+    {
+      type: 'Input',
+      // 表单是否隐藏 默认为false（控制的是el-form-item）
+      hidden: false,
+      // 表单项绑定的值（字段名） 必需
+      field: 'moreinput',
+      // 初始值
+      value: 'moreinput初始值',
+      // 表单项的配置项
+      attrs: {},
+      col: {
+        span: 6,
+      },
+      more: [
+        {
+          field: 'moreinput111',
+        }
+      ]
+    },
+  ],
   // 在有more配置项时的el-form-item的内部布局方式
-  // layout: {
-  //   gutter: 20,
-  // },
+  layout: {
+    gutter: 20,
+  },
   // 该表单项在el-form-item占据的空间
-  // col: {
-  //   span: 11,
-  // },
+  col: {
+    span: 11,
+  },
 
   // 某表单项的包裹组件
   // 如果是个组件需要Vue.use(ElFormPlus, {components: {someComponents}})注册
