@@ -58,19 +58,8 @@ export default class ElFormPlus extends Vue {
 
     // 防止事件注入时再次触发render
     this.listeners = this.$listeners
-  }
 
-  // 将数据存储起来，便于后续的查询操作
-  setCachedData() {
-    // 扁平化为一维数组
-    let oneDemArr: any = []
-    this.data.forEach(o => {
-      oneDemArr.push(o)
-      if (o.more && isArray(o.more)) {
-        oneDemArr = oneDemArr.concat(o.more)
-      }
-    })
-    this.cachedDataArr = oneDemArr
+    this.exportMethods()
   }
 
   // 这一步主要是为了方便内部操作options
@@ -92,6 +81,19 @@ export default class ElFormPlus extends Vue {
     // 将组装好的model对外暴露出去
     this.$emit('change', this.model)
     // this.exportInstance()
+  }
+
+  // 将数据存储起来，便于后续的查询操作
+  setCachedData() {
+    // 扁平化为一维数组
+    let oneDemArr: any = []
+    this.data.forEach(o => {
+      oneDemArr.push(o)
+      if (o.more && isArray(o.more)) {
+        oneDemArr = oneDemArr.concat(o.more)
+      }
+    })
+    this.cachedDataArr = oneDemArr
   }
 
   // 深度绑定数据
@@ -192,13 +194,15 @@ export default class ElFormPlus extends Vue {
 
   // 将操作实例的方法暴露出去
   private exportMethods() {
-    this.$emit('change', {
-      setByField: this.setByField,
-      isHasByField: this.isHasByField,
-      insertByField: this.insertByField,
-      emptysByField: this.emptysByField,
-      getByField: this.getByField,
-      delByField: this.delByField,
+    this.$emit('render-complete', {
+      operaMethods: {
+        setByField: this.setByField,
+        isHasByField: this.isHasByField,
+        insertByField: this.insertByField,
+        emptysByField: this.emptysByField,
+        getByField: this.getByField,
+        delByField: this.delByField,
+      }
     })
   }
 
