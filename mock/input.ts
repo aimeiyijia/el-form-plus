@@ -10,6 +10,9 @@ const input = {
   // 表单项的配置项
   attrs: {
     type: 'text',
+    // 控件支持的原生属性也可以写在这里
+    class: '1234',
+    style:"color: red"
   },
   // 渲染更多的表单项
   // 配置项相同，因为是渲染在同一个el-form-item中所以无config配置，也不支持
@@ -33,7 +36,7 @@ const input = {
   // layout: {
   //   gutter: 20,
   // },
-  // // 该表单项在el-form-item占据的空间
+  // 该表单项在el-form-item占据的空间
   // col: {
   //   span: 11,
   // },
@@ -67,13 +70,6 @@ const input = {
     // append: () => {
     //   return '后置'
     // },
-  },
-
-  prepend() {
-    return '外前置'
-  },
-  append: () => {
-    return '外后置'
   },
 
   // el-form-item配置项 可选

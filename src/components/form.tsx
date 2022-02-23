@@ -217,19 +217,6 @@ export default class ElFormPlus extends Vue {
     return 'fragment'
   }
 
-  // 判断需要渲染的前置后置元素
-  private renderPendEl(c: any) {
-    if (c) {
-      if (isFunction(c)) {
-        return c.call(null, this)
-      }
-      if (isString(c)) {
-        return c
-      }
-    }
-    return ''
-  }
-
   render(h: CreateElement): VNode {
 
     const model = this.model
@@ -278,21 +265,12 @@ export default class ElFormPlus extends Vue {
       // 渲染container
       const ContainerEl = this.renderContainerEl(container)
 
-
-      // 前置
-      const PrependEl = this.renderPendEl(prepend)
-
-      // 后置
-      const AppendEl = this.renderPendEl(append)
-
       // 需要渲染的组件 SuperComponent
       const SComponent: any = this.renderWhatComponent(type)
 
       return (
         <ColEl  {...{ props: { ...col } }}>
           <ContainerEl>
-            <div class="form-plus-item">
-              <span class="prepend">{PrependEl}</span>
               <SComponent
                 value={value}
                 {...{ scopedSlots }}
@@ -304,8 +282,6 @@ export default class ElFormPlus extends Vue {
                     input: onInput
                   }
                 }} />
-              <span class="append">{AppendEl}</span>
-            </div>
           </ContainerEl>
         </ColEl>
 

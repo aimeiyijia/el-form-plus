@@ -4,6 +4,7 @@
       v-model="model"
       :config="config"
       :options="options"
+      :layout="layout"
       @validate="validate"
     ></el-form-plus>
   </div>
@@ -26,6 +27,8 @@ export default {
       // el-form 表单整体配置（除model配置项，因为内部已拦截）
       config: {
         labelWidth: '60px',
+        // Since you're using inline Form, you need to explicitly assign a width to Slider
+        // 当你使用内联from时，必须给el-slider一个固定的宽度，这是element-ui原生要求
         // inline: true,
         // rules: {
         //   input: [
