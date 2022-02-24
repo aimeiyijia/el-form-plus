@@ -240,8 +240,7 @@ export default class ElFormPlus extends Vue {
 
     const model = this.model
 
-    const { row: globalRowConfig, col: globalColConfig = { span: 12 } } = this.layout
-
+    const { row: globalRowConfig = {}, col: globalColConfig = { span: 12 } } = this.layout || {}
     // 渲染表单项
     const renderSingleForm = (singleFormAttrs: any) => {
 
@@ -318,7 +317,7 @@ export default class ElFormPlus extends Vue {
         const singleFormAttrs = omit(o, ['hidden', 'config', 'more'])
 
         const { field = '', config = {}, more = [], layout } = o
-        const { col, container, cancelrule = false } = config
+        const { col = { span: 12 }, container, cancelrule = false } = config
 
         const result = this.isFieldExist(singleFormAttrs)
 
