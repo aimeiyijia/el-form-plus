@@ -247,7 +247,7 @@ export default class ElFormPlus extends Vue {
       let {
         type = "",
         layout,
-        col = { span: 12 },
+        col,
         field = "",
         customNode,
         attrs = {},
