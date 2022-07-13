@@ -13,12 +13,12 @@ import Vnodes from './vnode'
 import buttonData from './data/index'
 
 interface IVnodes {
-  [key: string]: any;
-  [index: number]: any;
+  [key: string]: any
+  [index: number]: any
 }
 interface IModel {
-  [key: string]: any;
-  [index: number]: any;
+  [key: string]: any
+  [index: number]: any
 }
 
 // TODO 全局设置包裹组件
@@ -98,7 +98,7 @@ export default class ElFormPlus extends Vue {
 
   // 深度绑定数据
   private bindData(data: any) {
-    for (let o in data) {
+    for (const o in data) {
       if (Object.prototype.toString.call(data[o]) === '[object Object]') {
         this.bindData(data[o])
       }
@@ -108,7 +108,7 @@ export default class ElFormPlus extends Vue {
 
   // 构建model
   private buildModel(data: any) {
-    for (let o of data) {
+    for (const o of data) {
       const result = this.isFieldExist(o)
       if (!result) {
         continue
@@ -227,16 +227,19 @@ export default class ElFormPlus extends Vue {
   private renderContainerEl(c: any) {
     if (c) {
       if (isFunction(c)) {
+        // eslint-disable-next-line no-useless-call
         return c.call(null, this)
       }
       if (isString(c)) {
         return c
       }
     }
-    return 'fragment'
+    return 'Fragment'
   }
 
   render(h: CreateElement): VNode {
+
+    console.log(this.$scopedSlots, '全部的插槽')
 
     const model = this.model
 
@@ -244,7 +247,7 @@ export default class ElFormPlus extends Vue {
     // 渲染表单项
     const renderSingleForm = (singleFormAttrs: any) => {
 
-      let {
+      const {
         type = "",
         layout,
         col,
@@ -256,6 +259,19 @@ export default class ElFormPlus extends Vue {
         scopedSlots = {}
       } = singleFormAttrs
 
+      console.log(scopedSlots, '单个组件的插槽')
+
+      // 作用域插槽本身也是函数，在这里做一次转换
+      const customScopedSlots: { [key: string]: any } = {}
+      for (const key in scopedSlots) {
+        console.log(key)
+        if (isString(scopedSlots[key])) {
+          customScopedSlots[key] = this.$scopedSlots[scopedSlots[key]]
+        }
+        customScopedSlots[key] = scopedSlots[key]
+      }
+      console.log(customScopedSlots, '67890')
+
       // 拦截原生input事件，以便触发数据更新
       const customInputEvent = (val: any) => {
 
@@ -264,6 +280,7 @@ export default class ElFormPlus extends Vue {
         const { input } = on
         if (!input) return
         if (isFunction(input)) {
+          // eslint-disable-next-line no-useless-call
           input.call(null, val)
         } else {
           console.error(`field='${field}'中input必须是函数`)
@@ -291,13 +308,14 @@ export default class ElFormPlus extends Vue {
           <ContainerEl>
             <TrueComponent
               {...{
-                scopedSlots,
+                scopedSlots: customScopedSlots,
                 attrs,
                 on: {
                   ...extraEvents,
                   input: customInputEvent
                 }
               }}
+              class={attrs.extraClass}
               value={value}
               customNode={customNode}
             />

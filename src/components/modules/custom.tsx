@@ -2,9 +2,11 @@ import Vue, { VNode, CreateElement } from 'vue'
 import { Component, Prop, Emit, Watch } from 'vue-property-decorator'
 import { Fragment } from 'vue-fragment'
 
+import {isFunction} from '../utils/index'
+
 interface IAttrs {
-  [key: string]: any;
-  [index: number]: any;
+  [key: string]: any
+  [index: number]: any
 }
 
 @Component({
@@ -15,7 +17,7 @@ export default class CustomPlus extends Vue {
   mounted() {
     console.log(this.$attrs, 'CustomPlus attrs')
     // console.log(this.$listeners, 'CustomPlus listeners')
-    // console.log(this.$scopedSlots, 'CustomPlus scopedSlots')
+    console.log(this.$scopedSlots, 'CustomPlus scopedSlots')
   }
 
   @Watch('$attrs.value', { immediate: true, deep: true })
@@ -24,8 +26,8 @@ export default class CustomPlus extends Vue {
   }
 
   private dispatch(componentName: string, eventName: string, params: any[]) {
-    var parent = this.$parent || this.$root;
-    var name = (parent.$options as any).componentName;
+    let parent = this.$parent || this.$root;
+    let name = (parent.$options as any).componentName;
 
     while (parent && (!name || name !== componentName)) {
       parent = parent.$parent;

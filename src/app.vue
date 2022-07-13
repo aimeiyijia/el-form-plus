@@ -6,7 +6,11 @@
       :options="options"
       @render-complete="renderComplete"
       @validate="validate"
-    ></el-form-plus>
+    >
+      <template #custom>
+        <span>哈哈哈哈哈</span>
+      </template>
+    </el-form-plus>
   </div>
 </template>
 
@@ -55,17 +59,17 @@ export default {
     // this.model.input = '123'
     // this.model.setByField('input', 'attrs.value', 1234567890)
     // setInterval(() => {
-      // console.log(this.model, '双向绑定值')
-      // this.model.input = new Date().getSeconds() + 100
+    // console.log(this.model, '双向绑定值')
+    // this.model.input = new Date().getSeconds() + 100
     // this.model.moreinput = new Date().getSeconds() + 100
     // this.options[0].value = new Date().getSeconds() + 100
     // }, 2000)
   },
   methods: {
-    renderComplete(val){
+    renderComplete(val) {
       console.log(val, 'api')
       const { setByField } = val.operaMethods
-      setByField('input', 'value', '通过api更新的')
+      // setByField('input', 'value', '通过api更新的')
     },
     validate() {
       console.log(1)
