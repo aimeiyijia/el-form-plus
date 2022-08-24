@@ -24,6 +24,6 @@ export default class CustomPlus extends Vue {
     const { custom } = this.$scopedSlots
     const node = custom ? custom({ h, instance: this }) : ''
 
-    return <fragment>123456</fragment>
+    return <fragment>{ node }</fragment>
   }
 }

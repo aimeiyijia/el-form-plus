@@ -358,7 +358,13 @@ export default class ElFormPlus extends Vue {
         }
 
         console.log(type, '123455类型')
+        console.log(scopedSlots, '插槽12345')
 
+        // 作用域插槽本身也是函数，在这里做一次转换
+        let customScopedSlots = {}
+        if (type === 'SuperCustom') {
+          customScopedSlots = isString(scopedSlots) ? { custom: this.$scopedSlots[scopedSlots] } : { custom: scopedSlots }
+        }
         return (
           <ColEl  {...{ props: { ...globalColConfig, ...col } }}>
             <ContainerEl>
@@ -366,7 +372,7 @@ export default class ElFormPlus extends Vue {
                 type === 'SuperCustom' ?
                   <SuperCustom
                     {...{
-                      scopedSlots: scopedSlots
+                      scopedSlots: customScopedSlots
                     }}
                   ></SuperCustom>
                   :
