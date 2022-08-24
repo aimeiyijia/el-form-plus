@@ -21,7 +21,7 @@ const custom = {
           value: instance.$attrs.value,
         },
         on: {
-          input: val => {
+          input: (val: string) => {
             console.log(val, '变化')
             instance.$emit('input', val)
           },
