@@ -10,8 +10,6 @@ import './styles/index.scss'
 // 取出vnode匹配表
 import Vnodes, { SuperCustom } from './vnode'
 
-import buttonData from './data/index'
-
 interface IVnodes {
   [key: string]: any
   [index: number]: any

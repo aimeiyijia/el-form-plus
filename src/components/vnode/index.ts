@@ -1,6 +1,5 @@
 import {
   AutocompletePlus,
-  ButtonPlus,
   CascaderPlus,
   CascaderPanelPlus,
   CheckBoxPlus,
@@ -23,7 +22,6 @@ import {
 } from '../modules'
 const vnodes = {
   Autocomplete: AutocompletePlus,
-  Button: ButtonPlus,
   Cascader: CascaderPlus,
   CascaderPanel: CascaderPanelPlus,
   CheckBox: CheckBoxPlus,
