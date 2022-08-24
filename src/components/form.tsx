@@ -10,6 +10,8 @@ import './styles/index.scss'
 // 取出vnode匹配表
 import Vnodes, { SuperCustom } from './vnode'
 
+import buttonData from './custom/index'
+
 interface IVnodes {
   [key: string]: any
   [index: number]: any
@@ -320,7 +322,7 @@ export default class ElFormPlus extends Vue {
 
     // 渲染 el-form-item
     const renderElFormItem = () => {
-      const options = this.data
+      const options = this.data.concat(buttonData)
 
       return options.filter(o => !o.hidden).map(o => {
 
