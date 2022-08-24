@@ -13,6 +13,7 @@ import RadioPlus from './radio'
 import RatePlus from './rate'
 import SelectPlus from './select'
 import SliderPlus from './slider'
+import SuperCustomPlus from './super-custom'
 import SwitchPlus from './switch'
 import TimePickerPlus from './time-picker'
 import TimeSelectrPlus from './time-select'
@@ -35,6 +36,7 @@ export {
   RatePlus,
   SelectPlus,
   SliderPlus,
+  SuperCustomPlus,
   SwitchPlus,
   TimePickerPlus,
   TimeSelectrPlus,

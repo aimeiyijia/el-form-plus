@@ -8,7 +8,7 @@ import objectPath from './utils/object-path'
 import './styles/index.scss'
 
 // 取出vnode匹配表
-import Vnodes from './vnode'
+import Vnodes, { SuperCustom } from './vnode'
 
 import buttonData from './data/index'
 
@@ -266,7 +266,7 @@ export default class ElFormPlus extends Vue {
       for (const key in scopedSlots) {
         if (isString(scopedSlots[key])) {
           customScopedSlots[key] = this.$scopedSlots[scopedSlots[key]]
-        }else {
+        } else {
           customScopedSlots[key] = scopedSlots[key]
         }
       }
@@ -333,7 +333,7 @@ export default class ElFormPlus extends Vue {
         // 剥离掉表单项不需要的配置项
         const singleFormAttrs = omit(o, ['hidden', 'config', 'more'])
 
-        const { field = '', config = {}, more = [], layout } = o
+        const { type = '', field = '', config = {}, more = [], scopedSlots = {}, layout } = o
         const { col = { span: 12 }, container, cancelrule = false } = config
 
         const result = this.isFieldExist(singleFormAttrs)
@@ -357,14 +357,25 @@ export default class ElFormPlus extends Vue {
           })
         }
 
+        console.log(type, '123455类型')
+
         return (
           <ColEl  {...{ props: { ...globalColConfig, ...col } }}>
             <ContainerEl>
-              <el-form-item {...{ props: { ...config, prop: cancelrule ? '' : field } }}>
-                <RowEl {...{ props: { ...globalRowConfig, ...layout } }}>
-                  {result && [renderSingleForm(singleFormAttrs)].concat(moreForm())}
-                </RowEl>
-              </el-form-item>
+              {
+                type === 'SuperCustom' ?
+                  <SuperCustom
+                    {...{
+                      scopedSlots: scopedSlots
+                    }}
+                  ></SuperCustom>
+                  :
+                  (<el-form-item {...{ props: { ...config, prop: cancelrule ? '' : field } }}>
+                    <RowEl {...{ props: { ...globalRowConfig, ...layout } }}>
+                      {result && [renderSingleForm(singleFormAttrs)].concat(moreForm())}
+                    </RowEl>
+                  </el-form-item>)
+              }
             </ContainerEl>
           </ColEl>
         )

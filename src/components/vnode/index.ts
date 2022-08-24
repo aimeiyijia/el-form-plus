@@ -14,6 +14,7 @@ import {
   RatePlus,
   SelectPlus,
   SliderPlus,
+  SuperCustomPlus,
   SwitchPlus,
   TimePickerPlus,
   TimeSelectrPlus,
@@ -42,5 +43,7 @@ const vnodes = {
   Transfer: TransferPlus,
   Upload: UploadPlus,
 }
+
+export const SuperCustom = SuperCustomPlus
 
 export default vnodes
