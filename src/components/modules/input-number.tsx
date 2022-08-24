@@ -1,6 +1,5 @@
 import Vue, { VNode, CreateElement } from 'vue'
 import { Component, Prop, Emit, Watch } from 'vue-property-decorator'
-import omit from 'lodash/omit'
 
 @Component
 export default class InputNumberPlus extends Vue {

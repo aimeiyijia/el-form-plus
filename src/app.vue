@@ -7,8 +7,8 @@
       @render-complete="renderComplete"
       @validate="validate"
     >
-      <template #custom>
-        <span>哈哈哈哈哈</span>
+      <template #custom123>
+        <span>我是一个分割线</span>
       </template>
     </el-form-plus>
   </div>

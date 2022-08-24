@@ -8,12 +8,13 @@ export default class UploadPlus extends Vue {
   changeToInputEvent(fileList: object[]) {
     return fileList
   }
+
   render(h: CreateElement): VNode {
     const attrs = omit(this.$attrs, 'onChange')
     // 组装插槽及作用域插槽
     const scopedSlots: any = this.$scopedSlots
     const slots = []
-    for (let slot in scopedSlots) {
+    for (const slot in scopedSlots) {
       slots.push({
         name: slot,
         value: scopedSlots[slot]({ h, value: this.$attrs.value }),

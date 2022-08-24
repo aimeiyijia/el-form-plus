@@ -30,7 +30,7 @@ data.push(
   // datepicker,
   // datetimepicker,
   // inputnumber,
-  // input,
+  input,
   // radio,
   // rate,
   // select,

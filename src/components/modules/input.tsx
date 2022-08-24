@@ -4,8 +4,6 @@ import { Component } from 'vue-property-decorator'
 @Component
 export default class InputPlus extends Vue {
   render(h: CreateElement): VNode {
-
-    console.log(this.$attrs, '123456')
     // 组装插槽及作用域插槽
     const scopedSlots: any = this.$scopedSlots
     const slots = []
