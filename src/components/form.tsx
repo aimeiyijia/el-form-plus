@@ -264,13 +264,12 @@ export default class ElFormPlus extends Vue {
       // 作用域插槽本身也是函数，在这里做一次转换
       const customScopedSlots: { [key: string]: any } = {}
       for (const key in scopedSlots) {
-        console.log(key)
         if (isString(scopedSlots[key])) {
           customScopedSlots[key] = this.$scopedSlots[scopedSlots[key]]
+        }else {
+          customScopedSlots[key] = scopedSlots[key]
         }
-        customScopedSlots[key] = scopedSlots[key]
       }
-      console.log(customScopedSlots, '67890')
 
       // 拦截原生input事件，以便触发数据更新
       const customInputEvent = (val: any) => {

@@ -2,22 +2,6 @@ import Vue from 'vue'
 const custom = {
   // 表单项渲染类型 必需
   type: 'Custom',
-  // jsx或h
-  // 这样就可以实现自定义组件的双向绑定
-  customNode: ({ instance }: { instance: Vue }) => {
-    console.log(instance)
-    return instance.$createElement(
-      'span',
-      {
-        on: {
-          click: () => {
-            instance.$emit('input', '')
-          },
-        },
-      },
-      instance.$attrs.value
-    )
-  },
   // 表单是否隐藏 默认为false（控制的是el-form-item）
   hidden: false,
   // 表单项绑定的值（字段名） 必需（为了不破坏内部的更新逻辑）
@@ -26,6 +10,25 @@ const custom = {
   value: '123456',
   // 表单项的配置项
   attrs: {},
+
+  scopedSlots: {
+    // jsx或h
+    // 这样就可以实现自定义组件的双向绑定
+    custom: ({ instance }: { instance: Vue }) => {
+      console.log(instance)
+      return instance.$createElement('el-input', {
+        props: {
+          value: instance.$attrs.value,
+        },
+        on: {
+          input: val => {
+            console.log(val, '变化')
+            instance.$emit('input', val)
+          },
+        },
+      })
+    },
+  },
 
   // el-form-item配置项 可选
   config: {

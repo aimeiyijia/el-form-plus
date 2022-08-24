@@ -2,7 +2,7 @@ import Vue, { VNode, CreateElement } from 'vue'
 import { Component, Prop, Emit, Watch } from 'vue-property-decorator'
 import { Fragment } from 'vue-fragment'
 
-import {isFunction} from '../utils/index'
+import { isFunction } from '../utils/index'
 
 interface IAttrs {
   [key: string]: any
@@ -43,8 +43,8 @@ export default class CustomPlus extends Vue {
   }
 
   render(h: CreateElement): VNode {
-    const { customNode } = this.$attrs as IAttrs
-    const node = customNode({ h, instance: this })
+    const { custom } = this.$scopedSlots
+    const node = custom ? custom({ h, instance: this }) : ''
 
     return <fragment>{node}</fragment>
   }
