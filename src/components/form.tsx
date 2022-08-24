@@ -239,8 +239,6 @@ export default class ElFormPlus extends Vue {
 
   render(h: CreateElement): VNode {
 
-    console.log(this.$scopedSlots, '全部的插槽')
-
     const model = this.model
 
     const { row: globalRowConfig = {}, col: globalColConfig = { span: 12 } } = this.layout || {}
@@ -258,8 +256,6 @@ export default class ElFormPlus extends Vue {
         on = {},
         scopedSlots = {}
       } = singleFormAttrs
-
-      console.log(scopedSlots, '单个组件的插槽')
 
       // 作用域插槽本身也是函数，在这里做一次转换
       const customScopedSlots: { [key: string]: any } = {}
