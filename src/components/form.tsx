@@ -10,7 +10,7 @@ import './styles/index.scss'
 // 取出vnode匹配表
 import Vnodes, { SuperCustom } from './vnode'
 
-import buttonData from './custom/index'
+import { renderButtons } from './custom/index'
 
 interface IVnodes {
   [key: string]: any
@@ -320,7 +320,7 @@ export default class ElFormPlus extends Vue {
 
     // 渲染 el-form-item
     const renderElFormItem = () => {
-      const options = this.data.concat(buttonData)
+      const options = this.data
 
       return options.filter(o => !o.hidden).map(o => {
 
@@ -382,6 +382,17 @@ export default class ElFormPlus extends Vue {
 
     // 是否渲染el-row元素
     const RowEl = this.layout ? 'el-row' : 'fragment'
+
+    const renderSuperCustom = () => {}
+
+    const renderItem = () => {
+      const { buttonsConfig } = this.config
+      console.log(renderButtons, '123')
+      const options = this.data.concat(renderButtons(buttonsConfig))
+      console.log(options,'重写之后的配置项')
+    }
+
+    renderItem()
 
     // 渲染el-form
     return (

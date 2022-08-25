@@ -47,6 +47,14 @@ export default {
         //   ],
         // },
         // 拓展内置按钮配置
+        buttonsConfig: {
+          confirm: true,
+          confirmText: '确认',
+          reset: true,
+          resetText: '重置',
+          cancel: true,
+          cancelText: '取消',
+        }
       },
 
       // 表单项生成配置
