@@ -3,6 +3,7 @@ const input = {
   type: 'Input',
   // 表单是否隐藏 默认为false（控制的是el-form-item）
   hidden: false,
+  label: '外部的label',
   // 表单项绑定的值（字段名） 必需
   field: 'input',
   // 初始值
@@ -77,7 +78,7 @@ const input = {
   config: {
     // vue ref属性 默认为[field] 利用此属性来查找某一组件
     ref: 'input',
-    label: 'input：',
+    // label: 'input：',
     // labelWidth: '120px',
 
     // el-form-item所占据的空间

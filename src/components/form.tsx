@@ -250,7 +250,6 @@ export default class ElFormPlus extends Vue {
         layout,
         col,
         field = "",
-        customNode,
         attrs = {},
         container,
         on = {},
@@ -312,7 +311,6 @@ export default class ElFormPlus extends Vue {
               }}
               class={attrs.extraClass}
               value={value}
-              customNode={customNode}
             />
           </ContainerEl>
         </ColEl>
@@ -330,9 +328,9 @@ export default class ElFormPlus extends Vue {
         const singleFormAttrs = omit(o, ['hidden', 'config', 'more'])
 
         const { type = '', field = '', config = {}, more = [], scopedSlots = {}, layout } = o
-        const { col = { span: 12 }, container, cancelrule = false } = config
+        const { label = o.label, col = { span: 12 }, container, cancelrule = false } = config
 
-        const result = this.isFieldExist(singleFormAttrs)
+        const result = type === 'SuperCustom' ? true : this.isFieldExist(singleFormAttrs)
 
         // 一个el-form-item占据的空间
         const ColEl = this.layout ? 'el-col' : 'fragment'
@@ -370,14 +368,14 @@ export default class ElFormPlus extends Vue {
                     }}
                   ></SuperCustom>
                   :
-                  (<el-form-item {...{ props: { ...config, prop: cancelrule ? '' : field } }}>
+                  (<el-form-item {...{ props: { ...{ label }, ...config, prop: cancelrule ? '' : field } }}>
                     <RowEl {...{ props: { ...globalRowConfig, ...layout } }}>
                       {result && [renderSingleForm(singleFormAttrs)].concat(moreForm())}
                     </RowEl>
                   </el-form-item>)
               }
             </ContainerEl>
-          </ColEl>
+          </ColEl >
         )
       })
     }
