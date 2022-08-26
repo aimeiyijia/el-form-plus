@@ -4,11 +4,12 @@
       v-model="model"
       :config="config"
       :options="options"
+      :layout="{}"
       @render-complete="renderComplete"
       @validate="validate"
     >
       <template #custom123>
-        <span>我是一个分割线</span>
+        <div>我是一个分割线</div>
       </template>
     </el-form-plus>
   </div>
@@ -47,14 +48,7 @@ export default {
         //   ],
         // },
         // 拓展内置按钮配置
-        buttonsConfig: {
-          confirm: true,
-          confirmText: '确认',
-          reset: true,
-          resetText: '重置',
-          cancel: true,
-          cancelText: '取消',
-        }
+        buttonsConfig: {},
       },
 
       // 表单项生成配置
@@ -63,14 +57,14 @@ export default {
     }
   },
   mounted() {
-    // console.log(this.model, '双向绑定值')
+    console.log(this.model, '------双向绑定值------')
     // this.model.input = '123'
     // this.model.setByField('input', 'attrs.value', 1234567890)
     // setInterval(() => {
-    // console.log(this.model, '双向绑定值')
-    // this.model.input = new Date().getSeconds() + 100
-    // this.model.moreinput = new Date().getSeconds() + 100
-    // this.options[0].value = new Date().getSeconds() + 100
+    //   console.log(this.model, '双向绑定值')
+    //   this.model.input = new Date().getSeconds() + 100
+    //   this.model.moreinput = new Date().getSeconds() + 100
+    //   this.options[0].value = new Date().getSeconds() + 100
     // }, 2000)
   },
   methods: {

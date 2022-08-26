@@ -2,7 +2,9 @@ import Vue, { VNode, CreateElement } from 'vue'
 import { Component, Prop, Model, Watch } from 'vue-property-decorator'
 import { Fragment } from 'vue-fragment'
 import omit from 'lodash/omit'
+import { Form } from 'element-ui'
 import { cloneDeep, isFunction, isString, isArray } from 'lodash'
+import { isBoolean } from './utils'
 import objectPath from './utils/object-path'
 // 样式
 import './styles/index.scss'
@@ -49,6 +51,29 @@ export default class ElFormPlus extends Vue {
   private cachedDataArr: any[] = []
 
   private listeners: any = null
+
+  get dataHasButtonData(): any {
+    const { buttonsConfig } = this.config
+    if (isBoolean(buttonsConfig)) {
+      if (buttonsConfig) {
+        const buttons = renderButtons({})
+        return this.data.concat([buttons])
+      }
+    } else {
+      let buttons = {}
+      if (!buttonsConfig) {
+        buttons = renderButtons(buttons)
+      } else {
+        buttons = renderButtons(buttonsConfig)
+      }
+      return this.data.concat([buttons])
+    }
+    return this.data
+  }
+
+  get elFormRef() {
+    return this.$refs.ElForm as Form
+  }
 
   created() {
     // 绑定初值
@@ -194,15 +219,18 @@ export default class ElFormPlus extends Vue {
 
   // 将操作实例的方法暴露出去
   private exportMethods() {
-    this.$emit('render-complete', {
-      operaMethods: {
-        setByField: this.setByField,
-        isHasByField: this.isHasByField,
-        insertByField: this.insertByField,
-        emptysByField: this.emptysByField,
-        getByField: this.getByField,
-        delByField: this.delByField,
-      }
+    this.$nextTick(function() {
+      this.$emit('render-complete', {
+        operaMethods: {
+          setByField: this.setByField,
+          isHasByField: this.isHasByField,
+          insertByField: this.insertByField,
+          emptysByField: this.emptysByField,
+          getByField: this.getByField,
+          delByField: this.delByField,
+        },
+        elForm: this.elFormRef
+      })
     })
   }
 
@@ -319,81 +347,77 @@ export default class ElFormPlus extends Vue {
     }
 
     // 渲染 el-form-item
-    const renderElFormItem = () => {
-      const options = this.data
+    const renderElFormItem = (o: any) => {
+      // 剥离掉表单项不需要的配置项
+      const singleFormAttrs = omit(o, ['hidden', 'config', 'more'])
 
-      return options.filter(o => !o.hidden).map(o => {
+      const { field = '', config = {}, more = [], layout } = o
+      const { label = o.label, col = { span: 12 }, container, cancelrule = false } = config
 
-        // 剥离掉表单项不需要的配置项
-        const singleFormAttrs = omit(o, ['hidden', 'config', 'more'])
+      const result = this.isFieldExist(singleFormAttrs)
 
-        const { type = '', field = '', config = {}, more = [], scopedSlots = {}, layout } = o
-        const { label = o.label, col = { span: 12 }, container, cancelrule = false } = config
+      // 一个el-form-item占据的空间
+      const ColEl = this.layout ? 'el-col' : 'fragment'
 
-        const result = type === 'SuperCustom' ? true : this.isFieldExist(singleFormAttrs)
+      // 一个el-form-item内部的布局
+      const RowEl = layout ? 'el-row' : 'fragment'
 
-        // 一个el-form-item占据的空间
-        const ColEl = this.layout ? 'el-col' : 'fragment'
+      // 渲染container
+      const ContainerEl = this.renderContainerEl(container)
 
-        // 一个el-form-item内部的布局
-        const RowEl = layout ? 'el-row' : 'fragment'
+      // 更多表单项
+      const moreForm = () => {
+        return more.map((o: object) => {
+          // 不接受layout配置，一定会被more同级的layout配置项覆盖
+          const props: any = o
+          props.layout = layout
+          return renderSingleForm(props)
+        })
+      }
 
-        // 渲染container
-        const ContainerEl = this.renderContainerEl(container)
+      return (
+        <ColEl  {...{ props: { ...globalColConfig, ...col } }}>
+          <ContainerEl>
+            <el-form-item {...{ props: { ...{ label }, ...config, prop: cancelrule ? '' : field } }}>
+              <RowEl {...{ props: { ...globalRowConfig, ...layout } }}>
+                {result && [renderSingleForm(singleFormAttrs)].concat(moreForm())}
+              </RowEl>
+            </el-form-item>
+          </ContainerEl>
+        </ColEl >
+      )
+    }
 
-        // 更多表单项
-        const moreForm = () => {
-          return more.map((o: object) => {
-            // 不接受layout配置，一定会被more同级的layout配置项覆盖
-            const props: any = o
-            props.layout = layout
-            return renderSingleForm(props)
-          })
+    const renderSuperCustom = (options: any) => {
+      const { scopedSlots, col = { span: 24 } } = options
+      const customScopedSlots = isString(scopedSlots) ? { custom: this.$scopedSlots[scopedSlots] } : { custom: scopedSlots }
+      const ColEl = this.layout ? 'el-col' : 'fragment'
+      return (
+        <ColEl  {...{ props: { ...globalColConfig, ...col } }}>
+          <SuperCustom
+            {...{
+              scopedSlots: customScopedSlots
+            }}
+          ></SuperCustom>
+        </ColEl>
+      )
+    }
+
+    const renderItem = () => {
+      const options = this.dataHasButtonData
+      // 分流，SuperCustom是独立，但还是在el-form里面
+      // 与el-form-item(不启用布局)或el-row(启用布局)平级
+
+      return options.filter((o: any) => !o.hidden).map((o: any) => {
+        if (o.type === 'SuperCustom') {
+          return renderSuperCustom(o)
         }
-
-        // 作用域插槽本身也是函数，在这里做一次转换
-        let customScopedSlots = {}
-        if (type === 'SuperCustom') {
-          customScopedSlots = isString(scopedSlots) ? { custom: this.$scopedSlots[scopedSlots] } : { custom: scopedSlots }
-        }
-
-        return (
-          <ColEl  {...{ props: { ...globalColConfig, ...col } }}>
-            <ContainerEl>
-              {
-                type === 'SuperCustom' ?
-                  <SuperCustom
-                    {...{
-                      scopedSlots: customScopedSlots
-                    }}
-                  ></SuperCustom>
-                  :
-                  (<el-form-item {...{ props: { ...{ label }, ...config, prop: cancelrule ? '' : field } }}>
-                    <RowEl {...{ props: { ...globalRowConfig, ...layout } }}>
-                      {result && [renderSingleForm(singleFormAttrs)].concat(moreForm())}
-                    </RowEl>
-                  </el-form-item>)
-              }
-            </ContainerEl>
-          </ColEl >
-        )
+        return renderElFormItem(o)
       })
     }
 
     // 是否渲染el-row元素
     const RowEl = this.layout ? 'el-row' : 'fragment'
-
-    const renderSuperCustom = () => {}
-
-    const renderItem = () => {
-      const { buttonsConfig } = this.config
-      console.log(renderButtons, '123')
-      const options = this.data.concat(renderButtons(buttonsConfig))
-      console.log(options,'重写之后的配置项')
-    }
-
-    renderItem()
-
     // 渲染el-form
     return (
       <el-form ref="ElForm"
@@ -405,7 +429,7 @@ export default class ElFormPlus extends Vue {
           on: this.listeners
         }}>
         <RowEl {...{ props: { ...globalRowConfig } }}>
-          {renderElFormItem()}
+          {renderItem()}
         </RowEl>
       </el-form>
     )

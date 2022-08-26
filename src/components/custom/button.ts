@@ -2,12 +2,12 @@ import Vue, { VNode, CreateElement } from 'vue'
 import { Fragment } from 'vue-fragment'
 
 interface IButtonsConfig {
-  confirm: boolean
-  confirmText: string
-  reset: boolean
-  resetText: string
-  cancel: boolean
-  cancelText: string
+  confirm?: boolean
+  confirmText?: string
+  reset?: boolean
+  resetText?: string
+  cancel?: boolean
+  cancelText?: string
 }
 
 function findElFormComponent(instance: Vue): any {
@@ -34,19 +34,44 @@ function findElFormComponent(instance: Vue): any {
 function isRenderConfirmButton(
   h: CreateElement,
   config: {
-    confirm: boolean
-    confirmText: string
-  }) {
+    confirm?: boolean
+    confirmText?: string
+  },
+  instance: Vue) {
   const { confirm = true, confirmText = '确认' } = config
-  return confirm ? h('el-button', {}, confirmText) : ''
+  return confirm ?
+    h('el-button',
+      {
+        on: {
+          click: () => {
+            console.log(instance)
+            const elForm = findElFormComponent(instance)
+            console.log(elForm, '表单实例')
+            if (elForm) {
+              elForm.validate((valid: boolean) => {
+                if (valid) {
+                  alert('submit!');
+                  return true
+                } else {
+                  alert('error submit!!');
+                  return false;
+                }
+              });
+            }
+          }
+        },
+      },
+      confirmText)
+    : ''
 }
 // 是否渲染重置按钮
 function isRenderResetButton(
   h: CreateElement,
   config: {
-    reset: boolean
-    resetText: string
-  }) {
+    reset?: boolean
+    resetText?: string
+  },
+  instance: Vue) {
   const { reset = true, resetText = '重置' } = config
   return reset ? h('el-button', {}, resetText) : ''
 }
@@ -54,9 +79,10 @@ function isRenderResetButton(
 function isRenderCancleButton(
   h: CreateElement,
   config: {
-    cancel: boolean
-    cancelText: string
-  }) {
+    cancel?: boolean
+    cancelText?: string
+  },
+  instance: Vue) {
   const { cancel = true, cancelText = '取消' } = config
   return cancel ? h('el-button', {}, cancelText) : ''
 }
@@ -67,7 +93,7 @@ function renderButtons(config: IButtonsConfig) {
   const buttons = {
     // 表单项渲染类型 必需
     type: 'Custom',
-    field: new Date(),
+    field: 'ButtonCustom',
     // on: {
     //   click: ({ instance }: { instance: Vue }) => {
     //     const elForm = findElFormComponent(instance)
@@ -106,9 +132,9 @@ function renderButtons(config: IButtonsConfig) {
         console.log(instance)
         const h = instance.$createElement
         return h('Fragment', [
-          isRenderConfirmButton(h, config),
-          isRenderResetButton(h, config),
-          isRenderCancleButton(h, config)
+          isRenderConfirmButton(h, config, instance),
+          isRenderResetButton(h, config, instance),
+          isRenderCancleButton(h, config, instance)
         ])
       },
     },
