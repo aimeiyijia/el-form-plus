@@ -7,6 +7,7 @@
       :layout="{}"
       @render-complete="renderComplete"
       @validate="validate"
+      @submit="handleSubmit"
     >
       <template #custom123>
         <div>我是一个分割线</div>
@@ -76,6 +77,9 @@ export default {
     validate() {
       console.log(1)
     },
+    handleSubmit(val){
+      console.log(val, '提交')
+    }
   },
 }
 </script>

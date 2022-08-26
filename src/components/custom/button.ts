@@ -1,5 +1,6 @@
 import Vue, { VNode, CreateElement } from 'vue'
 import { Fragment } from 'vue-fragment'
+import { Form } from 'element-ui'
 
 interface IButtonsConfig {
   confirm?: boolean
@@ -37,23 +38,21 @@ function isRenderConfirmButton(
     confirm?: boolean
     confirmText?: string
   },
-  instance: Vue) {
+  instance: Form) {
   const { confirm = true, confirmText = '确认' } = config
   return confirm ?
     h('el-button',
       {
         on: {
           click: () => {
-            console.log(instance)
             const elForm = findElFormComponent(instance)
-            console.log(elForm, '表单实例')
             if (elForm) {
               elForm.validate((valid: boolean) => {
                 if (valid) {
-                  alert('submit!');
+                  elForm.$emit('submit', elForm.model)
                   return true
                 } else {
-                  alert('error submit!!');
+                  elForm.$emit('error-submit')
                   return false;
                 }
               });
@@ -71,21 +70,33 @@ function isRenderResetButton(
     reset?: boolean
     resetText?: string
   },
-  instance: Vue) {
+  instance: Form) {
   const { reset = true, resetText = '重置' } = config
-  return reset ? h('el-button', {}, resetText) : ''
+  return reset ?
+    h('el-button', {
+      on: {
+        click: () => {
+          console.log(instance)
+          const elForm = findElFormComponent(instance)
+          if (elForm) {
+            elForm.resetFields()
+          }
+        }
+      },
+    }, resetText)
+    : ''
 }
-// 是否渲染取消按钮
-function isRenderCancleButton(
-  h: CreateElement,
-  config: {
-    cancel?: boolean
-    cancelText?: string
-  },
-  instance: Vue) {
-  const { cancel = true, cancelText = '取消' } = config
-  return cancel ? h('el-button', {}, cancelText) : ''
-}
+// // 是否渲染取消按钮
+// function isRenderCancleButton(
+//   h: CreateElement,
+//   config: {
+//     cancel?: boolean
+//     cancelText?: string
+//   },
+//   instance: Form) {
+//   const { cancel = true, cancelText = '取消' } = config
+//   return cancel ? h('el-button', {}, cancelText) : ''
+// }
 
 function renderButtons(config: IButtonsConfig) {
   // 默认的提交 重置按钮
@@ -128,13 +139,13 @@ function renderButtons(config: IButtonsConfig) {
     scopedSlots: {
       // jsx或h
       // 这样就可以实现自定义组件的双向绑定
-      custom: ({ instance }: { instance: Vue }) => {
+      custom: ({ instance }: { instance: Form }) => {
         console.log(instance)
         const h = instance.$createElement
         return h('Fragment', [
           isRenderConfirmButton(h, config, instance),
           isRenderResetButton(h, config, instance),
-          isRenderCancleButton(h, config, instance)
+          // isRenderCancleButton(h, config, instance)
         ])
       },
     },
