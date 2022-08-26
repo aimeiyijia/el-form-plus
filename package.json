@@ -1,6 +1,6 @@
 {
   "name": "el-form-plus",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "main": "dist/el-form-plus.common.js",
   "typings": "types/index.d.ts",
   "private": false,
