@@ -7,6 +7,7 @@ export default class DateTimePickerPlus extends Vue {
     return (
       <el-date-picker
         {...{
+          attrs: this.$attrs,
           props: this.$attrs,
           on: this.$listeners,
           scopedSlots: this.$scopedSlots,

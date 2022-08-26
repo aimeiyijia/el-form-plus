@@ -25,7 +25,7 @@ export default class CheckBoxPlus extends Vue {
         else { CheckboxTypeChild = 'el-checkbox' }
         return (
           <CheckboxTypeChild
-            {...{ props: { ...attrs, label: value, ...restAttrs }, on: this.$listeners }}
+            {...{ attrs, props: { ...attrs, label: value, ...restAttrs }, on: this.$listeners }}
           >
             {label}
           </CheckboxTypeChild>
@@ -38,7 +38,7 @@ export default class CheckBoxPlus extends Vue {
     const renderGroupCheckboxs = () => {
       return (
         <el-checkbox-group
-          {...{ props: { ...attrs }, on: this.$listeners }}>
+          {...{ attrs, props: { ...attrs }, on: this.$listeners }}>
           {renderSingleCheckboxs()}
         </el-checkbox-group>
       )

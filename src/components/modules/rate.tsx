@@ -5,6 +5,6 @@ import { Component } from 'vue-property-decorator'
 export default class RatePlus extends Vue {
 
   render(h: CreateElement): VNode {
-    return <el-rate {...{ props: this.$attrs, on: this.$listeners }} />
+    return <el-rate {...{ attrs: this.$attrs, props: this.$attrs, on: this.$listeners }} />
   }
 }

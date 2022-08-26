@@ -20,6 +20,7 @@ export default class InputPlus extends Vue {
     return (
       <el-input
         {...{
+          attrs: this.$attrs,
           props: this.$attrs,
           on: this.$listeners,
           scopedSlots: customScopedSlots,

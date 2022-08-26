@@ -26,6 +26,7 @@ export default class UploadPlus extends Vue {
       const origOnChangeF = this.$attrs.onChange
       if (!origOnChangeF) return
       if (isFunction(origOnChangeF)) {
+        // eslint-disable-next-line no-useless-call
         origOnChangeF.call(null, file, fileList)
       } else {
         console.error(`onChange必须是函数`)
@@ -35,6 +36,7 @@ export default class UploadPlus extends Vue {
     return (
       <el-upload
         {...{
+          attrs: attrs,
           props: { ...attrs, onChange: onChange },
         }}
       >

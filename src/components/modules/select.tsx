@@ -24,7 +24,7 @@ export default class SelectPlus extends Vue {
     const renderOptions = (options: any) => {
       return options.map((o: any) => {
         const { value, slot } = o
-        return <el-option key={value} {...{ props: o }}>{slot ? slot({ attr: o }) : ''}</el-option>
+        return <el-option key={value} {...{ attrs: o, props: o }}>{slot ? slot({ attr: o }) : ''}</el-option>
       })
     }
     const renderGroupOption = () => {
@@ -37,7 +37,7 @@ export default class SelectPlus extends Vue {
           // 除options之外的配置项均为group参数
           const restAttrs = omit(o, 'options')
 
-          const el = <el-option-group {...{ props: restAttrs }}>{renderOptions(gOptions)}</el-option-group>
+          const el = <el-option-group {...{ attrs: restAttrs, props: restAttrs }}>{renderOptions(gOptions)}</el-option-group>
           optionEl.push(el)
         })
       }
@@ -47,6 +47,7 @@ export default class SelectPlus extends Vue {
       <el-select
         ref={this.$attrs.ref}
         {...{
+          attrs: this.$attrs,
           props: this.$attrs,
           on: this.$listeners,
           scopedSlots: customScopedSlots

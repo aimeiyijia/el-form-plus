@@ -32,6 +32,7 @@ export default class CustomPlus extends Vue {
     }
     if (parent) {
       const arg: any = [eventName].concat(params)
+      // eslint-disable-next-line prefer-spread
       parent.$emit.apply(parent, arg);
     }
   }

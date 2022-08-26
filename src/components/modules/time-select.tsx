@@ -4,6 +4,6 @@ import { Component } from 'vue-property-decorator'
 @Component
 export default class TimeSelectPlus extends Vue {
   render(h: CreateElement): VNode {
-    return <el-time-select {...{ props: this.$attrs, on: this.$listeners }} />
+    return <el-time-select {...{ attrs: this.$attrs, props: this.$attrs, on: this.$listeners }} />
   }
 }

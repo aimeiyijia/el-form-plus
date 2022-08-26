@@ -28,6 +28,7 @@ export default class AutocompletePlus extends Vue {
     return (
       <el-autocomplete
         {...{
+          attrs: this.$attrs,
           props: this.$attrs,
           on: {
             ...this.$listeners,

@@ -7,6 +7,7 @@ export default class InputNumberPlus extends Vue {
     return (
       <el-input-number
         {...{
+          attrs: this.$attrs,
           props: this.$attrs,
           on: {
             ...this.$listeners,

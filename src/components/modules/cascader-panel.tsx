@@ -8,6 +8,7 @@ export default class CascaderPanelPlus extends Vue {
     return (
       <el-cascader-panel
         {...{
+          attrs: this.$attrs,
           props: this.$attrs,
           on: this.$listeners,
           scopedSlots: this.$scopedSlots

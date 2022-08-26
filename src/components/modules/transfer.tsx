@@ -7,6 +7,7 @@ export default class TransferPlus extends Vue {
     return (
       <el-transfer
         {...{
+          attrs: this.$attrs,
           props: this.$attrs,
           on: this.$listeners,
           scopedSlots: this.$scopedSlots,

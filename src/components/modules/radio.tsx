@@ -23,7 +23,7 @@ export default class RadioPlus extends Vue {
         if (type === "button") { RadioTypeChild = 'el-Radio-button' }
         return (
           <RadioTypeChild
-            {...{ props: { ...attrs, label: value, ...restAttrs }, on: this.$listeners }}
+            {...{ attrs, props: { ...attrs, label: value, ...restAttrs }, on: this.$listeners }}
           >
             {label}
           </RadioTypeChild>
@@ -36,7 +36,7 @@ export default class RadioPlus extends Vue {
     const renderGroupRadios = () => {
       return (
         <el-Radio-group
-          {...{ props: { ...attrs }, on: this.$listeners }}>
+          {...{ attrs, props: { ...attrs }, on: this.$listeners }}>
           {renderSingleRadio()}
         </el-Radio-group>
       )

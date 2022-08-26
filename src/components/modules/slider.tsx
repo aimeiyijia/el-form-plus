@@ -4,6 +4,6 @@ import { Component } from 'vue-property-decorator'
 @Component
 export default class SliderPlus extends Vue {
   render(h: CreateElement): VNode {
-    return <el-slider {...{ props: this.$attrs, on: this.$listeners }} />
+    return <el-slider {...{ attrs: this.$attrs, props: this.$attrs, on: this.$listeners }} />
   }
 }

@@ -6,6 +6,7 @@ export default class CascaderPlus extends Vue {
     return (
       <el-cascader
         {...{
+          attrs: this.$attrs,
           props: this.$attrs,
           on: this.$listeners,
           scopedSlots: this.$scopedSlots,
