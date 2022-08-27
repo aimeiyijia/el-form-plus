@@ -269,7 +269,8 @@ export default class ElFormPlus extends Vue {
 
     const model = this.model
 
-    const { row: globalRowConfig = {}, col: globalColConfig = { span: 12 } } = this.layout || {}
+    const { row: globalRowConfig = { gutter: 20 }, col: globalColConfig = { span: 12 } } = this.layout || {}
+
     // 渲染表单项
     const renderSingleForm = (singleFormAttrs: any) => {
 
@@ -299,6 +300,7 @@ export default class ElFormPlus extends Vue {
 
         if (field) this.$set(model, field, val)
 
+        // 拦截之后再触发input事件
         const { input } = on
         if (!input) return
         if (isFunction(input)) {
@@ -320,6 +322,7 @@ export default class ElFormPlus extends Vue {
       const ColEl = layout ? 'el-col' : 'fragment'
 
       // 渲染container
+      // 表单项的包裹元素，目前主要用于表单项的拖拽功能
       const ContainerEl = this.renderContainerEl(container)
 
       // 需要渲染的组件 SuperComponent
@@ -354,7 +357,7 @@ export default class ElFormPlus extends Vue {
       const { field = '', config = {}, more = [], layout } = o
       const { label = o.label, col = { span: 12 }, container, cancelrule = false } = config
 
-      const result = this.isFieldExist(singleFormAttrs)
+      const isHasField = this.isFieldExist(singleFormAttrs)
 
       // 一个el-form-item占据的空间
       const ColEl = this.layout ? 'el-col' : 'fragment'
@@ -369,7 +372,7 @@ export default class ElFormPlus extends Vue {
       const moreForm = () => {
         return more.map((o: object) => {
           // 不接受layout配置，一定会被more同级的layout配置项覆盖
-          const props: any = o
+          const props: any = o || {}
           props.layout = layout
           return renderSingleForm(props)
         })
@@ -380,7 +383,7 @@ export default class ElFormPlus extends Vue {
           <ContainerEl>
             <el-form-item {...{ props: { ...{ label }, ...config, prop: cancelrule ? '' : field } }}>
               <RowEl {...{ props: { ...globalRowConfig, ...layout } }}>
-                {result && [renderSingleForm(singleFormAttrs)].concat(moreForm())}
+                {isHasField && [renderSingleForm(singleFormAttrs)].concat(moreForm())}
               </RowEl>
             </el-form-item>
           </ContainerEl>
@@ -405,9 +408,9 @@ export default class ElFormPlus extends Vue {
 
     const renderItem = () => {
       const options = this.dataHasButtonData
+
       // 分流，SuperCustom是独立，但还是在el-form里面
       // 与el-form-item(不启用布局)或el-row(启用布局)平级
-
       return options.filter((o: any) => !o.hidden).map((o: any) => {
         if (o.type === 'SuperCustom') {
           return renderSuperCustom(o)
