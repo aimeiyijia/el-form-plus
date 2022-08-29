@@ -92,7 +92,7 @@ function renderButtons(config: IButtonsConfig) {
   const buttons = {
     // 表单项渲染类型 必需
     type: 'Custom',
-    field: 'ButtonCustom',
+    noField: true,
     scopedSlots: {
       // jsx或h
       // 这样就可以实现自定义组件的双向绑定

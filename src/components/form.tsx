@@ -237,6 +237,8 @@ export default class ElFormPlus extends Vue {
   // 校验必须参数
   // 目前必须的参数为 attrs中的 field字段
   private isFieldExist(attrs: any): boolean {
+    // 不需要field时不校验
+    if(attrs.noField) return true
     const isExist = objectPath.has(attrs, 'field')
     if (!isExist) {
       console.error('field字段不能为空，请检查配置项')
