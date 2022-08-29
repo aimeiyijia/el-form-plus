@@ -13,7 +13,7 @@ const input = {
     type: 'text',
     // 控件支持的原生属性也可以写在这里
     extraClass: 'extraClass',
-    style: 'color: red',
+    style: 'color: red'
   },
   // 渲染更多的表单项
   // 配置项相同，因为是渲染在同一个el-form-item中所以无config配置，也不支持

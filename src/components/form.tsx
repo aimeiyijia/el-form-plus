@@ -108,7 +108,7 @@ export default class ElFormPlus extends Vue {
     // this.exportInstance()
   }
 
-  // 将数据存储起来，便于后续的查询操作
+  // 将数据扁平化并存储起来，便于后续的查询操作
   setCachedData() {
     // 扁平化为一维数组
     let oneDemArr: any = []
@@ -161,6 +161,8 @@ export default class ElFormPlus extends Vue {
     try {
       const target = this.getTarget(fieldName)
       objectPath.set(target, path, value)
+      // 没太找到更合适的方式，可能这部分需要重写下
+      this.$forceUpdate()
     } catch (error) {
       console.error(error, 'updateField')
     }
@@ -182,6 +184,7 @@ export default class ElFormPlus extends Vue {
     try {
       const target = this.getTarget(fieldName)
       objectPath.insert(target, path, value, positions);
+      this.$forceUpdate()
     } catch (error) {
       console.error(error, 'insertByField')
     }
@@ -192,6 +195,7 @@ export default class ElFormPlus extends Vue {
     try {
       const target = this.getTarget(fieldName)
       objectPath.empty(target, path)
+      this.$forceUpdate()
     } catch (error) {
       console.error(error, 'emptysByField')
     }
@@ -212,6 +216,7 @@ export default class ElFormPlus extends Vue {
     try {
       const target = this.getTarget(fieldName)
       objectPath.del(target, path)
+      this.$forceUpdate()
     } catch (error) {
       console.error(error, 'delByField')
     }

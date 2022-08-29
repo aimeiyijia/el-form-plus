@@ -71,8 +71,7 @@ export default {
   methods: {
     renderComplete(val) {
       console.log(val, 'api')
-      const { setByField } = val.operaMethods
-      // setByField('input', 'value', '通过api更新的')
+      const { setByField, insertByField } = val.operaMethods
     },
     validate() {
       console.log(1)
