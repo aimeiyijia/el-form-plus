@@ -243,7 +243,7 @@ export default class ElFormPlus extends Vue {
   // 目前必须的参数为 attrs中的 field字段
   private isFieldExist(attrs: any): boolean {
     // 不需要field时不校验
-    if(attrs.noField) return true
+    if (attrs.noField) return true
     const isExist = objectPath.has(attrs, 'field')
     if (!isExist) {
       console.error('field字段不能为空，请检查配置项')
@@ -413,8 +413,27 @@ export default class ElFormPlus extends Vue {
       )
     }
 
+    const isRenderButtons = () => {
+      const { buttonsConfig } = this.config
+      if (isBoolean(buttonsConfig)) {
+        if (buttonsConfig) {
+          const buttons = renderButtons({})
+          return this.data.concat([buttons])
+        }
+      } else {
+        let buttons = {}
+        if (!buttonsConfig) {
+          buttons = renderButtons(buttons)
+        } else {
+          buttons = renderButtons(buttonsConfig)
+        }
+        return this.data.concat([buttons])
+      }
+      return this.data
+    }
+
     const renderItem = () => {
-      const options = this.dataHasButtonData
+      const options = isRenderButtons()
 
       // 分流，SuperCustom是独立，但还是在el-form里面
       // 与el-form-item(不启用布局)或el-row(启用布局)平级
