@@ -4,4 +4,4 @@ export const Fragment: FunctionalComponentOptions<{}> = {
   render: (h: CreateElement, context: RenderContext<{}>) => context.children
 }
 
-// Vue.component<any>('Fragment', Fragment)
+Vue.component('Fragment', Fragment)

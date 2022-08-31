@@ -3,6 +3,7 @@ import { Component, Prop, Model, Watch } from 'vue-property-decorator'
 // import { Fragment } from 'vue-frag'
 import omit from 'lodash/omit'
 import { Form, Col } from 'element-ui'
+import './custom/fragment'
 import { cloneDeep, isFunction, isString, isArray } from 'lodash'
 import { isBoolean } from './utils'
 import objectPath from './utils/object-path'
@@ -11,8 +12,6 @@ import './styles/index.scss'
 
 // 取出vnode匹配表
 import Vnodes, { SuperCustom } from './vnode'
-
-import Draggable from 'vuedraggable'
 
 import { renderButtons } from './custom/index'
 
@@ -24,13 +23,6 @@ interface IModel {
   [key: string]: any
   [index: number]: any
 }
-
-const Fragment: FunctionalComponentOptions<{}> = {
-  functional: true,
-  render: (h: CreateElement, context: RenderContext<{}>) => context.children
-}
-
-Vue.component('Fragment', Fragment)
 
 
 @Component({

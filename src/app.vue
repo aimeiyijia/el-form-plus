@@ -4,6 +4,7 @@
       v-model="model"
       :config="config"
       :options="options"
+      :layout="layout"
       @render-complete="renderComplete"
       @validate="validate"
       @submit="handleSubmit"
