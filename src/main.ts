@@ -9,8 +9,12 @@ import ElFormPlus from './components/install'
 
 import App from './app.vue'
 
+import Draggable from 'vuedraggable'
+
 Vue.use(ElementUI)
-Vue.use(ElFormPlus)
+Vue.use(ElFormPlus, {
+  components: { Draggable }
+})
 
 Vue.config.productionTip = false
 

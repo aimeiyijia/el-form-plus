@@ -4,7 +4,6 @@
       v-model="model"
       :config="config"
       :options="options"
-      :layout="{}"
       @render-complete="renderComplete"
       @validate="validate"
       @submit="handleSubmit"
@@ -49,7 +48,8 @@ export default {
         //   ],
         // },
         // 拓展内置按钮配置
-        buttonsConfig: {},
+        buttonsConfig: false,
+        container: 'draggable',
       },
 
       // 表单项生成配置
@@ -76,9 +76,9 @@ export default {
     validate() {
       console.log(1)
     },
-    handleSubmit(val){
+    handleSubmit(val) {
       console.log(val, '提交')
-    }
+    },
   },
 }
 </script>

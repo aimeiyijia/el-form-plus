@@ -19,7 +19,8 @@ const install: InstallFunction = (Vue: typeof _Vue, options = {}) => {
   })
 
   Object.keys(components).forEach((name: any) => {
-    Vue.component(name, options[name])
+    console.log(components[name], '1234')
+    Vue.component(name, components[name])
   })
 
   install.installed = true

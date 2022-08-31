@@ -1,8 +1,8 @@
-import Vue, { VNode, CreateElement } from 'vue'
+import Vue, { FunctionalComponentOptions, RenderContext, VNode, CreateElement } from 'vue'
 import { Component, Prop, Model, Watch } from 'vue-property-decorator'
-import { Fragment } from 'vue-fragment'
+// import { Fragment } from 'vue-frag'
 import omit from 'lodash/omit'
-import { Form } from 'element-ui'
+import { Form, Col } from 'element-ui'
 import { cloneDeep, isFunction, isString, isArray } from 'lodash'
 import { isBoolean } from './utils'
 import objectPath from './utils/object-path'
@@ -11,6 +11,8 @@ import './styles/index.scss'
 
 // 取出vnode匹配表
 import Vnodes, { SuperCustom } from './vnode'
+
+import Draggable from 'vuedraggable'
 
 import { renderButtons } from './custom/index'
 
@@ -23,12 +25,16 @@ interface IModel {
   [index: number]: any
 }
 
-// TODO 全局设置包裹组件
-// TODO 布局配置优化
-// TODO
+const Fragment: FunctionalComponentOptions<{}> = {
+  functional: true,
+  render: (h: CreateElement, context: RenderContext<{}>) => context.children
+}
+
+Vue.component('Fragment', Fragment)
+
+
 @Component({
   name: 'ElFormPlus',
-  components: { Fragment },
 })
 export default class ElFormPlus extends Vue {
 
@@ -253,12 +259,14 @@ export default class ElFormPlus extends Vue {
     return 'Fragment'
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   render(h: CreateElement): VNode {
 
     const model = this.model
 
     const { row: globalRowConfig = { gutter: 20 }, col: globalColConfig = { span: 12 } } = this.layout || {}
 
+    const { container: globalContainer, buttonsConfig } = this.config || {}
     // 渲染表单项
     const renderSingleForm = (singleFormAttrs: any) => {
 
@@ -307,7 +315,7 @@ export default class ElFormPlus extends Vue {
 
       // 是否渲染el-col元素
       // 一个el-form-item内部某表单项占据的空间
-      const ColEl = layout ? 'el-col' : 'fragment'
+      const ColEl: any = layout ? Col : 'Fragment'
 
       // 渲染container
       // 表单项的包裹元素，目前主要用于表单项的拖拽功能
@@ -348,10 +356,10 @@ export default class ElFormPlus extends Vue {
       const isHasField = this.isFieldExist(singleFormAttrs)
 
       // 一个el-form-item占据的空间
-      const ColEl = this.layout ? 'el-col' : 'fragment'
+      const ColEl = this.layout ? 'el-col' : 'Fragment'
 
       // 一个el-form-item内部的布局
-      const RowEl = layout ? 'el-row' : 'fragment'
+      const RowEl = layout ? 'el-row' : 'Fragment'
 
       // 渲染container
       const ContainerEl = this.renderContainerEl(container)
@@ -382,7 +390,7 @@ export default class ElFormPlus extends Vue {
     const renderSuperCustom = (options: any) => {
       const { scopedSlots, col = { span: 24 } } = options
       const customScopedSlots = isString(scopedSlots) ? { custom: this.$scopedSlots[scopedSlots] } : { custom: scopedSlots }
-      const ColEl = this.layout ? 'el-col' : 'fragment'
+      const ColEl = this.layout ? 'el-col' : 'Fragment'
       return (
         <ColEl  {...{ props: { ...globalColConfig, ...col } }}>
           <SuperCustom
@@ -395,7 +403,6 @@ export default class ElFormPlus extends Vue {
     }
 
     const isRenderButtons = () => {
-      const { buttonsConfig } = this.config || {}
       if (isBoolean(buttonsConfig)) {
         if (buttonsConfig) {
           const buttons = renderButtons({})
@@ -427,7 +434,8 @@ export default class ElFormPlus extends Vue {
     }
 
     // 是否渲染el-row元素
-    const RowEl = this.layout ? 'el-row' : 'fragment'
+    const RowEl = this.layout ? 'el-row' : 'Fragment'
+    const GlobalContainer = this.renderContainerEl(globalContainer)
     // 渲染el-form
     return (
       <el-form ref="ElForm"
@@ -439,7 +447,9 @@ export default class ElFormPlus extends Vue {
           on: this.listeners
         }}>
         <RowEl {...{ props: { ...globalRowConfig } }}>
-          {renderItem()}
+          <GlobalContainer>
+            {renderItem()}
+          </GlobalContainer>
         </RowEl>
       </el-form>
     )
