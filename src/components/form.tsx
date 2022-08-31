@@ -52,25 +52,6 @@ export default class ElFormPlus extends Vue {
 
   private listeners: any = null
 
-  get dataHasButtonData(): any {
-    const { buttonsConfig } = this.config
-    if (isBoolean(buttonsConfig)) {
-      if (buttonsConfig) {
-        const buttons = renderButtons({})
-        return this.data.concat([buttons])
-      }
-    } else {
-      let buttons = {}
-      if (!buttonsConfig) {
-        buttons = renderButtons(buttons)
-      } else {
-        buttons = renderButtons(buttonsConfig)
-      }
-      return this.data.concat([buttons])
-    }
-    return this.data
-  }
-
   get elFormRef() {
     return this.$refs.ElForm as Form
   }
@@ -414,7 +395,7 @@ export default class ElFormPlus extends Vue {
     }
 
     const isRenderButtons = () => {
-      const { buttonsConfig } = this.config
+      const { buttonsConfig } = this.config || {}
       if (isBoolean(buttonsConfig)) {
         if (buttonsConfig) {
           const buttons = renderButtons({})
