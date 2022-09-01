@@ -1,6 +1,5 @@
-import Vue, { FunctionalComponentOptions, RenderContext, VNode, CreateElement } from 'vue'
+import Vue, { VNode, CreateElement } from 'vue'
 import { Component, Prop, Model, Watch } from 'vue-property-decorator'
-// import { Fragment } from 'vue-frag'
 import omit from 'lodash/omit'
 import { Form, Col } from 'element-ui'
 import './custom/fragment'
@@ -248,7 +247,7 @@ export default class ElFormPlus extends Vue {
         return c
       }
     }
-    return 'Fragment'
+    return 'FFragment'
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -307,7 +306,7 @@ export default class ElFormPlus extends Vue {
 
       // 是否渲染el-col元素
       // 一个el-form-item内部某表单项占据的空间
-      const ColEl: any = layout ? Col : 'Fragment'
+      const ColEl: any = layout ? Col : 'FFragment'
 
       // 渲染container
       // 表单项的包裹元素，目前主要用于表单项的拖拽功能
@@ -348,10 +347,10 @@ export default class ElFormPlus extends Vue {
       const isHasField = this.isFieldExist(singleFormAttrs)
 
       // 一个el-form-item占据的空间
-      const ColEl = this.layout ? 'el-col' : 'Fragment'
+      const ColEl = this.layout ? 'el-col' : 'FFragment'
 
       // 一个el-form-item内部的布局
-      const RowEl = layout ? 'el-row' : 'Fragment'
+      const RowEl = layout ? 'el-row' : 'FFragment'
 
       // 渲染container
       const ContainerEl = this.renderContainerEl(container)
@@ -382,7 +381,7 @@ export default class ElFormPlus extends Vue {
     const renderSuperCustom = (options: any) => {
       const { scopedSlots, col = { span: 24 } } = options
       const customScopedSlots = isString(scopedSlots) ? { custom: this.$scopedSlots[scopedSlots] } : { custom: scopedSlots }
-      const ColEl = this.layout ? 'el-col' : 'Fragment'
+      const ColEl = this.layout ? 'el-col' : 'FFragment'
       return (
         <ColEl  {...{ props: { ...globalColConfig, ...col } }}>
           <SuperCustom
@@ -426,7 +425,8 @@ export default class ElFormPlus extends Vue {
     }
 
     // 是否渲染el-row元素
-    const RowEl = this.layout ? 'el-row' : 'Fragment'
+    const RowEl = this.layout ? 'el-row' : 'FFragment'
+    // 其实 我也没想到有什么应用场景，我主要用来做可拖拽系统的
     const GlobalContainer = this.renderContainerEl(globalContainer)
     // 渲染el-form
     return (
