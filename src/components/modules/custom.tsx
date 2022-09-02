@@ -41,6 +41,6 @@ export default class CustomPlus extends Vue {
     const { custom } = this.$scopedSlots
     const node = custom ? custom({ h, instance: this }) : ''
 
-    return <fragment>{node}</fragment>
+    return <div class="el-form-plus_custom">{node}</div>
   }
 }

@@ -6,11 +6,10 @@ import { Fragment } from 'vue-fragment'
   components: { Fragment },
 })
 export default class CustomPlus extends Vue {
-
   render(h: CreateElement): VNode {
     const { custom } = this.$scopedSlots
     const node = custom ? custom({ h, instance: this }) : ''
 
-    return <fragment>{ node }</fragment>
+    return <div class="el-form-plus_super-custom">{node}</div>
   }
 }
