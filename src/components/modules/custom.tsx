@@ -1,6 +1,6 @@
 import Vue, { VNode, CreateElement } from 'vue'
 import { Component, Prop, Emit, Watch } from 'vue-property-decorator'
-import { Fragment } from 'vue-fragment'
+import { Fragment } from 'vue-frag'
 
 import { isFunction } from '../utils/index'
 
@@ -41,6 +41,6 @@ export default class CustomPlus extends Vue {
     const { custom } = this.$scopedSlots
     const node = custom ? custom({ h, instance: this }) : ''
 
-    return <div class="el-form-plus_custom">{node}</div>
+    return <fragment>{node}</fragment>
   }
 }

@@ -1,7 +1,7 @@
 import Vue, { VNode, CreateElement } from 'vue'
 import { Component } from 'vue-property-decorator'
 import omit from 'lodash/omit'
-import { Fragment } from 'vue-fragment'
+import { Fragment } from 'vue-frag'
 
 @Component({
   components: { Fragment },

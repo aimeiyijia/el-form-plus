@@ -2,7 +2,7 @@ import Vue, { VNode, CreateElement } from 'vue'
 import { Component, Prop, Emit, Watch } from 'vue-property-decorator'
 import omit from 'lodash/omit'
 import { isArray } from '../utils/index'
-import { Fragment } from 'vue-fragment'
+import { Fragment } from 'vue-frag'
 
 @Component({
   components: { Fragment },
