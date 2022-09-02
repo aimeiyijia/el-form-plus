@@ -49,7 +49,9 @@ export default {
         //   ],
         // },
         // 拓展内置按钮配置
-        buttonsConfig: false,
+        buttonsConfig: {
+          confirmText: 'hahhaha'
+        },
         container: 'draggable',
       },
 

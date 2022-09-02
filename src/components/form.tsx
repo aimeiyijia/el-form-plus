@@ -3,6 +3,7 @@ import { Component, Prop, Model, Watch } from 'vue-property-decorator'
 import omit from 'lodash/omit'
 import { Form, Col } from 'element-ui'
 import './custom/fragment'
+import { Fragment } from 'vue-fragment'
 import { cloneDeep, isFunction, isString, isArray } from 'lodash'
 import { isBoolean } from './utils'
 import objectPath from './utils/object-path'
@@ -26,6 +27,7 @@ interface IModel {
 
 @Component({
   name: 'ElFormPlus',
+  components: { Fragment },
 })
 export default class ElFormPlus extends Vue {
 
@@ -396,23 +398,22 @@ export default class ElFormPlus extends Vue {
     const isRenderButtons = () => {
       if (isBoolean(buttonsConfig)) {
         if (buttonsConfig) {
-          const buttons = renderButtons({})
-          return this.data.concat([buttons])
+          return renderButtons({})
         }
+        return false
       } else {
         let buttons = {}
         if (!buttonsConfig) {
-          buttons = renderButtons(buttons)
+          buttons = renderButtons({})
         } else {
           buttons = renderButtons(buttonsConfig)
         }
-        return this.data.concat([buttons])
+        return buttons
       }
-      return this.data
     }
 
     const renderItem = () => {
-      const options = isRenderButtons()
+      const options = this.data
 
       // 分流，SuperCustom是独立，但还是在el-form里面
       // 与el-form-item(不启用布局)或el-row(启用布局)平级
@@ -441,6 +442,7 @@ export default class ElFormPlus extends Vue {
         <RowEl {...{ props: { ...globalRowConfig } }}>
           <GlobalContainer>
             {renderItem()}
+            {isRenderButtons() && renderElFormItem(isRenderButtons())}
           </GlobalContainer>
         </RowEl>
       </el-form>
