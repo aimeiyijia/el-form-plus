@@ -259,7 +259,7 @@ export default class ElFormPlus extends Vue {
 
     const { row: globalRowConfig = { gutter: 20 }, col: globalColConfig = { span: 12 } } = this.layout || {}
 
-    const { container: globalContainer, buttonsConfig } = this.config || {}
+    const { container: globalContainer, buttonsConfig, full = false } = this.config || {}
     // 渲染表单项
     const renderSingleForm = (singleFormAttrs: any) => {
 
@@ -432,13 +432,16 @@ export default class ElFormPlus extends Vue {
     // 渲染el-form
     return (
       <el-form ref="ElForm"
+        class={full ? 'el-form_full' : ''}
         {...{
           props: {
             ...this.config,
             model: model,
           },
           on: this.listeners
-        }}>
+        }}
+
+      >
         <RowEl {...{ props: { ...globalRowConfig } }}>
           <GlobalContainer>
             {renderItem()}

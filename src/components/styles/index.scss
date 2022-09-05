@@ -1,3 +1,11 @@
 .el-rate {
   display: inline-block;
 }
+
+.el-form_full {
+  .el-form-item__content {
+    & > div {
+      width: 100%;
+    }
+  }
+}

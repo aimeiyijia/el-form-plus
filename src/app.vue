@@ -53,6 +53,8 @@ export default {
           confirmText: 'hahhaha'
         },
         container: 'draggable',
+        // 表单控件是否充满表单域
+        full: true,
       },
 
       // 表单项生成配置
