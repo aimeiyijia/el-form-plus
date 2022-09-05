@@ -344,7 +344,7 @@ export default class ElFormPlus extends Vue {
       const singleFormAttrs = omit(o, ['hidden', 'config', 'more'])
 
       const { field = '', config = {}, more = [], layout } = o
-      const { label = o.label, col = { span: 12 }, container, cancelrule = false } = config
+      const { label = o.label, col = globalColConfig, container, cancelrule = false } = config
 
       const isHasField = this.isFieldExist(singleFormAttrs)
 
