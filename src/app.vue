@@ -29,11 +29,15 @@ export default {
       // layout布局配置项 同element-ui中Layout 中 Row Attributes
       // layout只要存在，不管是不是{}，都会去按照el-row el-col去布局
       // 对el-form-item进行的布局
-      layout: {},
+      layout: {
+        col: {
+          span: 24,
+        },
+      },
 
       // el-form 表单整体配置（除model配置项，因为内部已拦截）
       config: {
-        labelWidth: '60px',
+        labelWidth: '120px',
         // Since you're using inline Form, you need to explicitly assign a width to Slider
         // 当你使用内联from时，必须给el-slider一个固定的宽度，这是element-ui原生要求
         // inline: true,
@@ -50,7 +54,7 @@ export default {
         // },
         // 拓展内置按钮配置
         buttonsConfig: {
-          confirmText: 'hahhaha'
+          confirmText: 'hahhaha',
         },
         container: 'draggable',
         // 表单控件是否充满表单域
@@ -77,6 +81,9 @@ export default {
     renderComplete(val) {
       console.log(val, 'api')
       const { setByField, insertByField } = val.operaMethods
+      // setInterval(() => {
+      //   setByField('input', 'value', new Date().getSeconds() + 100)
+      // }, 2000)
     },
     validate() {
       console.log(1)

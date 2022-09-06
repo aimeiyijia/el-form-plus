@@ -34,7 +34,7 @@ const custom = {
   config: {
     // vue ref属性 默认为[field] 利用此属性来查找某一组件
     ref: 'input',
-    label: 'input：',
+    label: 'customInput：',
     // labelWidth: '120px',
 
     // el-form-item所占据的空间
