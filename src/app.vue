@@ -23,7 +23,7 @@ export default {
   data() {
     return {
       // 除了在option配置项中的value字段中设置初始值，也可以直接传递model对象赋初值
-      model: { input: 1 },
+      model: { input: '来自model的初始值' },
       api: null,
 
       // layout布局配置项 同element-ui中Layout 中 Row Attributes
