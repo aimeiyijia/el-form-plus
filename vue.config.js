@@ -5,6 +5,10 @@ module.exports = {
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx', '.vue', '.json'],
     },
+    externals: process.env.NODE_ENV === 'development' ? {} : {
+      'element-ui': 'element-ui',
+      vue: 'vue',
+    },
   },
   chainWebpack: config => {
     // These are some necessary steps changing the default webpack config of the Vue CLI
