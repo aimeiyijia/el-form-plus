@@ -68,6 +68,12 @@ export default {
   },
   mounted() {
     console.log(this.model, '------双向绑定值------')
+    // setInterval(() => {
+    //   console.log('变化')
+    //   this.model = {
+    //     input: new Date().getSeconds()
+    //   }
+    // }, 1000)
     // this.model.input = '123'
     // this.model.setByField('input', 'attrs.value', 1234567890)
     // setInterval(() => {

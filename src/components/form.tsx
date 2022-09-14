@@ -67,6 +67,12 @@ export default class ElFormPlus extends Vue {
     this.exportMethods()
   }
 
+  @Watch('modelData', { deep: true })
+  modelDataChange(){
+    console.log(this.modelData, '123456')
+    this.bindData(this.modelData)
+  }
+
   // 这一步主要是为了方便内部操作options
   // 深拷贝保存为内部状态
   @Watch('options', { immediate: true, deep: true })
