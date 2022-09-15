@@ -69,18 +69,18 @@ export default {
   mounted() {
     console.log(this.model, '------双向绑定值------')
     // setInterval(() => {
-    //   console.log('变化')
-    //   this.model = {
-    //     input: new Date().getSeconds()
-    //   }
+    // console.log('变化')
+    // this.model = {
+    //   input: new Date().getSeconds()
+    // }
     // }, 1000)
     // this.model.input = '123'
     // this.model.setByField('input', 'attrs.value', 1234567890)
     // setInterval(() => {
     //   console.log(this.model, '双向绑定值')
     //   this.model.input = new Date().getSeconds() + 100
-    //   this.model.moreinput = new Date().getSeconds() + 100
-    //   this.options[0].value = new Date().getSeconds() + 100
+      // this.model.moreinput = new Date().getSeconds() + 100
+      // this.options[0].value = new Date().getSeconds() + 100
     // }, 2000)
   },
   methods: {
@@ -88,7 +88,25 @@ export default {
       console.log(val, 'api')
       const { setByField, insertByField } = val.operaMethods
       // setInterval(() => {
-      //   setByField('input', 'value', new Date().getSeconds() + 100)
+        // setByField('input', 'value', new Date().getSeconds() + 100)
+      //   setByField('city', 'attrs.options', [
+      //     {
+      //       value: 'Chengdu',
+      //       label: '成都',
+      //     },
+      //     {
+      //       value: 'Shenzhen1',
+      //       label: '深圳',
+      //     },
+      //     {
+      //       value: 'Guangzhou1',
+      //       label: '广州',
+      //     },
+      //     {
+      //       value: 'Dalian1',
+      //       label: '大连',
+      //     },
+      //   ])
       // }, 2000)
     },
     validate() {

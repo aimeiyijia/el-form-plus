@@ -67,9 +67,8 @@ export default class ElFormPlus extends Vue {
     this.exportMethods()
   }
 
-  @Watch('modelData', { deep: true })
+  @Watch('modelData')
   modelDataChange(){
-    console.log(this.modelData, '123456')
     this.bindData(this.modelData)
   }
 
