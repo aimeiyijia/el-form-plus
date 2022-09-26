@@ -56,7 +56,7 @@ export default {
         buttonsConfig: {
           confirmText: 'hahhaha',
         },
-        container: 'draggable',
+        // container: 'draggable',
         // 表单控件是否充满表单域
         full: true,
       },

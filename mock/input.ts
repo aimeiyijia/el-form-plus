@@ -3,11 +3,12 @@ const input = {
   type: 'Input',
   // 表单是否隐藏 默认为false（控制的是el-form-item）
   hidden: false,
-  label: '外部的label',
+  label: '外部的label123',
   // 表单项绑定的值（字段名） 必需
   field: 'input',
   // 初始值
   value: 'input初始值',
+  placeholder: '快捷方式配置的placeholder',
   // 表单项的配置项
   attrs: {
     type: 'text',

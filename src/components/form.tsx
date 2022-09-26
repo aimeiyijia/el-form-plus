@@ -170,16 +170,20 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
     // 渲染表单项
     const renderSingleForm = (singleFormAttrs: any) => {
 
+      const { placeholder } = singleFormAttrs
       const {
         type = "",
+        attrs = {},
         layout,
         col,
         field = "",
-        attrs = {},
         container,
         on = {},
         scopedSlots = {}
       } = singleFormAttrs
+
+      // 将attrs中一些常用的配置提取出来，
+      const shortcutAttrs = { placeholder }
 
       // 作用域插槽本身也是函数，在这里做一次转换
       const customScopedSlots: { [key: string]: any } = {}
@@ -230,7 +234,7 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
             <TrueComponent
               {...{
                 scopedSlots: customScopedSlots,
-                attrs,
+                attrs: { ...shortcutAttrs, ...attrs },
                 on: {
                   ...extraEvents,
                   input: customInputEvent
@@ -241,7 +245,6 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
             />
           </ContainerEl>
         </ColEl>
-
       )
     }
 
@@ -250,8 +253,12 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
       // 剥离掉表单项不需要的配置项
       const singleFormAttrs = omit(o, ['hidden', 'config', 'more'])
 
-      const { field = '', config = {}, more = [], layout } = o
-      const { label = o.label, col = globalColConfig, container, cancelrule = false } = config
+      const { label, field = '', config = {}, more = [], layout } = o
+      const { col = globalColConfig, container, cancelrule = false } = config
+      // 将config中一些常用的配置提取出来，
+      const shortcutConfig = { label }
+
+
 
       const isHasField = this.isFieldExist(singleFormAttrs)
 
@@ -277,7 +284,7 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
       return (
         <ColEl  {...{ props: { ...globalColConfig, ...col } }}>
           <ContainerEl>
-            <el-form-item {...{ props: { ...{ label }, ...config, prop: cancelrule ? '' : field } }}>
+            <el-form-item {...{ props: { ...shortcutConfig, ...config, prop: cancelrule ? '' : field } }}>
               <RowEl {...{ props: { ...globalRowConfig, ...layout } }}>
                 {isHasField && [renderSingleForm(singleFormAttrs)].concat(moreForm())}
               </RowEl>
