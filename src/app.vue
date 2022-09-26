@@ -110,7 +110,7 @@ export default {
       // }, 2000)
     },
     validate() {
-      console.log(1)
+      console.log('触发表单校验')
     },
     handleSubmit(val) {
       console.log(val, '提交')
