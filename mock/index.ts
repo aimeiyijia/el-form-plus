@@ -23,7 +23,7 @@ const data = []
 data.push(
   // autocomplete,
   // cascaderpanel,
-  // cascader,
+  cascader,
   // checkbox,
   // colorpicker,
   // supercustom,
@@ -31,7 +31,7 @@ data.push(
   // datepicker,
   // datetimepicker,
   // inputnumber,
-  input,
+  // input,
   // radio,
   // rate,
   // select,

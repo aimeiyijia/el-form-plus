@@ -10,6 +10,8 @@ const cascader = {
   // value: ['zhinan', 'shejiyuanze', 'yizhi'],
   // 表单项的配置项
   attrs: {
+    // 省市区联动快捷方式
+    shortcut: 'area',
     // filterable: true,
     props: {
       multiple: true,
