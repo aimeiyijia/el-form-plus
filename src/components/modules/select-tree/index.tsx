@@ -1,6 +1,6 @@
 import Vue, { VNode, CreateElement } from 'vue'
 import { Component } from 'vue-property-decorator'
-import SelectTree from './select-tree'
+import SelectTree from './components'
 @Component
 export default class CascaderPlus extends Vue {
   render(h: CreateElement): VNode {
