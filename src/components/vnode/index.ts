@@ -19,6 +19,7 @@ import {
   TimePickerBase,
   TimeSelectrBase,
   TransferBase,
+  TreeBase,
   UploadBase,
 } from '../modules'
 const vnodes = {
@@ -41,6 +42,7 @@ const vnodes = {
   TimePicker: TimePickerBase,
   TimeSelect: TimeSelectrBase,
   Transfer: TransferBase,
+  Tree: TreeBase,
   Upload: UploadBase,
 }
 

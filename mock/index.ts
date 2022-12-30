@@ -18,6 +18,7 @@ import switchdata from './switch'
 import timepicker from './time-picker'
 import timeselect from './time-select'
 import transfer from './transfer'
+import tree from './tree'
 import upload from './upload'
 
 const data = []
@@ -36,13 +37,14 @@ data.push(
   // radio,
   // rate,
   // select,
-  selectTree
+  // selectTree,
   // slider,
   // supercustom,
   // switchdata,
   // timepicker,
   // timeselect,
   // transfer,
+  // tree
   // upload
 )
 

@@ -18,6 +18,7 @@ import SwitchBase from './switch'
 import TimePickerBase from './time-picker'
 import TimeSelectrBase from './time-select'
 import TransferBase from './transfer'
+import TreeBase from './tree'
 import UploadBase from './upload'
 
 export {
@@ -41,5 +42,6 @@ export {
   TimePickerBase,
   TimeSelectrBase,
   TransferBase,
+  TreeBase,
   UploadBase,
 }
