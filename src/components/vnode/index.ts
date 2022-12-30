@@ -1,4 +1,5 @@
 import {
+  SelectTreeBase,
   AutocompleteBase,
   CascaderBase,
   CascaderPanelBase,
@@ -21,6 +22,7 @@ import {
   UploadBase,
 } from '../modules'
 const vnodes = {
+  SelectTree: SelectTreeBase,
   Autocomplete: AutocompleteBase,
   Cascader: CascaderBase,
   CascaderPanel: CascaderPanelBase,

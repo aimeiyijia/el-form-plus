@@ -11,6 +11,7 @@ import input from './input'
 import radio from './radio'
 import rate from './rate'
 import select from './select'
+import selectTree from './select-tree'
 import slider from './slider'
 import supercustom from './super-custom'
 import switchdata from './switch'
@@ -35,6 +36,7 @@ data.push(
   // radio,
   // rate,
   // select,
+  selectTree
   // slider,
   // supercustom,
   // switchdata,

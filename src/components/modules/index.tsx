@@ -1,3 +1,4 @@
+import SelectTreeBase from './select-tree/index'
 import AutocompleteBase from './autocomplete'
 import CascaderBase from './cascader'
 import CascaderPanelBase from './cascader-panel'
@@ -20,6 +21,7 @@ import TransferBase from './transfer'
 import UploadBase from './upload'
 
 export {
+  SelectTreeBase,
   AutocompleteBase,
   CascaderBase,
   CascaderPanelBase,
