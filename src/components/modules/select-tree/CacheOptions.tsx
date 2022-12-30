@@ -1,4 +1,4 @@
-import Vue, { VNode, CreateElement } from 'vue';
+import Vue, { VNode } from 'vue';
 import { Component, Inject, Prop, Watch } from 'vue-property-decorator'
 import { Fragment } from 'vue-frag';
 
@@ -33,7 +33,7 @@ export class CacheOptions extends Vue {
     });
   }
 
-  render(h: CreateElement): VNode {
+  render(): VNode {
     return <fragment></fragment>
   }
 }

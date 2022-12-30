@@ -20,15 +20,15 @@ import {
 import './index.scss'
 
 import type { Select as ElSelectType, Tree as ElTreeType } from 'element-ui';
-
+import type { TreeData, TreeNode, TreeStore } from 'element-ui/types/tree'
 @Component({
   name: 'ElSelectTree',
 })
 export default class ElSelectTree extends Mixins(ElSelectMixin, ElTreeMixin) {
   @Prop({ type: Array, default: () => [] }) cacheData!: Obj[];
 
-  @Ref('select') public select!: ElSelectType;
-  @Ref('tree') public tree!: ElTreeType<any, any>;
+  @Ref('select') public select!: ElSelectType & Obj;
+  @Ref('tree') public tree!: ElTreeType<any, any> & Obj;
 
   render(h: CreateElement) {
     if (
@@ -51,14 +51,13 @@ export default class ElSelectTree extends Mixins(ElSelectMixin, ElTreeMixin) {
         props: {
           ...this.propsElSelect,
           value: this.privateValue,
-          popperClass: `el-select-tree__popper ${
-            this.propsElSelect.popperClass || ''
-          }`,
+          popperClass: `el-select-tree__popper ${this.propsElSelect.popperClass || ''
+            }`,
           filterMethod: this._filterMethod,
         },
         on: {
           ...this.$listeners,
-          change: (val) => {
+          change: (val: any) => {
             this.privateValue = val;
           },
           'visible-change': this._visibleChange,
@@ -91,7 +90,7 @@ export default class ElSelectTree extends Mixins(ElSelectMixin, ElTreeMixin) {
     // get ElTree/ElSelect all methods
     this.$nextTick(() => {
       ['focus', 'blur'].forEach((item) => {
-        this[item] = this.select[item];
+        (this as Obj)[item] = this.select[item];
       });
       [
         'filter',
@@ -113,7 +112,7 @@ export default class ElSelectTree extends Mixins(ElSelectMixin, ElTreeMixin) {
         'insertBefore',
         'insertAfter',
       ].forEach((item) => {
-        this[item] = this.tree[item];
+        (this as Obj)[item] = this.tree[item];
       });
     });
   }
@@ -124,7 +123,7 @@ export default class ElSelectTree extends Mixins(ElSelectMixin, ElTreeMixin) {
     const options: CacheOption[] = [];
 
     treeEach(
-      this.data.concat(this.cacheData),
+      (this.data as Obj[]).concat(this.cacheData),
       (node) => {
         const value = this.getValByProp('value', node);
         options.push({
@@ -147,9 +146,9 @@ export default class ElSelectTree extends Mixins(ElSelectMixin, ElTreeMixin) {
    * change from current component
    * @private
    */
-  private privateValue = null;
+  private privateValue: any = null;
   @Watch('privateValue')
-  onPrivateValueChange(val) {
+  onPrivateValueChange(val: any) {
     // update when difference only
     if (!isEqualsValue(val, this.value as string)) {
       this.$emit('change', cloneValue(val));
@@ -166,7 +165,7 @@ export default class ElSelectTree extends Mixins(ElSelectMixin, ElTreeMixin) {
    * change from user assign value
    */
   @Watch('value', { deep: true, immediate: true })
-  private onValueChange(val) {
+  private onValueChange(val: any) {
     // update when difference only
     if (!isEqualsValue(val, this.privateValue)) {
       this.privateValue = cloneValue(val);
@@ -177,13 +176,13 @@ export default class ElSelectTree extends Mixins(ElSelectMixin, ElTreeMixin) {
   // Expand the parent node of the selected node by default,
   // "default" is the value/data/defaultExpandedKeys
   // changed from user assign value, rather than current component
-  private _defaultExpandedKeys = [];
+  private _defaultExpandedKeys: any = [];
   @Watch('data')
   @Watch('defaultExpandedKeys', { immediate: true })
   _updateDefaultExpandedKeys() {
     const parentKeys =
       isValidArr(this.values) && isValidArr(this.data)
-        ? getParentKeys(this.values, this.data, this.getValByProp)
+        ? getParentKeys(this.values, this.data as Obj[], this.getValByProp)
         : [];
     return (this._defaultExpandedKeys = this.defaultExpandedKeys
       ? this.defaultExpandedKeys.concat(parentKeys)
@@ -224,7 +223,7 @@ export default class ElSelectTree extends Mixins(ElSelectMixin, ElTreeMixin) {
   private getValByProp(
     prop: 'value' | 'label' | 'children' | 'disabled' | 'isLeaf',
     data: Obj
-  ) {
+  ): any {
     const propVal = this.propsMixin[prop];
     if (propVal instanceof Function) {
       return propVal(
@@ -236,7 +235,10 @@ export default class ElSelectTree extends Mixins(ElSelectMixin, ElTreeMixin) {
     }
   }
 
-  private _renderContent(h, { node, data, store }) {
+  private _renderContent(
+    h: CreateElement,
+    { node, data, store }: { node: TreeNode<any, any>, data: TreeData, store: TreeStore<any, any> }
+  ) {
     const ElSelectTreeOption = {
       extends: Vue.component('ElOption'),
       methods: {
@@ -244,6 +246,7 @@ export default class ElSelectTree extends Mixins(ElSelectMixin, ElTreeMixin) {
         selectOptionClick() {
           // $parent === slot-scope
           // $parent.$parent === el-tree-node
+          // @ts-ignore
           this.$parent.$parent.handleClick();
         },
       },
@@ -260,8 +263,8 @@ export default class ElSelectTree extends Mixins(ElSelectMixin, ElTreeMixin) {
       this.renderContent
         ? [this.renderContent(h, { node, data, store })]
         : this.$scopedSlots.default
-        ? this.$scopedSlots.default({ node, data, store })
-        : undefined
+          ? this.$scopedSlots.default({ node, data, store })
+          : undefined
     );
   }
 
@@ -276,7 +279,7 @@ export default class ElSelectTree extends Mixins(ElSelectMixin, ElTreeMixin) {
     });
   }
 
-  private _filterNodeMethod(value, data, node) {
+  private _filterNodeMethod(value: any, data: TreeData, node: TreeNode<any, any>) {
     // fix: https://github.com/yujinpan/el-select-tree/issues/35
     if (this.filterMethod) return this.filterMethod(value, data, node);
     if (!value) return true;
@@ -284,15 +287,16 @@ export default class ElSelectTree extends Mixins(ElSelectMixin, ElTreeMixin) {
   }
 
   // can not select
-  private _nodeClick(data, node, component) {
+  private _nodeClick(data: TreeData, node: TreeNode<any, any>, component: any) {
     (this.$listeners['node-click'] as Function)?.(...arguments);
 
     if (this.canSelect(node)) {
       if (!this.getValByProp('disabled', data)) {
         const elOptionSlot = component.$children.find(
-          (item) => item.$options._componentTag === 'node-content'
+          (item: any) => item.$options._componentTag === 'node-content'
         );
-        const elOption = elOptionSlot.$children[0];
+        if(!elOptionSlot) return
+        const elOption: any = elOptionSlot.$children[0];
         elOption.dispatch('ElSelect', 'handleOptionClick', [elOption, true]);
       }
     } else {
@@ -301,7 +305,7 @@ export default class ElSelectTree extends Mixins(ElSelectMixin, ElTreeMixin) {
   }
 
   // clear filter text when visible change
-  private _visibleChange(val) {
+  private _visibleChange(val: any) {
     (this.$listeners['visible-change'] as Function)?.(...arguments);
 
     if (this.filterable && val) {
@@ -310,7 +314,7 @@ export default class ElSelectTree extends Mixins(ElSelectMixin, ElTreeMixin) {
   }
 
   // set selected when check change
-  private _check(data, params) {
+  private _check(data: TreeData, params: any) {
     (this.$listeners.check as Function)?.(...arguments);
 
     let { checkedKeys, checkedNodes } = params;
@@ -318,18 +322,18 @@ export default class ElSelectTree extends Mixins(ElSelectMixin, ElTreeMixin) {
     // remove folder node when `checkStrictly` is false
     if (!this.checkStrictly) {
       checkedKeys = checkedNodes
-        .filter((item) => !isValidArr(this.getValByProp('children', item)))
-        .map((item) => this.getValByProp('value', item));
+        .filter((item: any) => !isValidArr(this.getValByProp('children', item)))
+        .map((item: any) => this.getValByProp('value', item));
     }
 
     this.privateValue = this.multiple
       ? [...checkedKeys]
       : checkedKeys.includes(this.getValByProp('value', data))
-      ? this.getValByProp('value', data)
-      : undefined;
+        ? this.getValByProp('value', data)
+        : undefined;
   }
 
-  private canSelect(data) {
+  private canSelect(data: TreeData) {
     return this.checkStrictly || this.getValByProp('isLeaf', data);
   }
 }

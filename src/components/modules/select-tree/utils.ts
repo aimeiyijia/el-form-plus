@@ -1,5 +1,7 @@
 import Vue from 'vue';
 
+export type Obj = { [p: string]: any };
+
 export const ElSelectMixinOptions = {
   model: {
     prop: 'value',
@@ -102,12 +104,12 @@ export function getParentKeys(
   getValByProp: (prop: 'value' | 'children', data: Obj) => any
 ) {
   const result = new Set<string | number>();
-  const getKeys = (tree) => {
+  const getKeys = (tree: Obj[]) => {
     tree.forEach((node) => {
       const children = getValByProp('children', node);
       if (children && children.length) {
         if (
-          children.find((item) =>
+          children.find((item: Obj) =>
             currentKeys.includes(getValByProp('value', item))
           )
         ) {
@@ -135,8 +137,6 @@ export function isEqualsValue(val1: Value, val2: Value) {
       val1.toString() === val2.toString())
   );
 }
-
-export type Obj = { [p: string]: any };
 
 type TreeCallback<T extends Obj, R> = (
   data: T,
