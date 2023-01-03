@@ -24,6 +24,7 @@ export default class CustomPlus extends Vue {
     let name = (parent.$options as any).componentName;
 
     while (parent && (!name || name !== componentName)) {
+      // @ts-ignore
       parent = parent.$parent;
 
       if (parent) {

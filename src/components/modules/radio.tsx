@@ -22,6 +22,7 @@ export default class RadioPlus extends Vue {
         let RadioTypeChild = 'el-radio'
         if (type === "button") { RadioTypeChild = 'el-Radio-button' }
         return (
+          // @ts-ignore
           <RadioTypeChild
             {...{ attrs, props: { ...attrs, label: value, ...restAttrs }, on: this.$listeners }}
           >

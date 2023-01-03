@@ -24,6 +24,7 @@ export default class CheckBoxPlus extends Vue {
         if (type === "button") { CheckboxTypeChild = 'el-checkbox-button' }
         else { CheckboxTypeChild = 'el-checkbox' }
         return (
+          // @ts-ignore
           <CheckboxTypeChild
             {...{ attrs, props: { ...attrs, label: value, ...restAttrs }, on: this.$listeners }}
           >
