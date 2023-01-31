@@ -41,6 +41,8 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
 
   // 单个表单配置项组成的表单项渲染规则
   @Prop({ type: Array, default: () => [] }) readonly options!: any[]
+  // 各个表单项相同的配置项
+  @Prop({ type: Array, default: () => { } }) readonly unifyOptions!: any
 
   private model: IModel = {}
 
@@ -67,7 +69,6 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
   // 深拷贝保存为内部状态
   @Watch('options', { immediate: true, deep: true })
   private setData() {
-    // const options = this.options.concat(buttonData)
     const options = this.options
     this.data = cloneDeep(options)
     this.setCachedData()
@@ -164,10 +165,10 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
 
     const { row: globalRowConfig = { gutter: 20 }, col: globalColConfig = { span: 12 } } = this.layout || {}
 
-    const { container: globalContainer, buttonsConfig, full = false } = this.config || {}
+    const { container: globalContainer, full = false } = this.config || {}
     // 渲染表单项
     const renderSingleForm = (singleFormAttrs: any) => {
-
+      const { attrs: unifyAttrs = {} } = this.unifyOptions
       const { placeholder } = singleFormAttrs
       const {
         type = "",
@@ -232,7 +233,7 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
             <TrueComponent
               {...{
                 scopedSlots: customScopedSlots,
-                attrs: { ...shortcutAttrs, ...attrs },
+                attrs: { ...unifyAttrs, ...shortcutAttrs, ...attrs },
                 on: {
                   ...extraEvents,
                   input: customInputEvent
@@ -248,10 +249,12 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
 
     // 渲染 el-form-item
     const renderElFormItem = (o: any) => {
+      const { config: unifyConfig = {} } = this.unifyOptions
       // 剥离掉表单项不需要的配置项
       const singleFormAttrs = omit(o, ['hidden', 'config', 'more'])
 
       const { label, field = '', config = {}, more = [], layout } = o
+      Object.assign(config, unifyConfig)
       const { col = globalColConfig, container, cancelrule = false } = config
       // 将config中一些常用的配置提取出来，
       const shortcutConfig = { label }

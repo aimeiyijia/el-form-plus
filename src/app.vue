@@ -52,10 +52,6 @@ export default {
         //     },
         //   ],
         // },
-        // 拓展内置按钮配置
-        buttonsConfig: {
-          confirmText: 'hahhaha',
-        },
         // container: 'draggable',
         // 表单控件是否充满表单域
         full: true,
@@ -63,6 +59,11 @@ export default {
 
       // 表单项生成配置
       options: formData,
+      // 各个表单项相同的配置项
+      unifyOptions: {
+        attrs: {},
+        config: {},
+      },
       // 表单校验规则
     }
   },
@@ -79,8 +80,8 @@ export default {
     // setInterval(() => {
     //   console.log(this.model, '双向绑定值')
     //   this.model.input = new Date().getSeconds() + 100
-      // this.model.moreinput = new Date().getSeconds() + 100
-      // this.options[0].value = new Date().getSeconds() + 100
+    // this.model.moreinput = new Date().getSeconds() + 100
+    // this.options[0].value = new Date().getSeconds() + 100
     // }, 2000)
   },
   methods: {
@@ -88,7 +89,7 @@ export default {
       console.log(val, 'api')
       const { setByField, insertByField } = val.operaMethods
       // setInterval(() => {
-        // setByField('input', 'value', new Date().getSeconds() + 100)
+      // setByField('input', 'value', new Date().getSeconds() + 100)
       //   setByField('city', 'attrs.options', [
       //     {
       //       value: 'Chengdu',
