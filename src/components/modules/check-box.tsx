@@ -11,7 +11,7 @@ export default class CheckBoxPlus extends Vue {
 
   render(h: CreateElement): VNode {
     // 取出Checkbox渲染数组
-    const { options = [], isGroup = false } = this.$attrs
+    const { options = [], group = true } = this.$attrs
     // 获取出除options, options之外的配置项
     const attrs = omit(this.$attrs, ['options', 'type'])
 
@@ -46,8 +46,7 @@ export default class CheckBoxPlus extends Vue {
     }
 
     const renderCheckboxs = () => {
-      // 如果value为数组类型，则渲染为多选框组
-      if (isGroup) {
+      if (group) {
         return renderGroupCheckboxs()
       }
       return renderSingleCheckboxs()

@@ -28,7 +28,7 @@ export default class SelectPlus extends Vue {
       })
     }
     const renderGroupOption = () => {
-      const { groupOptions, options } = this.$attrs
+      const { groupOptions = [], options = [] } = this.$attrs
       const optionEl: any = []
       // groupOptions只要存在，就渲染分组select
       if (groupOptions) {

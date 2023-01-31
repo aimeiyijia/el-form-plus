@@ -10,7 +10,7 @@ const inputnumber = {
   // 表单项的配置项
   attrs: {
     controlsPosition: 'right',
-    max: 10,
+    max: 500,
   },
   // 表单项事件
   on: {

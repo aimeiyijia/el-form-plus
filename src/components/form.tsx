@@ -14,8 +14,6 @@ import './styles/index.scss'
 // 取出vnode匹配表
 import Vnodes, { SuperCustom } from './vnode'
 
-import { renderButtons } from './custom/index'
-
 interface IVnodes {
   [key: string]: any
   [index: number]: any
@@ -309,23 +307,6 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
       )
     }
 
-    const isRenderButtons = () => {
-      if (isBoolean(buttonsConfig)) {
-        if (buttonsConfig) {
-          return renderButtons({})
-        }
-        return false
-      } else {
-        let buttons = {}
-        if (!buttonsConfig) {
-          buttons = renderButtons({})
-        } else {
-          buttons = renderButtons(buttonsConfig)
-        }
-        return buttons
-      }
-    }
-
     const renderItem = () => {
       const options = this.data
 
@@ -359,7 +340,6 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
         <RowEl {...{ props: { ...globalRowConfig } }}>
           <GlobalContainer>
             {renderItem()}
-            {isRenderButtons() && renderElFormItem(isRenderButtons())}
           </GlobalContainer>
         </RowEl>
       </el-form>
