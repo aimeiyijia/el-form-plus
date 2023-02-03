@@ -41,7 +41,6 @@ const autocomplete = {
     // vue ref属性 默认为field 利用此属性来查找某一组件
     ref: 'autoComplete',
     label: 'autoComplete：',
-    labelWidth: '120px',
   },
 }
 export default autocomplete

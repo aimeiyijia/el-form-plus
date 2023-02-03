@@ -3,6 +3,7 @@
     <el-form-plus
       v-model="model"
       :config="config"
+      :unify-options="unifyOptions"
       :options="options"
       :layout="layout"
       @render-complete="renderComplete"
@@ -62,7 +63,9 @@ export default {
       // 各个表单项相同的配置项
       unifyOptions: {
         attrs: {},
-        config: {},
+        config: {
+          labelWidth: '240px',
+        },
       },
       // 表单校验规则
     }

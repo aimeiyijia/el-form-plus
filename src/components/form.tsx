@@ -249,13 +249,14 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
 
     // 渲染 el-form-item
     const renderElFormItem = (o: any) => {
-      const { config: unifyConfig } = this.unifyOptions
+      const { config: unifyConfig = {} } = this.unifyOptions
       // 剥离掉表单项不需要的配置项
       const singleFormAttrs = omit(o, ['hidden', 'config', 'more'])
 
       const { label, field = '', config = {}, more = [], layout } = o
-      Object.assign(config, unifyConfig)
-      const { col = globalColConfig, container, cancelrule = false } = config
+      const mergeConfig = { ...unifyConfig, ...config }
+
+      const { col = globalColConfig, container, cancelrule = false } = mergeConfig
       // 将config中一些常用的配置提取出来，
       const shortcutConfig = { label }
 
@@ -283,7 +284,7 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
       return (
         <ColEl  {...{ props: { ...globalColConfig, ...col } }}>
           <ContainerEl>
-            <el-form-item {...{ props: { ...shortcutConfig, ...config, prop: cancelrule ? '' : field } }}>
+            <el-form-item {...{ props: { ...shortcutConfig, ...mergeConfig, prop: cancelrule ? '' : field } }}>
               <RowEl {...{ props: { ...globalRowConfig, ...layout } }}>
                 {isHasField && [renderSingleForm(singleFormAttrs)].concat(moreForm())}
               </RowEl>
