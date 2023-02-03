@@ -34,15 +34,15 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
   @Model('change', { type: Object }) readonly modelData!: any
 
   // 表单布局配置项 https://element.eleme.cn/#/zh-CN/component/layout#row-attributes
-  @Prop({ type: Object, default: () => { } }) readonly layout?: any
+  @Prop({ type: Object, default: () => ({}) }) readonly layout?: any
 
   // 表单整体配置 https://element.eleme.cn/#/zh-CN/component/form#form-attributes
-  @Prop({ type: Object, default: () => { } }) readonly config!: any
+  @Prop({ type: Object, default: () => ({}) }) readonly config!: any
 
   // 单个表单配置项组成的表单项渲染规则
   @Prop({ type: Array, default: () => [] }) readonly options!: any[]
   // 各个表单项相同的配置项
-  @Prop({ type: Array, default: () => { } }) readonly unifyOptions!: any
+  @Prop({ type: Object, default: () => ({}) }) readonly unifyOptions!: any
 
   private model: IModel = {}
 
@@ -165,7 +165,7 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
 
     const { row: globalRowConfig = { gutter: 20 }, col: globalColConfig = { span: 12 } } = this.layout || {}
 
-    const { container: globalContainer, full = false } = this.config || {}
+    const { container: globalContainer, full = false } = this.config
     // 渲染表单项
     const renderSingleForm = (singleFormAttrs: any) => {
       const { attrs: unifyAttrs = {} } = this.unifyOptions
@@ -249,7 +249,7 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
 
     // 渲染 el-form-item
     const renderElFormItem = (o: any) => {
-      const { config: unifyConfig = {} } = this.unifyOptions
+      const { config: unifyConfig } = this.unifyOptions
       // 剥离掉表单项不需要的配置项
       const singleFormAttrs = omit(o, ['hidden', 'config', 'more'])
 
@@ -258,8 +258,6 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
       const { col = globalColConfig, container, cancelrule = false } = config
       // 将config中一些常用的配置提取出来，
       const shortcutConfig = { label }
-
-
 
       const isHasField = this.isFieldExist(singleFormAttrs)
 
