@@ -1282,22 +1282,6 @@ exports.f = DESCRIPTORS ? V8_PROTOTYPE_DEFINE_BUG ? function defineProperty(O, P
 
 /***/ }),
 
-/***/ "3508":
-/***/ (function(module, exports, __webpack_require__) {
-
-var toIntegerOrInfinity = __webpack_require__("3a3a");
-
-var $RangeError = RangeError;
-
-module.exports = function (it) {
-  var result = toIntegerOrInfinity(it);
-  if (result < 0) throw $RangeError("The argument can't be less than 0");
-  return result;
-};
-
-
-/***/ }),
-
 /***/ "3528":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1329,47 +1313,6 @@ function baseUnary(func) {
 }
 
 module.exports = baseUnary;
-
-
-/***/ }),
-
-/***/ "3830":
-/***/ (function(module, exports, __webpack_require__) {
-
-var bind = __webpack_require__("881c");
-var IndexedObject = __webpack_require__("7188");
-var toObject = __webpack_require__("6369");
-var lengthOfArrayLike = __webpack_require__("dbeb");
-
-// `Array.prototype.{ findLast, findLastIndex }` methods implementation
-var createMethod = function (TYPE) {
-  var IS_FIND_LAST_INDEX = TYPE == 1;
-  return function ($this, callbackfn, that) {
-    var O = toObject($this);
-    var self = IndexedObject(O);
-    var boundFunction = bind(callbackfn, that);
-    var index = lengthOfArrayLike(self);
-    var value, result;
-    while (index-- > 0) {
-      value = self[index];
-      result = boundFunction(value, index, O);
-      if (result) switch (TYPE) {
-        case 0: return value; // findLast
-        case 1: return index; // findLastIndex
-      }
-    }
-    return IS_FIND_LAST_INDEX ? -1 : undefined;
-  };
-};
-
-module.exports = {
-  // `Array.prototype.findLast` method
-  // https://github.com/tc39/proposal-array-find-from-last
-  findLast: createMethod(0),
-  // `Array.prototype.findLastIndex` method
-  // https://github.com/tc39/proposal-array-find-from-last
-  findLastIndex: createMethod(1)
-};
 
 
 /***/ }),
@@ -1888,58 +1831,6 @@ function baseAssignIn(object, source) {
 }
 
 module.exports = baseAssignIn;
-
-
-/***/ }),
-
-/***/ "47b1":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var global = __webpack_require__("d168");
-var call = __webpack_require__("085a");
-var ArrayBufferViewCore = __webpack_require__("8a1b");
-var lengthOfArrayLike = __webpack_require__("dbeb");
-var toOffset = __webpack_require__("fa45");
-var toIndexedObject = __webpack_require__("6369");
-var fails = __webpack_require__("ab3a");
-
-var RangeError = global.RangeError;
-var Int8Array = global.Int8Array;
-var Int8ArrayPrototype = Int8Array && Int8Array.prototype;
-var $set = Int8ArrayPrototype && Int8ArrayPrototype.set;
-var aTypedArray = ArrayBufferViewCore.aTypedArray;
-var exportTypedArrayMethod = ArrayBufferViewCore.exportTypedArrayMethod;
-
-var WORKS_WITH_OBJECTS_AND_GEERIC_ON_TYPED_ARRAYS = !fails(function () {
-  // eslint-disable-next-line es/no-typed-arrays -- required for testing
-  var array = new Uint8ClampedArray(2);
-  call($set, array, { length: 1, 0: 3 }, 1);
-  return array[1] !== 3;
-});
-
-// https://bugs.chromium.org/p/v8/issues/detail?id=11294 and other
-var TO_OBJECT_BUG = WORKS_WITH_OBJECTS_AND_GEERIC_ON_TYPED_ARRAYS && ArrayBufferViewCore.NATIVE_ARRAY_BUFFER_VIEWS && fails(function () {
-  var array = new Int8Array(2);
-  array.set(1);
-  array.set('2', 1);
-  return array[0] !== 0 || array[1] !== 2;
-});
-
-// `%TypedArray%.prototype.set` method
-// https://tc39.es/ecma262/#sec-%typedarray%.prototype.set
-exportTypedArrayMethod('set', function set(arrayLike /* , offset */) {
-  aTypedArray(this);
-  var offset = toOffset(arguments.length > 1 ? arguments[1] : undefined, 1);
-  var src = toIndexedObject(arrayLike);
-  if (WORKS_WITH_OBJECTS_AND_GEERIC_ON_TYPED_ARRAYS) return call($set, this, src, offset);
-  var length = this.length;
-  var len = lengthOfArrayLike(src);
-  var index = 0;
-  if (len + offset > length) throw RangeError('Wrong length');
-  while (index < len) this[offset + index] = src[index++];
-}, !WORKS_WITH_OBJECTS_AND_GEERIC_ON_TYPED_ARRAYS || TO_OBJECT_BUG);
 
 
 /***/ }),
@@ -3581,26 +3472,6 @@ module.exports = identity;
 
 /***/ }),
 
-/***/ "7883":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var ArrayBufferViewCore = __webpack_require__("8a1b");
-var $findLastIndex = __webpack_require__("3830").findLastIndex;
-
-var aTypedArray = ArrayBufferViewCore.aTypedArray;
-var exportTypedArrayMethod = ArrayBufferViewCore.exportTypedArrayMethod;
-
-// `%TypedArray%.prototype.findLastIndex` method
-// https://github.com/tc39/proposal-array-find-from-last
-exportTypedArrayMethod('findLastIndex', function findLastIndex(predicate /* , thisArg */) {
-  return $findLastIndex(aTypedArray(this), predicate, arguments.length > 1 ? arguments[1] : undefined);
-});
-
-
-/***/ }),
-
 /***/ "78a7":
 /***/ (function(module, exports) {
 
@@ -3696,21 +3567,6 @@ function isMasked(func) {
 }
 
 module.exports = isMasked;
-
-
-/***/ }),
-
-/***/ "7bde":
-/***/ (function(module, exports, __webpack_require__) {
-
-var fails = __webpack_require__("ab3a");
-
-module.exports = !fails(function () {
-  function F() { /* empty */ }
-  F.prototype.constructor = null;
-  // eslint-disable-next-line es/no-object-getprototypeof -- required for testing
-  return Object.getPrototypeOf(new F()) !== F.prototype;
-});
 
 
 /***/ }),
@@ -4159,204 +4015,6 @@ module.exports = function (it) {
 
 /***/ }),
 
-/***/ "8a1b":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var NATIVE_ARRAY_BUFFER = __webpack_require__("c8ae");
-var DESCRIPTORS = __webpack_require__("a15f");
-var global = __webpack_require__("d168");
-var isCallable = __webpack_require__("644c");
-var isObject = __webpack_require__("91f1");
-var hasOwn = __webpack_require__("abf7");
-var classof = __webpack_require__("c74d");
-var tryToString = __webpack_require__("bb5c");
-var createNonEnumerableProperty = __webpack_require__("8e8e");
-var defineBuiltIn = __webpack_require__("107e");
-var defineProperty = __webpack_require__("3426").f;
-var isPrototypeOf = __webpack_require__("d1bf");
-var getPrototypeOf = __webpack_require__("b286");
-var setPrototypeOf = __webpack_require__("fb30");
-var wellKnownSymbol = __webpack_require__("9168");
-var uid = __webpack_require__("803b");
-var InternalStateModule = __webpack_require__("7cfe");
-
-var enforceInternalState = InternalStateModule.enforce;
-var getInternalState = InternalStateModule.get;
-var Int8Array = global.Int8Array;
-var Int8ArrayPrototype = Int8Array && Int8Array.prototype;
-var Uint8ClampedArray = global.Uint8ClampedArray;
-var Uint8ClampedArrayPrototype = Uint8ClampedArray && Uint8ClampedArray.prototype;
-var TypedArray = Int8Array && getPrototypeOf(Int8Array);
-var TypedArrayPrototype = Int8ArrayPrototype && getPrototypeOf(Int8ArrayPrototype);
-var ObjectPrototype = Object.prototype;
-var TypeError = global.TypeError;
-
-var TO_STRING_TAG = wellKnownSymbol('toStringTag');
-var TYPED_ARRAY_TAG = uid('TYPED_ARRAY_TAG');
-var TYPED_ARRAY_CONSTRUCTOR = 'TypedArrayConstructor';
-// Fixing native typed arrays in Opera Presto crashes the browser, see #595
-var NATIVE_ARRAY_BUFFER_VIEWS = NATIVE_ARRAY_BUFFER && !!setPrototypeOf && classof(global.opera) !== 'Opera';
-var TYPED_ARRAY_TAG_REQUIRED = false;
-var NAME, Constructor, Prototype;
-
-var TypedArrayConstructorsList = {
-  Int8Array: 1,
-  Uint8Array: 1,
-  Uint8ClampedArray: 1,
-  Int16Array: 2,
-  Uint16Array: 2,
-  Int32Array: 4,
-  Uint32Array: 4,
-  Float32Array: 4,
-  Float64Array: 8
-};
-
-var BigIntArrayConstructorsList = {
-  BigInt64Array: 8,
-  BigUint64Array: 8
-};
-
-var isView = function isView(it) {
-  if (!isObject(it)) return false;
-  var klass = classof(it);
-  return klass === 'DataView'
-    || hasOwn(TypedArrayConstructorsList, klass)
-    || hasOwn(BigIntArrayConstructorsList, klass);
-};
-
-var getTypedArrayConstructor = function (it) {
-  var proto = getPrototypeOf(it);
-  if (!isObject(proto)) return;
-  var state = getInternalState(proto);
-  return (state && hasOwn(state, TYPED_ARRAY_CONSTRUCTOR)) ? state[TYPED_ARRAY_CONSTRUCTOR] : getTypedArrayConstructor(proto);
-};
-
-var isTypedArray = function (it) {
-  if (!isObject(it)) return false;
-  var klass = classof(it);
-  return hasOwn(TypedArrayConstructorsList, klass)
-    || hasOwn(BigIntArrayConstructorsList, klass);
-};
-
-var aTypedArray = function (it) {
-  if (isTypedArray(it)) return it;
-  throw TypeError('Target is not a typed array');
-};
-
-var aTypedArrayConstructor = function (C) {
-  if (isCallable(C) && (!setPrototypeOf || isPrototypeOf(TypedArray, C))) return C;
-  throw TypeError(tryToString(C) + ' is not a typed array constructor');
-};
-
-var exportTypedArrayMethod = function (KEY, property, forced, options) {
-  if (!DESCRIPTORS) return;
-  if (forced) for (var ARRAY in TypedArrayConstructorsList) {
-    var TypedArrayConstructor = global[ARRAY];
-    if (TypedArrayConstructor && hasOwn(TypedArrayConstructor.prototype, KEY)) try {
-      delete TypedArrayConstructor.prototype[KEY];
-    } catch (error) {
-      // old WebKit bug - some methods are non-configurable
-      try {
-        TypedArrayConstructor.prototype[KEY] = property;
-      } catch (error2) { /* empty */ }
-    }
-  }
-  if (!TypedArrayPrototype[KEY] || forced) {
-    defineBuiltIn(TypedArrayPrototype, KEY, forced ? property
-      : NATIVE_ARRAY_BUFFER_VIEWS && Int8ArrayPrototype[KEY] || property, options);
-  }
-};
-
-var exportTypedArrayStaticMethod = function (KEY, property, forced) {
-  var ARRAY, TypedArrayConstructor;
-  if (!DESCRIPTORS) return;
-  if (setPrototypeOf) {
-    if (forced) for (ARRAY in TypedArrayConstructorsList) {
-      TypedArrayConstructor = global[ARRAY];
-      if (TypedArrayConstructor && hasOwn(TypedArrayConstructor, KEY)) try {
-        delete TypedArrayConstructor[KEY];
-      } catch (error) { /* empty */ }
-    }
-    if (!TypedArray[KEY] || forced) {
-      // V8 ~ Chrome 49-50 `%TypedArray%` methods are non-writable non-configurable
-      try {
-        return defineBuiltIn(TypedArray, KEY, forced ? property : NATIVE_ARRAY_BUFFER_VIEWS && TypedArray[KEY] || property);
-      } catch (error) { /* empty */ }
-    } else return;
-  }
-  for (ARRAY in TypedArrayConstructorsList) {
-    TypedArrayConstructor = global[ARRAY];
-    if (TypedArrayConstructor && (!TypedArrayConstructor[KEY] || forced)) {
-      defineBuiltIn(TypedArrayConstructor, KEY, property);
-    }
-  }
-};
-
-for (NAME in TypedArrayConstructorsList) {
-  Constructor = global[NAME];
-  Prototype = Constructor && Constructor.prototype;
-  if (Prototype) enforceInternalState(Prototype)[TYPED_ARRAY_CONSTRUCTOR] = Constructor;
-  else NATIVE_ARRAY_BUFFER_VIEWS = false;
-}
-
-for (NAME in BigIntArrayConstructorsList) {
-  Constructor = global[NAME];
-  Prototype = Constructor && Constructor.prototype;
-  if (Prototype) enforceInternalState(Prototype)[TYPED_ARRAY_CONSTRUCTOR] = Constructor;
-}
-
-// WebKit bug - typed arrays constructors prototype is Object.prototype
-if (!NATIVE_ARRAY_BUFFER_VIEWS || !isCallable(TypedArray) || TypedArray === Function.prototype) {
-  // eslint-disable-next-line no-shadow -- safe
-  TypedArray = function TypedArray() {
-    throw TypeError('Incorrect invocation');
-  };
-  if (NATIVE_ARRAY_BUFFER_VIEWS) for (NAME in TypedArrayConstructorsList) {
-    if (global[NAME]) setPrototypeOf(global[NAME], TypedArray);
-  }
-}
-
-if (!NATIVE_ARRAY_BUFFER_VIEWS || !TypedArrayPrototype || TypedArrayPrototype === ObjectPrototype) {
-  TypedArrayPrototype = TypedArray.prototype;
-  if (NATIVE_ARRAY_BUFFER_VIEWS) for (NAME in TypedArrayConstructorsList) {
-    if (global[NAME]) setPrototypeOf(global[NAME].prototype, TypedArrayPrototype);
-  }
-}
-
-// WebKit bug - one more object in Uint8ClampedArray prototype chain
-if (NATIVE_ARRAY_BUFFER_VIEWS && getPrototypeOf(Uint8ClampedArrayPrototype) !== TypedArrayPrototype) {
-  setPrototypeOf(Uint8ClampedArrayPrototype, TypedArrayPrototype);
-}
-
-if (DESCRIPTORS && !hasOwn(TypedArrayPrototype, TO_STRING_TAG)) {
-  TYPED_ARRAY_TAG_REQUIRED = true;
-  defineProperty(TypedArrayPrototype, TO_STRING_TAG, { get: function () {
-    return isObject(this) ? this[TYPED_ARRAY_TAG] : undefined;
-  } });
-  for (NAME in TypedArrayConstructorsList) if (global[NAME]) {
-    createNonEnumerableProperty(global[NAME], TYPED_ARRAY_TAG, NAME);
-  }
-}
-
-module.exports = {
-  NATIVE_ARRAY_BUFFER_VIEWS: NATIVE_ARRAY_BUFFER_VIEWS,
-  TYPED_ARRAY_TAG: TYPED_ARRAY_TAG_REQUIRED && TYPED_ARRAY_TAG,
-  aTypedArray: aTypedArray,
-  aTypedArrayConstructor: aTypedArrayConstructor,
-  exportTypedArrayMethod: exportTypedArrayMethod,
-  exportTypedArrayStaticMethod: exportTypedArrayStaticMethod,
-  getTypedArrayConstructor: getTypedArrayConstructor,
-  isView: isView,
-  isTypedArray: isTypedArray,
-  TypedArray: TypedArray,
-  TypedArrayPrototype: TypedArrayPrototype
-};
-
-
-/***/ }),
-
 /***/ "8a2a":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4415,26 +4073,6 @@ module.exports = function intersection(other) {
 /***/ (function(module, exports) {
 
 module.exports = __WEBPACK_EXTERNAL_MODULE__8bbf__;
-
-/***/ }),
-
-/***/ "8c46":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var ArrayBufferViewCore = __webpack_require__("8a1b");
-var $findLast = __webpack_require__("3830").findLast;
-
-var aTypedArray = ArrayBufferViewCore.aTypedArray;
-var exportTypedArrayMethod = ArrayBufferViewCore.exportTypedArrayMethod;
-
-// `%TypedArray%.prototype.findLast` method
-// https://github.com/tc39/proposal-array-find-from-last
-exportTypedArrayMethod('findLast', function findLast(predicate /* , thisArg */) {
-  return $findLast(aTypedArray(this), predicate, arguments.length > 1 ? arguments[1] : undefined);
-});
-
 
 /***/ }),
 
@@ -5539,34 +5177,6 @@ var $TypeError = TypeError;
 module.exports = function (argument) {
   if (isObject(argument)) return argument;
   throw $TypeError($String(argument) + ' is not an object');
-};
-
-
-/***/ }),
-
-/***/ "b286":
-/***/ (function(module, exports, __webpack_require__) {
-
-var hasOwn = __webpack_require__("abf7");
-var isCallable = __webpack_require__("644c");
-var toObject = __webpack_require__("6369");
-var sharedKey = __webpack_require__("dbfe");
-var CORRECT_PROTOTYPE_GETTER = __webpack_require__("7bde");
-
-var IE_PROTO = sharedKey('IE_PROTO');
-var $Object = Object;
-var ObjectPrototype = $Object.prototype;
-
-// `Object.getPrototypeOf` method
-// https://tc39.es/ecma262/#sec-object.getprototypeof
-// eslint-disable-next-line es/no-object-getprototypeof -- safe
-module.exports = CORRECT_PROTOTYPE_GETTER ? $Object.getPrototypeOf : function (O) {
-  var object = toObject(O);
-  if (hasOwn(object, IE_PROTO)) return object[IE_PROTO];
-  var constructor = object.constructor;
-  if (isCallable(constructor) && object instanceof constructor) {
-    return constructor.prototype;
-  } return object instanceof $Object ? ObjectPrototype : null;
 };
 
 
@@ -23122,31 +22732,6 @@ module.exports = memoizeCapped;
 
 /***/ }),
 
-/***/ "bf12":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var ArrayBufferViewCore = __webpack_require__("8a1b");
-var lengthOfArrayLike = __webpack_require__("dbeb");
-var toIntegerOrInfinity = __webpack_require__("3a3a");
-
-var aTypedArray = ArrayBufferViewCore.aTypedArray;
-var exportTypedArrayMethod = ArrayBufferViewCore.exportTypedArrayMethod;
-
-// `%TypedArray%.prototype.at` method
-// https://github.com/tc39/proposal-relative-indexing-method
-exportTypedArrayMethod('at', function at(index) {
-  var O = aTypedArray(this);
-  var len = lengthOfArrayLike(O);
-  var relativeIndex = toIntegerOrInfinity(index);
-  var k = relativeIndex >= 0 ? relativeIndex : len + relativeIndex;
-  return (k < 0 || k >= len) ? undefined : O[k];
-});
-
-
-/***/ }),
-
 /***/ "c2cd":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -23289,15 +22874,6 @@ function copyArray(source, array) {
 }
 
 module.exports = copyArray;
-
-
-/***/ }),
-
-/***/ "c8ae":
-/***/ (function(module, exports) {
-
-// eslint-disable-next-line es/no-typed-arrays -- safe
-module.exports = typeof ArrayBuffer != 'undefined' && typeof DataView != 'undefined';
 
 
 /***/ }),
@@ -26296,94 +25872,6 @@ var fragment = {
 // EXTERNAL MODULE: ./node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/lodash.js
 var lodash = __webpack_require__("bcba");
 
-// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/es.typed-array.at.js
-var es_typed_array_at = __webpack_require__("bf12");
-
-// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/es.typed-array.find-last.js
-var es_typed_array_find_last = __webpack_require__("8c46");
-
-// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/es.typed-array.find-last-index.js
-var es_typed_array_find_last_index = __webpack_require__("7883");
-
-// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/es.typed-array.set.js
-var es_typed_array_set = __webpack_require__("47b1");
-
-// CONCATENATED MODULE: ./src/components/utils/index.ts
-
-
-
-
-
-
-function isString(obj) {
-  return Object.prototype.toString.call(obj) === '[object String]';
-}
-function utils_isObject(obj) {
-  return Object.prototype.toString.call(obj) === '[object Object]';
-}
-function utils_isArray(val) {
-  return Object.prototype.toString.call(val) === '[object Array]';
-}
-function utils_isBoolean(val) {
-  return Object.prototype.toString.call(val) === '[object Boolean]';
-}
-function isHtmlElement(node) {
-  return node && node.nodeType === Node.ELEMENT_NODE;
-}
-/**
- *  - Inspired:
- *    https://github.com/jashkenas/underscore/blob/master/modules/isFunction.js
- */
-let isFunction = functionToCheck => {
-  const getType = {};
-  return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
-};
-if ( true && typeof Int8Array !== 'object' && (external_vue_default.a.prototype.$isServer || typeof document.childNodes !== 'function')) {
-  isFunction = function (obj) {
-    return typeof obj === 'function' || false;
-  };
-}
-
-const isUndefined = val => {
-  return typeof val === 'undefined';
-};
-const isDefined = val => {
-  return val !== undefined && val !== null;
-};
-const utils_isEmpty = function (val) {
-  // null or undefined
-  if (val == null) return true;
-  if (typeof val === 'boolean') return false;
-  if (typeof val === 'number') return !val;
-  if (val instanceof Error) return val.message === '';
-  switch (Object.prototype.toString.call(val)) {
-    // String or Array
-    case '[object String]':
-    case '[object Array]':
-      return !val.length;
-    // Map or Set or File
-    case '[object File]':
-    case '[object Map]':
-    case '[object Set]':
-      {
-        return !val.size;
-      }
-    // Plain Object
-    case '[object Object]':
-      {
-        return !Object.keys(val).length;
-      }
-  }
-  return false;
-};
-const kebabCase = function (str) {
-  const hyphenateRE = /([^-])([A-Z])/g;
-  return str.replace(hyphenateRE, '$1-$2').replace(hyphenateRE, '$1-$2').toLowerCase();
-};
-const capitalize = function (str) {
-  if (!isString(str)) return str;
-  return str.charAt(0).toUpperCase() + str.slice(1);
-};
 // EXTERNAL MODULE: ./src/components/styles/index.scss
 var styles = __webpack_require__("c2cd");
 
@@ -27020,7 +26508,7 @@ let check_box_CheckBoxPlus = class CheckBoxPlus extends external_vue_default.a {
     // 取出Checkbox渲染数组
     const {
       options = [],
-      isGroup = false
+      group = true
     } = this.$attrs;
     // 获取出除options, options之外的配置项
     const attrs = omit_default()(this.$attrs, ['options', 'type']);
@@ -27076,8 +26564,7 @@ let check_box_CheckBoxPlus = class CheckBoxPlus extends external_vue_default.a {
       }, [renderSingleCheckboxs()]);
     };
     const renderCheckboxs = () => {
-      // 如果value为数组类型，则渲染为多选框组
-      if (isGroup) {
+      if (group) {
         return renderGroupCheckboxs();
       }
       return renderSingleCheckboxs();
@@ -27275,7 +26762,7 @@ let radio_RadioPlus = class RadioPlus extends external_vue_default.a {
     // 取出Radio渲染数组
     const {
       options = [],
-      isGroup = false
+      group = true
     } = this.$attrs;
     // 获取出除options, options之外的配置项
     const attrs = omit_default()(this.$attrs, ['options', 'type']);
@@ -27330,7 +26817,7 @@ let radio_RadioPlus = class RadioPlus extends external_vue_default.a {
     };
     const renderRadios = () => {
       // 如果value为数组类型，则渲染为多选框组
-      if (isGroup) {
+      if (group) {
         return renderGroupRadios();
       }
       return renderSingleRadio();
@@ -27414,8 +26901,8 @@ let select_SelectPlus = class SelectPlus extends external_vue_default.a {
     };
     const renderGroupOption = () => {
       const {
-        groupOptions,
-        options
+        groupOptions = [],
+        options = []
       } = this.$attrs;
       const optionEl = [];
       // groupOptions只要存在，就渲染分组select
@@ -27705,102 +27192,7 @@ const vnode_vnodes = {
 };
 const SuperCustom = super_custom;
 /* harmony default export */ var vnode = (vnode_vnodes);
-// CONCATENATED MODULE: ./src/components/custom/button.ts
-function findElFormComponent(instance) {
-  const componentName = 'ElForm';
-  let parent = instance.$parent || instance.$root;
-  let name = parent.$options.componentName;
-  while (parent && (!name || name !== componentName)) {
-    // @ts-ignore
-    parent = parent.$parent;
-    if (parent) {
-      name = parent.$options.componentName;
-    }
-  }
-  if (parent) {
-    return parent;
-  }
-  return false;
-}
-// 是否渲染确认(提交)按钮
-function isRenderConfirmButton(h, config, instance) {
-  const {
-    confirm = true,
-    confirmText = '确认'
-  } = config;
-  return confirm ? h('el-button', {
-    props: {
-      type: "primary"
-    },
-    on: {
-      click: () => {
-        const elForm = findElFormComponent(instance);
-        if (elForm) {
-          elForm.validate(valid => {
-            if (valid) {
-              elForm.$emit('submit', elForm.model);
-              return true;
-            } else {
-              elForm.$emit('error-submit');
-              return false;
-            }
-          });
-        }
-      }
-    }
-  }, confirmText) : '';
-}
-// 是否渲染重置按钮
-function isRenderResetButton(h, config, instance) {
-  const {
-    reset = true,
-    resetText = '重置'
-  } = config;
-  return reset ? h('el-button', {
-    on: {
-      click: () => {
-        const elForm = findElFormComponent(instance);
-        if (elForm) {
-          elForm.resetFields();
-        }
-      }
-    }
-  }, resetText) : '';
-}
-function renderButtons(config) {
-  // 默认的提交 重置按钮
-  // 用内置的Custom类型生成
-  const buttons = {
-    // 表单项渲染类型 必需
-    type: 'Custom',
-    noField: true,
-    scopedSlots: {
-      // jsx或h
-      // 这样就可以实现自定义组件的双向绑定
-      custom: _ref => {
-        let {
-          instance
-        } = _ref;
-        console.log(instance);
-        const h = instance.$createElement;
-        return h('Fragment', [isRenderConfirmButton(h, config, instance), isRenderResetButton(h, config, instance)]);
-      }
-    },
-    config: {
-      // el-form-item所占据的空间
-      col: {
-        span: 24
-      }
-    }
-  };
-  return buttons;
-}
-/* harmony default export */ var custom_button = (renderButtons);
-// CONCATENATED MODULE: ./src/components/custom/index.ts
-
-
 // CONCATENATED MODULE: ./src/components/form.tsx
-
 
 
 
@@ -27817,7 +27209,6 @@ function renderButtons(config) {
 // 样式
 
 // 取出vnode匹配表
-
 
 let form_ElFormPlus = class ElFormPlus extends mixins(methods) {
   constructor() {
@@ -27840,7 +27231,6 @@ let form_ElFormPlus = class ElFormPlus extends mixins(methods) {
   // 这一步主要是为了方便内部操作options
   // 深拷贝保存为内部状态
   setData() {
-    // const options = this.options.concat(buttonData)
     const options = this.options;
     this.data = Object(lodash["cloneDeep"])(options);
     this.setCachedData();
@@ -27938,11 +27328,13 @@ let form_ElFormPlus = class ElFormPlus extends mixins(methods) {
     } = this.layout || {};
     const {
       container: globalContainer,
-      buttonsConfig,
       full = false
-    } = this.config || {};
+    } = this.config;
     // 渲染表单项
     const renderSingleForm = singleFormAttrs => {
+      const {
+        attrs: unifyAttrs = {}
+      } = this.unifyOptions;
       const {
         placeholder
       } = singleFormAttrs;
@@ -28006,6 +27398,7 @@ let form_ElFormPlus = class ElFormPlus extends mixins(methods) {
       }, [h(ContainerEl, [h(TrueComponent, helper_default()([{}, {
         scopedSlots: customScopedSlots,
         attrs: {
+          ...unifyAttrs,
           ...shortcutAttrs,
           ...attrs
         },
@@ -28022,6 +27415,9 @@ let form_ElFormPlus = class ElFormPlus extends mixins(methods) {
     };
     // 渲染 el-form-item
     const renderElFormItem = o => {
+      const {
+        config: unifyConfig = {}
+      } = this.unifyOptions;
       // 剥离掉表单项不需要的配置项
       const singleFormAttrs = omit_default()(o, ['hidden', 'config', 'more']);
       const {
@@ -28031,11 +27427,15 @@ let form_ElFormPlus = class ElFormPlus extends mixins(methods) {
         more = [],
         layout
       } = o;
+      const mergeConfig = {
+        ...unifyConfig,
+        ...config
+      };
       const {
         col = globalColConfig,
         container,
         cancelrule = false
-      } = config;
+      } = mergeConfig;
       // 将config中一些常用的配置提取出来，
       const shortcutConfig = {
         label
@@ -28067,7 +27467,7 @@ let form_ElFormPlus = class ElFormPlus extends mixins(methods) {
         "props": {
           ...{
             ...shortcutConfig,
-            ...config,
+            ...mergeConfig,
             prop: cancelrule ? '' : field
           }
         }
@@ -28104,22 +27504,6 @@ let form_ElFormPlus = class ElFormPlus extends mixins(methods) {
         scopedSlots: customScopedSlots
       }]))]);
     };
-    const isRenderButtons = () => {
-      if (utils_isBoolean(buttonsConfig)) {
-        if (buttonsConfig) {
-          return custom_button({});
-        }
-        return false;
-      } else {
-        let buttons = {};
-        if (!buttonsConfig) {
-          buttons = custom_button({});
-        } else {
-          buttons = custom_button(buttonsConfig);
-        }
-        return buttons;
-      }
-    };
     const renderItem = () => {
       const options = this.data;
       // 分流，SuperCustom是独立，但还是在el-form里面
@@ -28154,7 +27538,7 @@ let form_ElFormPlus = class ElFormPlus extends mixins(methods) {
           ...globalRowConfig
         }
       }
-    }, [h(GlobalContainer, [renderItem(), isRenderButtons() && renderElFormItem(isRenderButtons())])])]);
+    }, [h(GlobalContainer, [renderItem()])])]);
   }
 };
 __decorate([Model('change', {
@@ -28162,16 +27546,20 @@ __decorate([Model('change', {
 })], form_ElFormPlus.prototype, "modelData", void 0);
 __decorate([Prop({
   type: Object,
-  default: () => {}
+  default: () => ({})
 })], form_ElFormPlus.prototype, "layout", void 0);
 __decorate([Prop({
   type: Object,
-  default: () => {}
+  default: () => ({})
 })], form_ElFormPlus.prototype, "config", void 0);
 __decorate([Prop({
   type: Array,
   default: () => []
 })], form_ElFormPlus.prototype, "options", void 0);
+__decorate([Prop({
+  type: Object,
+  default: () => ({})
+})], form_ElFormPlus.prototype, "unifyOptions", void 0);
 __decorate([Watch('modelData')], form_ElFormPlus.prototype, "modelDataChange", null);
 __decorate([Watch('options', {
   immediate: true,
@@ -28385,22 +27773,6 @@ module.exports = function isSubsetOf(other) {
   return iterate(O, function (e) {
     if (!otherRec.includes(e)) return false;
   }, true) !== false;
-};
-
-
-/***/ }),
-
-/***/ "fa45":
-/***/ (function(module, exports, __webpack_require__) {
-
-var toPositiveInteger = __webpack_require__("3508");
-
-var $RangeError = RangeError;
-
-module.exports = function (it, BYTES) {
-  var offset = toPositiveInteger(it);
-  if (offset % BYTES) throw $RangeError('Wrong offset');
-  return offset;
 };
 
 
