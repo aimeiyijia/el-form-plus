@@ -28,7 +28,7 @@
   "ignorePath": ".prettierignore",
   "jsxBracketSameLine": false,
   "jsxSingleQuote": false,
-  "parser": "babylon",
+  "parser": "babel",
   "requireConfig": false,
   "stylelintIntegration": false,
   "trailingComma": "es5",
