@@ -24208,6 +24208,14 @@ module.exports = getAllKeysIn;
 // ESM COMPAT FLAG
 __webpack_require__.r(__webpack_exports__);
 
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, "setByField", function() { return /* reexport */ setByField; });
+__webpack_require__.d(__webpack_exports__, "isHasByField", function() { return /* reexport */ isHasByField; });
+__webpack_require__.d(__webpack_exports__, "insertByField", function() { return /* reexport */ insertByField; });
+__webpack_require__.d(__webpack_exports__, "emptysByField", function() { return /* reexport */ emptysByField; });
+__webpack_require__.d(__webpack_exports__, "getByField", function() { return /* reexport */ getByField; });
+__webpack_require__.d(__webpack_exports__, "delByField", function() { return /* reexport */ delByField; });
+
 // CONCATENATED MODULE: ./node_modules/.pnpm/@vue+cli-service@4.5.19_mw4tbthr2wxnu3b2dqmi5ek7da/node_modules/@vue/cli-service/lib/commands/build/setPublicPath.js
 // This file is imported into lib/wc client bundles.
 
@@ -27567,7 +27575,83 @@ form_ElFormPlus = __decorate([vue_class_component_esm({
   }
 })], form_ElFormPlus);
 /* harmony default export */ var components_form = (form_ElFormPlus);
+// CONCATENATED MODULE: ./src/components/utils/opera.tsx
+
+const targetErrorTips = fieldName => {
+  console.error(`无法根据${fieldName}找到对应配置项`);
+};
+// 根据attrs中的field字段匹配到目标配置项
+function getTarget(options, fieldName) {
+  return options.find(o => o.field === fieldName);
+}
+// 根据field字段值来查找其所在的配置项
+// 本质上还是变更option来达到更新目的
+// 通过表单域更新某配置项 如果不存在该path,那么将会添加进去
+function setByField(options, fieldName, path, value) {
+  try {
+    const target = getTarget(options, fieldName);
+    if (target) {
+      object_path.set(target, path, value);
+    } else {
+      targetErrorTips(fieldName);
+    }
+  } catch (error) {
+    console.error(error, 'updateField');
+  }
+}
+// 指定路径是否存在
+function isHasByField(options, fieldName, path) {
+  try {
+    const target = getTarget(options, fieldName);
+    if (target) {
+      return object_path.has(target, path);
+    } else {
+      targetErrorTips(fieldName);
+      return false;
+    }
+  } catch (error) {
+    console.error(error, 'isHasByField');
+    return false;
+  }
+}
+// insert 向指定路径中的数组插入值，该路径不存或没值就添加
+function insertByField(options, fieldName, path, value, positions) {
+  try {
+    const target = getTarget(options, fieldName);
+    object_path.insert(target, path, value, positions);
+  } catch (error) {
+    console.error(error, 'insertByField');
+  }
+}
+// number -> 0, boolean -> no-change, array -> [], object -> {}, Function -> null
+function emptysByField(options, fieldName, path) {
+  try {
+    const target = getTarget(options, fieldName);
+    object_path.empty(target, path);
+  } catch (error) {
+    console.error(error, 'emptysByField');
+  }
+}
+// 获取指定路径上的值
+function getByField(options, fieldName, path, defaultValue) {
+  try {
+    const target = getTarget(options, fieldName);
+    object_path.get(target, path, defaultValue);
+  } catch (error) {
+    console.error(error, 'getByField');
+  }
+}
+// 删除指定路径
+function delByField(options, fieldName, path) {
+  try {
+    const target = getTarget(options, fieldName);
+    object_path.del(target, path);
+  } catch (error) {
+    console.error(error, 'delByField');
+  }
+}
 // CONCATENATED MODULE: ./src/components/install.ts
+
 
 const Components = {
   ElFormPlus: components_form
@@ -27586,6 +27670,7 @@ const install = function (Vue) {
   });
   install.installed = true;
 };
+
 /* harmony default export */ var components_install = (install);
 // CONCATENATED MODULE: ./node_modules/.pnpm/@vue+cli-service@4.5.19_mw4tbthr2wxnu3b2dqmi5ek7da/node_modules/@vue/cli-service/lib/commands/build/entry-lib.js
 
