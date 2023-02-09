@@ -19,6 +19,7 @@
 
 <script>
 import formData from '../mock/index'
+import { setByField } from './components/install'
 export default {
   name: 'app',
   data() {
@@ -71,6 +72,11 @@ export default {
     }
   },
   mounted() {
+    console.log(setByField, '内置方法')
+    console.log(this.options, '配置项')
+
+    setByField(this.options, 'autoComplete', 'value', '1')
+    console.log(this.options, '配置项更新完毕')
     console.log(this.model, '------双向绑定值------')
     // setInterval(() => {
     // console.log('变化')
@@ -79,7 +85,6 @@ export default {
     // }
     // }, 1000)
     // this.model.input = '123'
-    // this.model.setByField('input', 'attrs.value', 1234567890)
     // setInterval(() => {
     //   console.log(this.model, '双向绑定值')
     //   this.model.input = new Date().getSeconds() + 100

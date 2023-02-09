@@ -1,6 +1,15 @@
 import ElFormPlus from './form'
 import _Vue, { PluginFunction, VueConstructor } from 'vue'
 
+import {
+  setByField,
+  isHasByField,
+  insertByField,
+  emptysByField,
+  getByField,
+  delByField,
+} from './utils/opera'
+
 interface InstallFunction extends PluginFunction<any> {
   installed?: boolean
 }
@@ -23,6 +32,15 @@ const install: InstallFunction = (Vue: typeof _Vue, options = {}) => {
   })
 
   install.installed = true
+}
+
+export {
+  setByField,
+  isHasByField,
+  insertByField,
+  emptysByField,
+  getByField,
+  delByField,
 }
 
 export default install

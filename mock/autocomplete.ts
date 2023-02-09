@@ -6,7 +6,7 @@ const autocomplete = {
   // 表单项绑定的值（字段名） 必需
   field: 'autoComplete',
   // 初始值
-  value: '2',
+  value: '3',
   // 表单项的配置项
   attrs: {
     fetchSuggestions: (queryString: string, callback: Function) => {
