@@ -88,7 +88,7 @@
     "type": "git",
     "url": "git+https://github.com/aimeiyijia/el-form-plus.git"
   },
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/aimeiyijia/el-form-plus/issues"
   },
