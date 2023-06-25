@@ -36,7 +36,7 @@ data.push(
   // input,
   // radio,
   // rate,
-  // select,
+  select,
   // selectTree,
   // slider,
   // supercustom,
