@@ -11,7 +11,7 @@
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
- "[vue]": {
+  "[vue]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "printWidth": 80,
@@ -28,9 +28,7 @@
   "ignorePath": ".prettierignore",
   "jsxBracketSameLine": false,
   "jsxSingleQuote": false,
-  "parser": "babel",
   "requireConfig": false,
   "stylelintIntegration": false,
-  "trailingComma": "es5",
   "tslintIntegration": false
 }

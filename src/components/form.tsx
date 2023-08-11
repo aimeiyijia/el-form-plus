@@ -23,13 +23,11 @@ interface IModel {
   [index: number]: any
 }
 
-
 @Component({
   name: 'ElFormPlus',
   components: { Fragment },
 })
 export default class ElFormPlus extends Mixins(MethodsMixins) {
-
   // 双向绑定的formData
   @Model('change', { type: Object }) readonly modelData!: any
 
@@ -60,9 +58,12 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
     this.listeners = this.$listeners
   }
 
-  @Watch('modelData')
+  // this.model.x = xx 这样的写法只会触发一次
+  // this.model = { x: xx } 这样的写法只会触发两次 因为这个写法改变了model的原有引用值
+  @Watch('modelData', { deep: true })
   modelDataChange() {
     this.bindData(this.modelData)
+    this.$emit('change', this.model)
   }
 
   // 这一步主要是为了方便内部操作options
@@ -160,10 +161,12 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   render(h: CreateElement): VNode {
-
     const model = this.model
 
-    const { row: globalRowConfig = { gutter: 20 }, col: globalColConfig = { span: 12 } } = this.layout || {}
+    const {
+      row: globalRowConfig = { gutter: 20 },
+      col: globalColConfig = { span: 12 },
+    } = this.layout || {}
 
     const { container: globalContainer, full = false } = this.config
     // 渲染表单项
@@ -171,14 +174,14 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
       const { attrs: unifyAttrs = {} } = this.unifyOptions
       const { placeholder } = singleFormAttrs
       const {
-        type = "",
+        type = '',
         attrs = {},
         layout,
         col,
-        field = "",
+        field = '',
         container,
         on = {},
-        scopedSlots = {}
+        scopedSlots = {},
       } = singleFormAttrs
 
       // 将attrs中一些常用的配置提取出来，
@@ -196,7 +199,6 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
 
       // 拦截原生input事件，以便触发数据更新
       const customInputEvent = (val: any) => {
-
         if (field) this.$set(model, field, val)
 
         // 拦截之后再触发input事件
@@ -228,7 +230,7 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
       const TrueComponent: any = this.renderWhatComponent(type)
 
       return (
-        <ColEl  {...{ props: { ...globalColConfig, ...col } }}>
+        <ColEl {...{ props: { ...globalColConfig, ...col } }}>
           <ContainerEl>
             <TrueComponent
               {...{
@@ -236,8 +238,8 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
                 attrs: { ...unifyAttrs, ...shortcutAttrs, ...attrs },
                 on: {
                   ...extraEvents,
-                  input: customInputEvent
-                }
+                  input: customInputEvent,
+                },
               }}
               class={attrs.extraClass}
               value={value}
@@ -256,7 +258,11 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
       const { label, field = '', config = {}, more = [], layout } = o
       const mergeConfig = { ...unifyConfig, ...config }
 
-      const { col = globalColConfig, container, cancelrule = false } = mergeConfig
+      const {
+        col = globalColConfig,
+        container,
+        cancelrule = false,
+      } = mergeConfig
       // 将config中一些常用的配置提取出来，
       const shortcutConfig = { label }
 
@@ -282,27 +288,38 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
       }
 
       return (
-        <ColEl  {...{ props: { ...globalColConfig, ...col } }}>
+        <ColEl {...{ props: { ...globalColConfig, ...col } }}>
           <ContainerEl>
-            <el-form-item {...{ props: { ...shortcutConfig, ...mergeConfig, prop: cancelrule ? '' : field } }}>
+            <el-form-item
+              {...{
+                props: {
+                  ...shortcutConfig,
+                  ...mergeConfig,
+                  prop: cancelrule ? '' : field,
+                },
+              }}
+            >
               <RowEl {...{ props: { ...globalRowConfig, ...layout } }}>
-                {isHasField && [renderSingleForm(singleFormAttrs)].concat(moreForm())}
+                {isHasField &&
+                  [renderSingleForm(singleFormAttrs)].concat(moreForm())}
               </RowEl>
             </el-form-item>
           </ContainerEl>
-        </ColEl >
+        </ColEl>
       )
     }
 
     const renderSuperCustom = (options: any) => {
       const { scopedSlots, col = { span: 24 } } = options
-      const customScopedSlots = isString(scopedSlots) ? { custom: this.$scopedSlots[scopedSlots] } : { custom: scopedSlots }
+      const customScopedSlots = isString(scopedSlots)
+        ? { custom: this.$scopedSlots[scopedSlots] }
+        : { custom: scopedSlots }
       const ColEl = this.layout ? 'el-col' : 'FFragment'
       return (
-        <ColEl  {...{ props: { ...globalColConfig, ...col } }}>
+        <ColEl {...{ props: { ...globalColConfig, ...col } }}>
           <SuperCustom
             {...{
-              scopedSlots: customScopedSlots
+              scopedSlots: customScopedSlots,
             }}
           ></SuperCustom>
         </ColEl>
@@ -314,12 +331,14 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
 
       // 分流，SuperCustom是独立，但还是在el-form里面
       // 与el-form-item(不启用布局)或el-row(启用布局)平级
-      return options.filter((o: any) => !o.hidden).map((o: any) => {
-        if (o.type === 'SuperCustom') {
-          return renderSuperCustom(o)
-        }
-        return renderElFormItem(o)
-      })
+      return options
+        .filter((o: any) => !o.hidden)
+        .map((o: any) => {
+          if (o.type === 'SuperCustom') {
+            return renderSuperCustom(o)
+          }
+          return renderElFormItem(o)
+        })
     }
 
     // 是否渲染el-row元素
@@ -328,21 +347,19 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
     const GlobalContainer = this.renderContainerEl(globalContainer)
     // 渲染el-form
     return (
-      <el-form ref="ElForm"
+      <el-form
+        ref="ElForm"
         class={full ? 'el-form_full' : ''}
         {...{
           props: {
             ...this.config,
             model: model,
           },
-          on: this.listeners
+          on: this.listeners,
         }}
-
       >
         <RowEl {...{ props: { ...globalRowConfig } }}>
-          <GlobalContainer>
-            {renderItem()}
-          </GlobalContainer>
+          <GlobalContainer>{renderItem()}</GlobalContainer>
         </RowEl>
       </el-form>
     )

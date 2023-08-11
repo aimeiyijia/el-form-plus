@@ -15,7 +15,6 @@ const custom = {
     // jsx或h
     // 这样就可以实现自定义组件的双向绑定
     custom: ({ instance }: { instance: Vue }) => {
-      console.log(instance)
       return instance.$createElement('el-input', {
         props: {
           value: instance.$attrs.value,

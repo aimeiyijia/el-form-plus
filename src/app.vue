@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import formData from '../mock/index'
 import { setByField } from './components/install'
 export default {
@@ -25,6 +26,7 @@ export default {
     return {
       // 除了在option配置项中的value字段中设置初始值，也可以直接传递model对象赋初值
       model: { input: '来自model的初始值' },
+
       api: null,
 
       // layout布局配置项 同element-ui中Layout 中 Row Attributes
@@ -71,24 +73,28 @@ export default {
     }
   },
   mounted() {
-    console.log(setByField, '内置方法')
-    console.log(this.options, '配置项')
+    // console.log(setByField, '内置方法')
+    // console.log(this.options, '配置项')
 
-    setByField(this.options, 'autoComplete', 'value', '1')
-    console.log(this.options, '配置项更新完毕')
-    console.log(this.model, '------双向绑定值------')
-    // setInterval(() => {
-    // console.log('变化')
-    // this.model = {
-    //   input: new Date().getSeconds()
-    // }
-    // }, 1000)
+    // setByField(this.options, 'autoComplete', 'value', '1')
+    // console.log(this.options, '配置项更新完毕')
+    // console.log(this.model, '------双向绑定值------')
+    setInterval(() => {
+      // 这样的写法将会触发两次表单更新 因为这个写法改变了model的原有引用值
+      this.model = {
+        inputNumber: new Date().getSeconds(),
+        input: new Date().getSeconds(),
+      }
+    }, 3000)
+
     // this.model.input = '123'
+
     // setInterval(() => {
     //   console.log(this.model, '双向绑定值')
+
+    //   // 这样的写法只会触发一次表单更新
     //   this.model.input = new Date().getSeconds() + 100
-    // this.model.moreinput = new Date().getSeconds() + 100
-    // this.options[0].value = new Date().getSeconds() + 100
+    //   this.model.inputNumber = new Date().getSeconds()
     // }, 2000)
   },
   methods: {
@@ -118,7 +124,7 @@ export default {
       // }, 2000)
     },
     validate() {
-      console.log('触发表单校验')
+      // console.log('触发表单校验')
     },
   },
 }

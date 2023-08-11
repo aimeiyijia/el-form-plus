@@ -64,7 +64,6 @@ const upload = {
       return h('el-button', '插槽点击上传')
     },
     tip({ h }: { h: CreateElement }) {
-      console.log('tip插槽')
       return '只能上传jpg/png文件，且不超过500kb'
     },
   },
