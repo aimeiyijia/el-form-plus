@@ -27233,8 +27233,11 @@ let form_ElFormPlus = class ElFormPlus extends mixins(methods) {
     // 防止事件注入时再次触发render
     this.listeners = this.$listeners;
   }
+  // this.model.x = xx 这样的写法只会触发一次
+  // this.model = { x: xx } 这样的写法只会触发两次 因为这个写法改变了model的原有引用值
   modelDataChange() {
     this.bindData(this.modelData);
+    this.$emit('change', this.model);
   }
   // 这一步主要是为了方便内部操作options
   // 深拷贝保存为内部状态
@@ -27347,11 +27350,11 @@ let form_ElFormPlus = class ElFormPlus extends mixins(methods) {
         placeholder
       } = singleFormAttrs;
       const {
-        type = "",
+        type = '',
         attrs = {},
         layout,
         col,
-        field = "",
+        field = '',
         container,
         on = {},
         scopedSlots = {}
@@ -27568,7 +27571,9 @@ __decorate([Prop({
   type: Object,
   default: () => ({})
 })], form_ElFormPlus.prototype, "unifyOptions", void 0);
-__decorate([Watch('modelData')], form_ElFormPlus.prototype, "modelDataChange", null);
+__decorate([Watch('modelData', {
+  deep: true
+})], form_ElFormPlus.prototype, "modelDataChange", null);
 __decorate([Watch('options', {
   immediate: true,
   deep: true
