@@ -4,6 +4,8 @@ import { Component } from 'vue-property-decorator'
 @Component
 export default class TimeSelectPlus extends Vue {
   render(h: CreateElement): VNode {
-    return <el-time-select {...{ attrs: this.$attrs, props: this.$attrs, on: this.$listeners }} />
+    console.log(this.$attrs, 'time-select 属性')
+    const { value } = this.$attrs
+    return <div class="el-form-item__content-detail">{value}</div>
   }
 }

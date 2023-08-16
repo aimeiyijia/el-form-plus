@@ -11,13 +11,13 @@ const checkbox = {
     // disabled: true,
     options: [
       {
-        label: '1',
+        label: '值为1',
         value: 1,
         // 该项就渲染为el-checkbox-button
         // type: 'button',
       },
       {
-        label: '2',
+        label: '值为2',
         value: 2,
       },
     ],

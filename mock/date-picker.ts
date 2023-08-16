@@ -7,7 +7,7 @@ const datepicker = {
   // 表单项绑定的值（字段名） 必需
   field: 'datePicker',
   // 初始值
-  value: '',
+  value: '345',
   // 表单项的配置项
   attrs: {
     type: 'daterange',

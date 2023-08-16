@@ -31,8 +31,16 @@ export default class CheckBoxPlus extends Vue {
   render(h: CreateElement): VNode {
     console.log(this.$attrs, 'checkbox 属性')
     const { value, options } = this.$attrs as any
-    const curOption: any = (options as Option[]).find(o => o.value === value)
-    const label = curOption.label
-    return <div class="el-form-item__content-detail">{label}</div>
+    const matchArrs: string[] = []
+    for (const v of value) {
+      const match: any = this.deepQuery(options, v)
+      matchArrs.push(match.label)
+    }
+
+    return (
+      <div class="el-form-item__content-detail">
+        {<div>{matchArrs.join('/')}</div>}
+      </div>
+    )
   }
 }

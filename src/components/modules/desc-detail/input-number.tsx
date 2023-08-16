@@ -4,20 +4,8 @@ import { Component, Prop, Emit, Watch } from 'vue-property-decorator'
 @Component
 export default class InputNumberPlus extends Vue {
   render(h: CreateElement): VNode {
-    return (
-      <el-input-number
-        {...{
-          attrs: this.$attrs,
-          props: this.$attrs,
-          on: {
-            ...this.$listeners,
-            change: (currentValue: number, oldValue: number) => {
-              this.$emit('input', currentValue)
-              this.$emit('change', currentValue, oldValue)
-            },
-          },
-        }}
-      />
-    )
+    console.log(this.$attrs, 'input-number 属性')
+    const { value } = this.$attrs
+    return <div class="el-form-item__content-detail">{value}</div>
   }
 }

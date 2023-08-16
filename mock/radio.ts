@@ -13,11 +13,11 @@ const radio = {
     isGroup: true,
     options: [
       {
-        lable: 1,
+        label: 1,
         value: 1,
       },
       {
-        lable: 2,
+        label: 2,
         value: 2,
       },
     ],
