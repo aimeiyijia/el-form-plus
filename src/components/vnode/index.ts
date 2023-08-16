@@ -22,7 +22,32 @@ import {
   TreeBase,
   UploadBase,
 } from '../modules'
-const vnodes = {
+
+import {
+  SelectTreeDetail,
+  AutocompleteDetail,
+  CascaderDetail,
+  CascaderPanelDetail,
+  CheckBoxDetail,
+  ColorPickerDetail,
+  CustomDetail,
+  DatePickerDetail,
+  DateTimePickerDetail,
+  InputNumberDetail,
+  InputDetail,
+  RadioDetail,
+  RateDetail,
+  SelectDetail,
+  SliderDetail,
+  SuperCustomDetail,
+  SwitchDetail,
+  TimePickerDetail,
+  TimeSelectrDetail,
+  TransferDetail,
+  TreeDetail,
+  UploadDetail,
+} from '../modules/desc-detail'
+const Vnodes = {
   SelectTree: SelectTreeBase,
   Autocomplete: AutocompleteBase,
   Cascader: CascaderBase,
@@ -45,7 +70,30 @@ const vnodes = {
   Tree: TreeBase,
   Upload: UploadBase,
 }
+const DetailVnodes = {
+  SelectTree: SelectTreeDetail,
+  Autocomplete: AutocompleteDetail,
+  Cascader: CascaderDetail,
+  CascaderPanel: CascaderPanelDetail,
+  CheckBox: CheckBoxDetail,
+  ColorPicker: ColorPickerDetail,
+  Custom: CustomDetail,
+  DatePicker: DatePickerDetail,
+  DateTimePicker: DateTimePickerDetail,
+  InputNumber: InputNumberDetail,
+  Input: InputDetail,
+  Radio: RadioDetail,
+  Rate: RateDetail,
+  Select: SelectDetail,
+  Slider: SliderDetail,
+  Switch: SwitchDetail,
+  TimePicker: TimePickerDetail,
+  TimeSelect: TimeSelectrDetail,
+  Transfer: TransferDetail,
+  Tree: TreeDetail,
+  Upload: UploadDetail,
+}
 
 export const SuperCustom = SuperCustomBase
 
-export default vnodes
+export { Vnodes, DetailVnodes }

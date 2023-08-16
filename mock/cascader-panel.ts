@@ -7,7 +7,10 @@ const cascader = {
   // 表单项绑定的值（字段名） 必需
   field: 'cascaderPanel',
   // 初始值
-  value: [['zhinan', 'shejiyuanze', 'yizhi']],
+  value: [
+    ['zhinan', 'shejiyuanze', 'yizhi'],
+    ['zhinan', 'shejiyuanze', 'fankui'],
+  ],
   // 表单项的配置项
   attrs: {
     props: {
@@ -303,8 +306,8 @@ const cascader = {
     input: () => {
       console.log('input事件')
     },
-    change: () => {
-      console.log('change事件')
+    change: (e: any) => {
+      console.log(e, 'change事件')
     },
     'expand-change': () => {
       console.log('expandChange事件')

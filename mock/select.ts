@@ -20,12 +20,12 @@ const select = {
             // value做key
             value: 'Chengdu',
             label: '成都',
-            slot: (o: any) => {
-              const { attr } = o
-              console.log()
-              // return h(<span style="float: left">{attr.label}</span>)
-              return 23
-            },
+            // slot: (o: any) => {
+            //   const { attr } = o
+            //   console.log()
+            //   // return h(<span style="float: left">{attr.label}</span>)
+            //   return 23
+            // },
           },
           {
             value: 'Shenzhen',

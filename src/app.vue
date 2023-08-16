@@ -25,7 +25,7 @@ export default {
   data() {
     return {
       // 除了在option配置项中的value字段中设置初始值，也可以直接传递model对象赋初值
-      model: { input: '来自model的初始值' },
+      model: {},
 
       api: null,
 
@@ -58,6 +58,9 @@ export default {
         // container: 'draggable',
         // 表单控件是否充满表单域
         full: true,
+        // 表单模式
+        // 详情模式 form：表单模式 desc：描述性模式
+        detailPattern: 'desc',
       },
 
       // 表单项生成配置
@@ -66,7 +69,7 @@ export default {
       unifyOptions: {
         attrs: {},
         config: {
-          labelWidth: '240px',
+          // labelWidth: '240px',
         },
       },
       // 表单校验规则
@@ -75,23 +78,19 @@ export default {
   mounted() {
     // console.log(setByField, '内置方法')
     // console.log(this.options, '配置项')
-
     // setByField(this.options, 'autoComplete', 'value', '1')
     // console.log(this.options, '配置项更新完毕')
     // console.log(this.model, '------双向绑定值------')
-    setInterval(() => {
-      // 这样的写法将会触发两次表单更新 因为这个写法改变了model的原有引用值
-      this.model = {
-        inputNumber: new Date().getSeconds(),
-        input: new Date().getSeconds(),
-      }
-    }, 3000)
-
+    // setInterval(() => {
+    //   // 这样的写法将会触发两次表单更新 因为这个写法改变了model的原有引用值
+    //   this.model = {
+    //     inputNumber: new Date().getSeconds(),
+    //     input: new Date().getSeconds(),
+    //   }
+    // }, 3000)
     // this.model.input = '123'
-
     // setInterval(() => {
     //   console.log(this.model, '双向绑定值')
-
     //   // 这样的写法只会触发一次表单更新
     //   this.model.input = new Date().getSeconds() + 100
     //   this.model.inputNumber = new Date().getSeconds()

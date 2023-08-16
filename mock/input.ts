@@ -3,11 +3,12 @@ const input = {
   type: 'Input',
   // 表单是否隐藏 默认为false（控制的是el-form-item）
   hidden: false,
-  label: '外部的label123',
+  label: '输入框：',
   // 表单项绑定的值（字段名） 必需
   field: 'input',
   // 初始值
   value: 'input初始值',
+  customValue: 0,
   placeholder: '快捷方式配置的placeholder',
   // disabled: true,
   // 表单项的配置项
@@ -15,7 +16,7 @@ const input = {
     type: 'text',
     // 控件支持的原生属性也可以写在这里
     extraClass: 'extraClass',
-    style: 'color: red'
+    // style: 'color: red'
   },
   // 渲染更多的表单项
   // 配置项相同，因为是渲染在同一个el-form-item中所以无config配置，也不支持
@@ -84,9 +85,9 @@ const input = {
     // labelWidth: '120px',
 
     // el-form-item所占据的空间
-    col: {
-      span: 24,
-    },
+    // col: {
+    //   span: 24,
+    // },
 
     // 包裹el-form-item的组件
     // 组件名/标签名

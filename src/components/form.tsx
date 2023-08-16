@@ -6,13 +6,13 @@ import MethodsMixins from './mixins/methods'
 import './custom/fragment'
 import { Fragment } from 'vue-frag'
 import { cloneDeep, isFunction, isString, isArray } from 'lodash'
-import { isBoolean } from './utils'
+import { isDefined } from './utils'
 import objectPath from './utils/object-path'
 // 样式
 import './styles/index.scss'
 
 // 取出vnode匹配表
-import Vnodes, { SuperCustom } from './vnode'
+import { Vnodes, DetailVnodes, SuperCustom } from './vnode'
 
 interface IVnodes {
   [key: string]: any
@@ -145,6 +145,11 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
     return vnodes[type]
   }
 
+  private renderWhatDetailComponent(type: any) {
+    const vnodes: IVnodes = DetailVnodes
+    return vnodes[type]
+  }
+
   // 判断需要渲染的containerEl
   private renderContainerEl(c: any) {
     if (c) {
@@ -168,7 +173,11 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
       col: globalColConfig = { span: 12 },
     } = this.layout || {}
 
-    const { container: globalContainer, full = false } = this.config
+    const {
+      container: globalContainer,
+      full = false,
+      detailPattern = 'form',
+    } = this.config
     // 渲染表单项
     const renderSingleForm = (singleFormAttrs: any) => {
       const { attrs: unifyAttrs = {} } = this.unifyOptions
@@ -179,6 +188,7 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
         layout,
         col,
         field = '',
+        customValue,
         container,
         on = {},
         scopedSlots = {},
@@ -229,21 +239,37 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
       // 需要渲染的组件 SuperComponent
       const TrueComponent: any = this.renderWhatComponent(type)
 
+      const detailComponent: any = this.renderWhatDetailComponent(type)
+
       return (
         <ColEl {...{ props: { ...globalColConfig, ...col } }}>
           <ContainerEl>
-            <TrueComponent
-              {...{
-                scopedSlots: customScopedSlots,
-                attrs: { ...unifyAttrs, ...shortcutAttrs, ...attrs },
-                on: {
-                  ...extraEvents,
-                  input: customInputEvent,
-                },
-              }}
-              class={attrs.extraClass}
-              value={value}
-            />
+            {detailPattern === 'desc' ? (
+              <detailComponent
+                {...{
+                  scopedSlots: customScopedSlots,
+                  attrs: { ...unifyAttrs, ...shortcutAttrs, ...attrs },
+                  on: {
+                    ...extraEvents,
+                  },
+                }}
+                class={attrs.extraClass}
+                value={isDefined(customValue) ? customValue : value}
+              ></detailComponent>
+            ) : (
+              <TrueComponent
+                {...{
+                  scopedSlots: customScopedSlots,
+                  attrs: { ...unifyAttrs, ...shortcutAttrs, ...attrs },
+                  on: {
+                    ...extraEvents,
+                    input: customInputEvent,
+                  },
+                }}
+                class={attrs.extraClass}
+                value={isDefined(customValue) ? customValue : value}
+              />
+            )}
           </ContainerEl>
         </ColEl>
       )
