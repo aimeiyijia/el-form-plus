@@ -172,7 +172,7 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
     // 渲染表单项
     const renderSingleForm = (singleFormAttrs: any) => {
       const { attrs: unifyAttrs = {} } = this.unifyOptions
-      const { placeholder } = singleFormAttrs
+      const { placeholder, disabled } = singleFormAttrs
       const {
         type = '',
         attrs = {},
@@ -185,7 +185,7 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
       } = singleFormAttrs
 
       // 将attrs中一些常用的配置提取出来，
-      const shortcutAttrs = { placeholder }
+      const shortcutAttrs = { placeholder, disabled }
 
       // 作用域插槽本身也是函数，在这里做一次转换
       const customScopedSlots: { [key: string]: any } = {}

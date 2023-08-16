@@ -9,6 +9,7 @@ const input = {
   // 初始值
   value: 'input初始值',
   placeholder: '快捷方式配置的placeholder',
+  // disabled: true,
   // 表单项的配置项
   attrs: {
     type: 'text',
