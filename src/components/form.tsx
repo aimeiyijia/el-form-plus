@@ -6,7 +6,6 @@ import MethodsMixins from './mixins/methods'
 import './custom/fragment'
 import { Fragment } from 'vue-frag'
 import { cloneDeep, isFunction, isString, isArray } from 'lodash'
-import { isDefined } from './utils'
 import objectPath from './utils/object-path'
 // 样式
 import './styles/index.scss'
@@ -188,7 +187,7 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
         layout,
         col,
         field = '',
-        customValue,
+        detail = {},
         container,
         on = {},
         scopedSlots = {},
@@ -239,23 +238,28 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
       // 需要渲染的组件 SuperComponent
       const TrueComponent: any = this.renderWhatComponent(type)
 
-      const detailComponent: any = this.renderWhatDetailComponent(type)
+      const DetailComponent: any = this.renderWhatDetailComponent(type)
 
       return (
         <ColEl {...{ props: { ...globalColConfig, ...col } }}>
           <ContainerEl>
             {detailPattern === 'desc' ? (
-              <detailComponent
+              <DetailComponent
                 {...{
                   scopedSlots: customScopedSlots,
-                  attrs: { ...unifyAttrs, ...shortcutAttrs, ...attrs },
+                  attrs: {
+                    ...unifyAttrs,
+                    ...shortcutAttrs,
+                    ...attrs,
+                    ...{ detail },
+                  },
                   on: {
                     ...extraEvents,
                   },
                 }}
                 class={attrs.extraClass}
-                value={isDefined(customValue) ? customValue : value}
-              ></detailComponent>
+                value={value}
+              ></DetailComponent>
             ) : (
               <TrueComponent
                 {...{
@@ -267,7 +271,7 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
                   },
                 }}
                 class={attrs.extraClass}
-                value={isDefined(customValue) ? customValue : value}
+                value={value}
               />
             )}
           </ContainerEl>

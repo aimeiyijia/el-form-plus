@@ -5,7 +5,12 @@ const checkbox = {
   hidden: false,
   // 表单项绑定的值（字段名） 必需
   field: 'checkBox',
-  value: [2],
+  value: [1, 2],
+  detail: {
+    // separator: '-',
+    // 这里的value会覆盖外面的value，不做任何处理会直接渲染出来
+    // value: '456789',
+  },
   // 表单项的配置项
   attrs: {
     // disabled: true,

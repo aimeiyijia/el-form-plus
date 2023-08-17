@@ -1,12 +1,15 @@
 import Vue, { VNode, CreateElement } from 'vue'
 import { Component } from 'vue-property-decorator'
-
+import { isDefined } from '../../utils/index'
 @Component
 export default class SliderPlus extends Vue {
   render(h: CreateElement): VNode {
     console.log(this.$attrs, 'slider 属性')
-    const { value } = this.$attrs
-    const label = (value as unknown as string[]).join(' ~ ')
-    return <div class="el-form-item__content-detail">{label}</div>
+    const { value, detail } = this.$attrs as any
+
+    const { value: forceValue, separator = ' ~ ' } = detail
+
+    const content = isDefined(forceValue) ? forceValue : value.join(separator)
+    return <div class="el-form-item__content-detail">{content}</div>
   }
 }

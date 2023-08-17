@@ -1,6 +1,7 @@
 import Vue, { VNode, CreateElement } from 'vue'
 import { Component } from 'vue-property-decorator'
 import omit from 'lodash/omit'
+import { isDefined } from '../../utils/index'
 import { Fragment } from 'vue-frag'
 
 @Component({
@@ -9,8 +10,11 @@ import { Fragment } from 'vue-frag'
 export default class RadioPlus extends Vue {
   render(h: CreateElement): VNode {
     console.log(this.$attrs, 'radio 属性')
-    const { value, options } = this.$attrs as any
-    const match = options.find((o: any) => o.value === value)
-    return <div class="el-form-item__content-detail">{match.label}</div>
+    const { value, detail } = this.$attrs as any
+
+    const { value: forceValue } = detail
+
+    const content = isDefined(forceValue) ? forceValue : value
+    return <div class="el-form-item__content-detail">{content}</div>
   }
 }

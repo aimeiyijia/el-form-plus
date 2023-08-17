@@ -8,6 +8,11 @@ const cascader = {
   value: [['zhinan', 'shejiyuanze', 'yizhi']],
   // 非多选时[value,value,value]
   // value: ['zhinan', 'shejiyuanze', 'yizhi'],
+  detail: {
+    // separator: '-',
+    // 这里的value会覆盖外面的value，不做任何处理会直接渲染出来
+    // value: '456789',
+  },
   // 表单项的配置项
   attrs: {
     // 省市区联动快捷方式

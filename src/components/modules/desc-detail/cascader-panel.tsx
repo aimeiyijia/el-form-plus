@@ -1,45 +1,48 @@
 import Vue, { VNode, CreateElement } from 'vue'
 import { Component } from 'vue-property-decorator'
+import {
+  isDefined,
+  deepQuery,
+  isArray,
+  isMultiDimension,
+} from '../../utils/index'
 
 @Component
-export default class CascaderPanelPlus extends Vue {
-  deepQuery(tree: any, value: string) {
-    let isGet = false
-    let retNode = null
-    function deepSearch(tree: any, value: string) {
-      for (let i = 0; i < tree.length; i++) {
-        if (tree[i].children && tree[i].children.length > 0) {
-          deepSearch(tree[i].children, value)
-        }
-        if (value === tree[i].value || isGet) {
-          isGet || (retNode = tree[i])
-          isGet = true
-          break
-        }
-      }
-    }
-    deepSearch(tree, value)
-    return retNode
-  }
-
+export default class CascaderPanelDetail extends Vue {
   render(h: CreateElement): VNode {
     console.log(this.$attrs, 'cascader-panel 属性')
-    const { value, options }: any = this.$attrs
-    const matchArrs = []
+    const { value, options, detail }: any = this.$attrs
+
+    const { value: forceValue, separator = '/' } = detail
+
+    const matchArrs: any = []
     for (const v of value) {
       const matchArr = []
-      for (const v1 of v) {
-        const match: any = this.deepQuery(options, v1)
-        matchArr.push(match.label)
+      if (isArray(v)) {
+        for (const v1 of v) {
+          const match: any = deepQuery(options, v1)
+          matchArr.push(match.label)
+        }
+        matchArrs.push(matchArr)
+      } else {
+        const match: any = deepQuery(options, v)
+        matchArrs.push(match.label)
       }
-      matchArrs.push(matchArr)
-      options.find((o: any) => o.value === 1)
     }
 
-    const labels = []
-    for (const v of matchArrs) {
-      labels.push(<div>{v.join('/')}</div>)
+    function getContent() {
+      if (isDefined(forceValue)) return forceValue
+      const labels = []
+      if (isMultiDimension(matchArrs)) {
+        for (const v of matchArrs) {
+          labels.push(<div>{v.join(separator)}</div>)
+        }
+      } else {
+        labels.push(<div>{matchArrs.join(separator)}</div>)
+      }
+      return labels
     }
-    return <div class="el-form-item__content-detail">{labels}</div>
+
+    return <div class="el-form-item__content-detail">{getContent()}</div>
   }
 }

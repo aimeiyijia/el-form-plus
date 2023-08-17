@@ -11,6 +11,10 @@ export function isArray(val: any): boolean {
   return Object.prototype.toString.call(val) === '[object Array]'
 }
 
+export function isMultiDimension(val: any): Boolean {
+  return val.some((item: any) => item instanceof Array)
+}
+
 export function isBoolean(val: any): boolean {
   return Object.prototype.toString.call(val) === '[object Boolean]'
 }
@@ -93,4 +97,28 @@ export const kebabCase = function(str: string): string {
 export const capitalize = function(str: string): string {
   if (!isString(str)) return str
   return str.charAt(0).toUpperCase() + str.slice(1)
+}
+
+export function deepQuery(
+  tree: any,
+  value: string,
+  matchMark = 'value',
+  children = 'children'
+) {
+  let isGet = false
+  let target = null
+  function deepSearch(tree: any, value: string) {
+    for (let i = 0; i < tree.length; i++) {
+      if (tree[i][children] && tree[i][children].length > 0) {
+        deepSearch(tree[i][children], value)
+      }
+      if (value === tree[i][matchMark] || isGet) {
+        isGet || (target = tree[i])
+        isGet = true
+        break
+      }
+    }
+  }
+  deepSearch(tree, value)
+  return target
 }
