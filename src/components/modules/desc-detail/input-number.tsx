@@ -10,6 +10,10 @@ export default class InputNumberDetail extends Vue {
     const { value: forceValue } = detail
 
     const content = isDefined(forceValue) ? forceValue : value
-    return <div class="el-form-item__content-detail">{content}</div>
+    return (
+      <div class="el-form-item__content-detail" {...{ on: this.$listeners }}>
+        {content}
+      </div>
+    )
   }
 }

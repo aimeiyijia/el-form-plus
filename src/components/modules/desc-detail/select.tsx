@@ -37,6 +37,10 @@ export default class SelectDetail extends Vue {
     if (curOption.next && curOption.next.label) {
       label = label + '/' + curOption.next.label
     }
-    return <div class="el-form-item__content-detail">{label}</div>
+    return (
+      <div class="el-form-item__content-detail" {...{ on: this.$listeners }}>
+        {label}
+      </div>
+    )
   }
 }

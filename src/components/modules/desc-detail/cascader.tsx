@@ -42,6 +42,10 @@ export default class CascaderDetail extends Vue {
       return labels
     }
 
-    return <div class="el-form-item__content-detail">{getContent()}</div>
+    return (
+      <div class="el-form-item__content-detail" {...{ on: this.$listeners }}>
+        {getContent()}
+      </div>
+    )
   }
 }

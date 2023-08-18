@@ -11,7 +11,7 @@ export default class ColorPickerDetail extends Vue {
 
     const content = isDefined(forceValue) ? forceValue : value
     return (
-      <div class="el-form-item__content-detail">
+      <div class="el-form-item__content-detail" {...{ on: this.$listeners }}>
         <span
           {...{ class: 'color-block', style: { backgroundColor: content } }}
         >

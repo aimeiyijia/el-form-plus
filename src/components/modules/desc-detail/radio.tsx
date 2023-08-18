@@ -7,7 +7,7 @@ import { Fragment } from 'vue-frag'
 @Component({
   components: { Fragment },
 })
-export default class RadioPlus extends Vue {
+export default class RadioDetail extends Vue {
   render(h: CreateElement): VNode {
     console.log(this.$attrs, 'radio 属性')
     const { value, detail } = this.$attrs as any
@@ -15,6 +15,10 @@ export default class RadioPlus extends Vue {
     const { value: forceValue } = detail
 
     const content = isDefined(forceValue) ? forceValue : value
-    return <div class="el-form-item__content-detail">{content}</div>
+    return (
+      <div class="el-form-item__content-detail" {...{ on: this.$listeners }}>
+        {content}
+      </div>
+    )
   }
 }

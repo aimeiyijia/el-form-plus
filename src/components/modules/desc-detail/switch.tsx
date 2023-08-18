@@ -2,7 +2,7 @@ import Vue, { VNode, CreateElement } from 'vue'
 import { Component } from 'vue-property-decorator'
 import { isDefined } from '../../utils/index'
 @Component
-export default class SwitchPlus extends Vue {
+export default class SwitchDetail extends Vue {
   render(h: CreateElement): VNode {
     console.log(this.$attrs, 'switch 属性')
     const {
@@ -15,8 +15,12 @@ export default class SwitchPlus extends Vue {
     const content = isDefined(forceValue)
       ? forceValue
       : value
-        ? activeText
-        : inactiveText
-    return <div class="el-form-item__content-detail">{content}</div>
+      ? activeText
+      : inactiveText
+    return (
+      <div class="el-form-item__content-detail" {...{ on: this.$listeners }}>
+        {content}
+      </div>
+    )
   }
 }

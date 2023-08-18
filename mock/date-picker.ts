@@ -7,11 +7,11 @@ const datepicker = {
   // 表单项绑定的值（字段名） 必需
   field: 'datePicker',
   // 初始值
-  value: '345',
+  value: [new Date(), new Date()],
   // 表单项的配置项
   attrs: {
     type: 'daterange',
-    align: 'right',
+    // align: 'right',
     unlinkPanels: true,
     rangeSeparator: '至',
     startPlaceholder: '开始日期',
@@ -47,6 +47,9 @@ const datepicker = {
         },
       ],
     },
+  },
+  detail: {
+    format: 'YYYY-MM-DD',
   },
   // 表单项事件
   on: {
