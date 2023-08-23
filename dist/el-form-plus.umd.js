@@ -6920,6 +6920,7 @@ function setByField(options, fieldName, path, value) {
     } else {
       targetErrorTips(fieldName);
     }
+    return options;
   } catch (error) {
     console.error(error, 'updateField');
   }
@@ -6944,6 +6945,7 @@ function insertByField(options, fieldName, path, value, positions) {
   try {
     const target = getTarget(options, fieldName);
     object_path.insert(target, path, value, positions);
+    return options;
   } catch (error) {
     console.error(error, 'insertByField');
   }
@@ -6953,6 +6955,7 @@ function emptysByField(options, fieldName, path) {
   try {
     const target = getTarget(options, fieldName);
     object_path.empty(target, path);
+    return options;
   } catch (error) {
     console.error(error, 'emptysByField');
   }
@@ -6962,6 +6965,7 @@ function getByField(options, fieldName, path, defaultValue) {
   try {
     const target = getTarget(options, fieldName);
     object_path.get(target, path, defaultValue);
+    return options;
   } catch (error) {
     console.error(error, 'getByField');
   }
@@ -6971,6 +6975,7 @@ function delByField(options, fieldName, path) {
   try {
     const target = getTarget(options, fieldName);
     object_path.del(target, path);
+    return options;
   } catch (error) {
     console.error(error, 'delByField');
   }
