@@ -18,7 +18,7 @@ export function setByField(
   fieldName: string,
   path: string,
   value: any
-): void {
+): any {
   try {
     const target = getTarget(options, fieldName)
     if (target) {
@@ -26,6 +26,7 @@ export function setByField(
     } else {
       targetErrorTips(fieldName)
     }
+    return options
   } catch (error) {
     console.error(error, 'updateField')
   }
@@ -58,20 +59,26 @@ export function insertByField(
   path: string,
   value: any,
   positions: number
-): void {
+): any {
   try {
     const target = getTarget(options, fieldName)
     objectPath.insert(target, path, value, positions)
+    return options
   } catch (error) {
     console.error(error, 'insertByField')
   }
 }
 
 // number -> 0, boolean -> no-change, array -> [], object -> {}, Function -> null
-export function emptysByField(options: [], fieldName: string, path: string) {
+export function emptysByField(
+  options: [],
+  fieldName: string,
+  path: string
+): any {
   try {
     const target = getTarget(options, fieldName)
     objectPath.empty(target, path)
+    return options
   } catch (error) {
     console.error(error, 'emptysByField')
   }
@@ -83,20 +90,22 @@ export function getByField(
   fieldName: string,
   path: string,
   defaultValue: any
-): void {
+): any {
   try {
     const target = getTarget(options, fieldName)
     objectPath.get(target, path, defaultValue)
+    return options
   } catch (error) {
     console.error(error, 'getByField')
   }
 }
 
 // 删除指定路径
-export function delByField(options: [], fieldName: string, path: string): void {
+export function delByField(options: [], fieldName: string, path: string): any {
   try {
     const target = getTarget(options, fieldName)
     objectPath.del(target, path)
+    return options
   } catch (error) {
     console.error(error, 'delByField')
   }
