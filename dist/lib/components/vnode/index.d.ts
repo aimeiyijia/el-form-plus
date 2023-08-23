@@ -1,5 +1,6 @@
 import { SelectTreeBase, AutocompleteBase, CascaderBase, CascaderPanelBase, CheckBoxBase, ColorPickerBase, CustomBase, DatePickerBase, DateTimePickerBase, InputNumberBase, InputBase, RadioBase, RateBase, SelectBase, SliderBase, SuperCustomBase, SwitchBase, TimePickerBase, TimeSelectrBase, TransferBase, TreeBase, UploadBase } from '../modules';
-declare const vnodes: {
+import { AutocompleteDetail, CascaderDetail, CascaderPanelDetail, CheckBoxDetail, ColorPickerDetail, DatePickerDetail, DateTimePickerDetail, InputNumberDetail, InputDetail, RadioDetail, RateDetail, SelectDetail, SliderDetail, SwitchDetail, TimePickerDetail, TimeSelectrDetail } from '../modules/desc-detail';
+declare const Vnodes: {
     SelectTree: typeof SelectTreeBase;
     Autocomplete: typeof AutocompleteBase;
     Cascader: typeof CascaderBase;
@@ -22,5 +23,28 @@ declare const vnodes: {
     Tree: typeof TreeBase;
     Upload: typeof UploadBase;
 };
+declare const DetailVnodes: {
+    SelectTree: typeof SelectTreeBase;
+    Autocomplete: typeof AutocompleteDetail;
+    Cascader: typeof CascaderDetail;
+    CascaderPanel: typeof CascaderPanelDetail;
+    CheckBox: typeof CheckBoxDetail;
+    ColorPicker: typeof ColorPickerDetail;
+    Custom: typeof CustomBase;
+    DatePicker: typeof DatePickerDetail;
+    DateTimePicker: typeof DateTimePickerDetail;
+    InputNumber: typeof InputNumberDetail;
+    Input: typeof InputDetail;
+    Radio: typeof RadioDetail;
+    Rate: typeof RateDetail;
+    Select: typeof SelectDetail;
+    Slider: typeof SliderDetail;
+    Switch: typeof SwitchDetail;
+    TimePicker: typeof TimePickerDetail;
+    TimeSelect: typeof TimeSelectrDetail;
+    Transfer: typeof TransferBase;
+    Tree: typeof TreeBase;
+    Upload: typeof UploadBase;
+};
 export declare const SuperCustom: typeof SuperCustomBase;
-export default vnodes;
+export { Vnodes, DetailVnodes };
