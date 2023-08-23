@@ -5,7 +5,6 @@ import { isDefined } from '../../utils/index'
 @Component
 export default class RateDetail extends Vue {
   render(h: CreateElement): VNode {
-    console.log(this.$attrs, 'rate 属性')
     const { value, detail } = this.$attrs as any
 
     const { value: forceValue } = detail

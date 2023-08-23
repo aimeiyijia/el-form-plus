@@ -4,7 +4,6 @@ import { isDefined } from '../../utils/index'
 @Component
 export default class SwitchDetail extends Vue {
   render(h: CreateElement): VNode {
-    console.log(this.$attrs, 'switch 属性')
     const {
       value,
       activeText = '是',

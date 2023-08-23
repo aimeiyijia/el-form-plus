@@ -117,7 +117,7 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
       }
       const { field, value, more } = o
       if (field) {
-        this.$set(this.model, field, value)
+        this.$set(this.model, field, this.model[value] || value)
       }
       if (more && isArray(more)) {
         this.buildModel(more)
@@ -321,6 +321,7 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
         <ColEl {...{ props: { ...globalColConfig, ...col } }}>
           <ContainerEl>
             <el-form-item
+              class={mergeConfig.class}
               {...{
                 props: {
                   ...shortcutConfig,

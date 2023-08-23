@@ -6,7 +6,6 @@ import { isDefined, isArray } from '../../utils/index'
 @Component
 export default class DateTimePickerDetail extends Vue {
   render(h: CreateElement): VNode {
-    console.log(this.$attrs, 'date-time-picker 属性')
     const { value, detail } = this.$attrs as any
 
     const {

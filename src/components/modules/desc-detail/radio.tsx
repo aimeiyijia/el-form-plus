@@ -1,7 +1,7 @@
 import Vue, { VNode, CreateElement } from 'vue'
 import { Component } from 'vue-property-decorator'
 import omit from 'lodash/omit'
-import { isDefined } from '../../utils/index'
+import { isDefined, deepQuery } from '../../utils/index'
 import { Fragment } from 'vue-frag'
 
 @Component({
@@ -9,12 +9,12 @@ import { Fragment } from 'vue-frag'
 })
 export default class RadioDetail extends Vue {
   render(h: CreateElement): VNode {
-    console.log(this.$attrs, 'radio 属性')
-    const { value, detail } = this.$attrs as any
+    const { value, options = [], detail } = this.$attrs as any
 
     const { value: forceValue } = detail
-
-    const content = isDefined(forceValue) ? forceValue : value
+    const match: any = deepQuery(options, value)
+    const label = match ? match.label : ''
+    const content = isDefined(forceValue) ? forceValue : label
     return (
       <div class="el-form-item__content-detail" {...{ on: this.$listeners }}>
         {content}

@@ -14,19 +14,7 @@ const custom = {
   scopedSlots: {
     // jsx或h
     // 这样就可以实现自定义组件的双向绑定
-    custom: ({ instance }: { instance: Vue }) => {
-      return instance.$createElement('el-input', {
-        props: {
-          value: instance.$attrs.value,
-        },
-        on: {
-          input: (val: string) => {
-            console.log(val, '变化')
-            instance.$emit('input', val)
-          },
-        },
-      })
-    },
+    custom: 'custom123'
   },
 
   // el-form-item配置项 可选

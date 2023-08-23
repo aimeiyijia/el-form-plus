@@ -5871,7 +5871,6 @@ function deepQuery(tree, value) {
 
 let cascader_CascaderDetail = class CascaderDetail extends external_vue_default.a {
   render(h) {
-    console.log(this.$attrs, 'cascader-panel 属性');
     const {
       value,
       options,
@@ -5925,7 +5924,6 @@ cascader_CascaderDetail = __decorate([vue_class_component_esm], cascader_Cascade
 
 let cascader_panel_CascaderPanelDetail = class CascaderPanelDetail extends external_vue_default.a {
   render(h) {
-    console.log(this.$attrs, 'cascader-panel 属性');
     const {
       value,
       options,
@@ -5980,10 +5978,9 @@ cascader_panel_CascaderPanelDetail = __decorate([vue_class_component_esm], casca
 
 let check_box_CheckBoxDetail = class CheckBoxDetail extends external_vue_default.a {
   render(h) {
-    console.log(this.$attrs, 'checkbox 属性');
     const {
       value,
-      options,
+      options = [],
       detail
     } = this.$attrs;
     const {
@@ -6019,7 +6016,6 @@ check_box_CheckBoxDetail = __decorate([vue_class_component_esm({
 
 let color_picker_ColorPickerDetail = class ColorPickerDetail extends external_vue_default.a {
   render(h) {
-    console.log(this.$attrs, 'color-picker 属性');
     const {
       value,
       detail
@@ -6096,7 +6092,6 @@ date_picker_DatePickerDetail = __decorate([vue_class_component_esm], date_picker
 
 let date_time_picker_DateTimePickerDetail = class DateTimePickerDetail extends external_vue_default.a {
   render(h) {
-    console.log(this.$attrs, 'date-time-picker 属性');
     const {
       value,
       detail
@@ -6135,7 +6130,6 @@ date_time_picker_DateTimePickerDetail = __decorate([vue_class_component_esm], da
 
 let input_number_InputNumberDetail = class InputNumberDetail extends external_vue_default.a {
   render(h) {
-    console.log(this.$attrs, 'input-number 属性');
     const {
       value,
       detail
@@ -6160,7 +6154,6 @@ input_number_InputNumberDetail = __decorate([vue_class_component_esm], input_num
 
 let input_InputDetail = class InputDetail extends external_vue_default.a {
   render(h) {
-    console.log(this.$attrs, 'input 属性');
     const {
       value
     } = this.$attrs;
@@ -6182,15 +6175,17 @@ input_InputDetail = __decorate([vue_class_component_esm], input_InputDetail);
 
 let radio_RadioDetail = class RadioDetail extends external_vue_default.a {
   render(h) {
-    console.log(this.$attrs, 'radio 属性');
     const {
       value,
+      options = [],
       detail
     } = this.$attrs;
     const {
       value: forceValue
     } = detail;
-    const content = isDefined(forceValue) ? forceValue : value;
+    const match = deepQuery(options, value);
+    const label = match ? match.label : '';
+    const content = isDefined(forceValue) ? forceValue : label;
     return h("div", {
       "class": "el-form-item__content-detail",
       "on": {
@@ -6212,7 +6207,6 @@ radio_RadioDetail = __decorate([vue_class_component_esm({
 
 let rate_RateDetail = class RateDetail extends external_vue_default.a {
   render(h) {
-    console.log(this.$attrs, 'rate 属性');
     const {
       value,
       detail
@@ -6240,7 +6234,7 @@ let select_SelectDetail = class SelectDetail extends external_vue_default.a {
     const {
       value,
       groupOptions = [],
-      options
+      options = []
     } = this.$attrs;
     let curOption = options.find(o => o.value === value);
     if (!curOption) {
@@ -6282,7 +6276,6 @@ select_SelectDetail = __decorate([vue_class_component_esm], select_SelectDetail)
 
 let slider_SliderDetail = class SliderDetail extends external_vue_default.a {
   render(h) {
-    console.log(this.$attrs, 'slider 属性');
     const {
       value,
       detail
@@ -6309,7 +6302,6 @@ slider_SliderDetail = __decorate([vue_class_component_esm], slider_SliderDetail)
 
 let switch_SwitchDetail = class SwitchDetail extends external_vue_default.a {
   render(h) {
-    console.log(this.$attrs, 'switch 属性');
     const {
       value,
       activeText = '是',
@@ -6339,7 +6331,6 @@ switch_SwitchDetail = __decorate([vue_class_component_esm], switch_SwitchDetail)
 
 let time_picker_TimePickerDetail = class TimePickerDetail extends external_vue_default.a {
   render(h) {
-    console.log(this.$attrs, 'time-picker 属性');
     const {
       value,
       detail
@@ -6380,7 +6371,6 @@ time_picker_TimePickerDetail = __decorate([vue_class_component_esm], time_picker
 
 let time_select_TimeSelectDetail = class TimeSelectDetail extends external_vue_default.a {
   render(h) {
-    console.log(this.$attrs, 'time-select 属性');
     const {
       value,
       detail
@@ -6582,7 +6572,7 @@ let form_ElFormPlus = class ElFormPlus extends mixins(methods) {
         more
       } = o;
       if (field) {
-        this.$set(this.model, field, value);
+        this.$set(this.model, field, this.model[value] || value);
       }
       if (more && Object(lodash["isArray"])(more)) {
         this.buildModel(more);
@@ -6795,6 +6785,7 @@ let form_ElFormPlus = class ElFormPlus extends mixins(methods) {
           }
         }
       }, [h(ContainerEl, [h("el-form-item", {
+        "class": mergeConfig.class,
         "props": {
           ...{
             ...shortcutConfig,

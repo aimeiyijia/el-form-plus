@@ -10,8 +10,7 @@ import { Fragment } from 'vue-frag'
 })
 export default class CheckBoxDetail extends Vue {
   render(h: CreateElement): VNode {
-    console.log(this.$attrs, 'checkbox 属性')
-    const { value, options, detail } = this.$attrs as any
+    const { value, options = [], detail } = this.$attrs as any
 
     const { value: forceValue, separator = '；' } = detail
 

@@ -4,7 +4,6 @@ import { isDefined } from '../../utils/index'
 @Component
 export default class ColorPickerDetail extends Vue {
   render(h: CreateElement): VNode {
-    console.log(this.$attrs, 'color-picker 属性')
     const { value, detail } = this.$attrs as any
 
     const { value: forceValue } = detail

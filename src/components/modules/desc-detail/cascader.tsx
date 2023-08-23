@@ -9,7 +9,6 @@ import {
 @Component
 export default class CascaderDetail extends Vue {
   render(h: CreateElement): VNode {
-    console.log(this.$attrs, 'cascader-panel 属性')
     const { value, options, detail }: any = this.$attrs
 
     const { value: forceValue, separator = '/' } = detail

@@ -13,7 +13,7 @@ type SelectPlus = {
 @Component
 export default class SelectDetail extends Vue {
   render(h: CreateElement): VNode {
-    const { value, groupOptions = [], options } = this.$attrs as any
+    const { value, groupOptions = [], options = [] } = this.$attrs as any
     let curOption: any = (options as Option[]).find(o => o.value === value)
     if (!curOption) {
       curOption = groupOptions.find((o: any) => {

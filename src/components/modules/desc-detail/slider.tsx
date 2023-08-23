@@ -4,7 +4,6 @@ import { isDefined } from '../../utils/index'
 @Component
 export default class SliderDetail extends Vue {
   render(h: CreateElement): VNode {
-    console.log(this.$attrs, 'slider 属性')
     const { value, detail } = this.$attrs as any
 
     const { value: forceValue, separator = ' ~ ' } = detail
