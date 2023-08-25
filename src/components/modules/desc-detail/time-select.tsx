@@ -13,12 +13,12 @@ export default class TimeSelectDetail extends Vue {
       if (isArray(value)) {
         const formatValue = []
         for (const v of value) {
-          const formatV = moment(v).format(format)
+          const formatV = format ? format(v) : v
           formatValue.push(formatV)
         }
         return formatValue.join(separator)
       }
-      return moment(value).format(format)
+      return format ? format(value) : value
     }
     return (
       <div class="el-form-item__content-detail" {...{ on: this.$listeners }}>

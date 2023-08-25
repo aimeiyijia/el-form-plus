@@ -60,7 +60,7 @@ export default {
         full: true,
         // 表单模式
         // 详情模式 form：表单模式 desc：描述性模式
-        // detailPattern: 'desc',
+        detailPattern: 'desc',
       },
 
       // 表单项生成配置

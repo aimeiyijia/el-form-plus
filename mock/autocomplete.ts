@@ -7,6 +7,12 @@ const autocomplete = {
   field: 'autoComplete',
   // 初始值
   value: '3',
+  detail: {
+    format: (v: any) => {
+      console.log(v, '----')
+      return v + 3
+    },
+  },
   // 表单项的配置项
   attrs: {
     fetchSuggestions: (queryString: string, callback: Function) => {

@@ -49,7 +49,7 @@ const datepicker = {
     },
   },
   detail: {
-    format: 'YYYY-MM-DD',
+    format: () => 123,
   },
   // 表单项事件
   on: {

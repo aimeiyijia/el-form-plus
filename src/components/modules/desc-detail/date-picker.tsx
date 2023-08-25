@@ -6,22 +6,18 @@ import { isDefined, isArray } from '../../utils/index'
 export default class DatePickerDetail extends Vue {
   render(h: CreateElement): VNode {
     const { value, detail } = this.$attrs as any
-    const {
-      value: forceValue,
-      format = 'YYYY-MM-DD',
-      separator = ' ~ ',
-    } = detail
+    const { value: forceValue, format, separator = ' ~ ' } = detail
     function getContent() {
       if (isDefined(forceValue)) return forceValue
       if (isArray(value)) {
         const formatValue = []
         for (const v of value) {
-          const formatV = moment(v).format(format)
+          const formatV = format ? format(v) : v
           formatValue.push(formatV)
         }
         return formatValue.join(separator)
       }
-      return moment(value).format(format)
+      return format ? format(value) : value
     }
     return (
       <div class="el-form-item__content-detail" {...{ on: this.$listeners }}>
