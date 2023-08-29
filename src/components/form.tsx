@@ -364,7 +364,9 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
       // 分流，SuperCustom是独立，但还是在el-form里面
       // 与el-form-item(不启用布局)或el-row(启用布局)平级
       return options
-        .filter((o: any) => !o.hidden)
+        .filter((o: any) =>
+          isFunction(o.hidden) ? !o.hidden(model) : !o.hidden
+        )
         .map((o: any) => {
           if (o.type === 'SuperCustom') {
             return renderSuperCustom(o)
