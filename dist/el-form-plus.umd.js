@@ -6883,7 +6883,7 @@ let form_ElFormPlus = class ElFormPlus extends mixins(methods) {
     // 渲染el-form
     return h("el-form", {
       "ref": "ElForm",
-      "class": full ? 'el-form_full' : '',
+      "class": [full ? 'el-form_full' : '', detailPattern === 'desc' ? 'el-form_detail-mode' : ''],
       "props": {
         ...{
           ...this.config,
