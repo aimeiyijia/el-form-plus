@@ -10,13 +10,17 @@
   }
 }
 
-.el-form-item__content-detail {
-  color: #303133;
-  .color-block {
-    color: #fff;
-    line-height: 24px;
-    display: inline-block;
-    padding: 2px 4px;
-    border-radius: 2px;
+.el-form_detail-mode {
+  .el-form-item {
+    margin-bottom: 0;
+  }
+  .el-form-item__content-detail {
+    .color-block {
+      color: #fff;
+      line-height: 24px;
+      display: inline-block;
+      padding: 2px 4px;
+      border-radius: 2px;
+    }
   }
 }

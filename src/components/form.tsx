@@ -380,7 +380,10 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
     return (
       <el-form
         ref="ElForm"
-        class={full ? 'el-form_full' : ''}
+        class={[
+          full ? 'el-form_full' : '',
+          detailPattern === 'desc' ? 'el-form_detail-mode' : '',
+        ]}
         {...{
           props: {
             ...this.config,
