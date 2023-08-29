@@ -7,6 +7,7 @@ import './custom/fragment'
 import { Fragment } from 'vue-frag'
 import { cloneDeep, isFunction, isString, isArray } from 'lodash'
 import objectPath from './utils/object-path'
+import { deepMerge } from './utils'
 // 样式
 import './styles/index.scss'
 
@@ -41,11 +42,11 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
   // 各个表单项相同的配置项
   @Prop({ type: Object, default: () => ({}) }) readonly unifyOptions!: any
 
-  private model: IModel = {}
+  public model: IModel = {}
 
-  private data: any[] = []
+  public data: any[] = []
 
-  private listeners: any = null
+  public listeners: any = null
 
   created() {
     // 绑定初值
@@ -68,7 +69,7 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
   // 这一步主要是为了方便内部操作options
   // 深拷贝保存为内部状态
   @Watch('options', { immediate: true, deep: true })
-  private setData() {
+  public setData() {
     const options = this.options
     this.data = cloneDeep(options)
     this.setCachedData()
@@ -77,8 +78,8 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
   // 监听options
   // 先从option中取出所有的field字段 组成model
   @Watch('data', { immediate: true, deep: true })
-  private dataChange() {
-    const options = this.data
+  public dataChange(val: any, oldVal: any) {
+    const options = val
     this.buildModel(options)
     // 将组装好的model对外暴露出去
     this.$emit('change', this.model)
@@ -99,7 +100,7 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
   }
 
   // 深度绑定数据
-  private bindData(data: any) {
+  public bindData(data: any) {
     for (const o in data) {
       if (Object.prototype.toString.call(data[o]) === '[object Object]') {
         this.bindData(data[o])
@@ -109,7 +110,7 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
   }
 
   // 构建model
-  private buildModel(data: any) {
+  public buildModel(data: any) {
     for (const o of data) {
       const result = this.isFieldExist(o)
       if (!result) {
@@ -117,7 +118,7 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
       }
       const { field, value, more } = o
       if (field) {
-        this.$set(this.model, field, this.model[value] || value)
+        this.$set(this.model, field, this.model[field] || value)
       }
       if (more && isArray(more)) {
         this.buildModel(more)
@@ -127,7 +128,7 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
 
   // 校验必须参数
   // 目前必须的参数为 attrs中的 field字段
-  private isFieldExist(attrs: any): boolean {
+  public isFieldExist(attrs: any): boolean {
     // 不需要field时不校验
     if (attrs.noField) return true
     const isExist = objectPath.has(attrs, 'field')
@@ -139,18 +140,18 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
   }
 
   // 根据type 判断需要渲染的组件
-  private renderWhatComponent(type: any) {
+  public renderWhatComponent(type: any) {
     const vnodes: IVnodes = Vnodes
     return vnodes[type]
   }
 
-  private renderWhatDetailComponent(type: any) {
+  public renderWhatDetailComponent(type: any) {
     const vnodes: IVnodes = DetailVnodes
     return vnodes[type]
   }
 
   // 判断需要渲染的containerEl
-  private renderContainerEl(c: any) {
+  public renderContainerEl(c: any) {
     if (c) {
       if (isFunction(c)) {
         // eslint-disable-next-line no-useless-call

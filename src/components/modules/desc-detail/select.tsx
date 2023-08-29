@@ -3,6 +3,7 @@ import { Component } from 'vue-property-decorator'
 import type { Option } from 'element-ui'
 // @ts-ignore
 import omit from 'lodash/omit'
+import { isDefined } from '../../utils/index'
 
 type SelectPlus = {
   value: any
@@ -13,7 +14,13 @@ type SelectPlus = {
 @Component
 export default class SelectDetail extends Vue {
   render(h: CreateElement): VNode {
-    const { value, groupOptions = [], options = [] } = this.$attrs as any
+    const {
+      value,
+      groupOptions = [],
+      options = [],
+      detail,
+    } = this.$attrs as any
+    const { value: forceValue, format } = detail
     let curOption: any = (options as Option[]).find(o => o.value === value)
     if (!curOption) {
       curOption = groupOptions.find((o: any) => {
@@ -37,9 +44,16 @@ export default class SelectDetail extends Vue {
     if (curOption.next && curOption.next.label) {
       label = label + '/' + curOption.next.label
     }
+    function getContent() {
+      if (isDefined(forceValue)) return forceValue
+      if (format) {
+        return format(value)
+      }
+      return label
+    }
     return (
       <div class="el-form-item__content-detail" {...{ on: this.$listeners }}>
-        {label}
+        {getContent()}
       </div>
     )
   }
