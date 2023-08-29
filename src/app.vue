@@ -76,8 +76,10 @@ export default {
     }
   },
   mounted() {
+    setByField(this.options, 'input', 'label', '变了')
+    setByField(this.options, 'inputNumber', 'value', '变了11')
     // console.log(setByField, '内置方法')
-    // console.log(this.options, '配置项')
+    console.log(this.options, '配置项')
     // setByField(this.options, 'autoComplete', 'value', '1')
     // console.log(this.options, '配置项更新完毕')
     // console.log(this.model, '------双向绑定值------')

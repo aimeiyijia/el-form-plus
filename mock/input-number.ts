@@ -3,6 +3,7 @@ const inputnumber = {
   type: 'InputNumber',
   // 表单是否隐藏 默认为false（控制的是el-form-item）
   hidden: false,
+  label: '输入框：',
   // 表单项绑定的值（字段名） 必需
   field: 'inputNumber',
   // 初始值
@@ -27,7 +28,6 @@ const inputnumber = {
   config: {
     // vue ref属性 默认为field 利用此属性来查找某一组件
     ref: 'inputNumber',
-    label: 'inputNumber：',
     labelWidth: '120px',
   },
 }

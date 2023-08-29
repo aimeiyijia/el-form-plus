@@ -232,6 +232,19 @@ module.exports = function (it) {
 
 /***/ }),
 
+/***/ "082c":
+/***/ (function(module, exports) {
+
+// `SameValueZero` abstract operation
+// https://tc39.es/ecma262/#sec-samevaluezero
+module.exports = function (x, y) {
+  // eslint-disable-next-line no-self-compare -- NaN check
+  return x === y || x != x && y != y;
+};
+
+
+/***/ }),
+
 /***/ "085a":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -425,6 +438,27 @@ module.exports = function (input, pref) {
 
 /***/ }),
 
+/***/ "120b":
+/***/ (function(module, exports, __webpack_require__) {
+
+var uncurryThis = __webpack_require__("ab64");
+
+// eslint-disable-next-line es/no-map -- safe
+var MapPrototype = Map.prototype;
+
+module.exports = {
+  // eslint-disable-next-line es/no-map -- safe
+  Map: Map,
+  set: uncurryThis(MapPrototype.set),
+  get: uncurryThis(MapPrototype.get),
+  has: uncurryThis(MapPrototype.has),
+  remove: uncurryThis(MapPrototype['delete']),
+  proto: MapPrototype
+};
+
+
+/***/ }),
+
 /***/ "125c":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -536,6 +570,31 @@ module.exports = baseGetAllKeys;
 
 /***/ }),
 
+/***/ "160c":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $ = __webpack_require__("6a00");
+var bind = __webpack_require__("881c");
+var aMap = __webpack_require__("2872");
+var iterate = __webpack_require__("3007");
+
+// `Map.prototype.every` method
+// https://github.com/tc39/proposal-collection-methods
+$({ target: 'Map', proto: true, real: true, forced: true }, {
+  every: function every(callbackfn /* , thisArg */) {
+    var map = aMap(this);
+    var boundFunction = bind(callbackfn, arguments.length > 1 ? arguments[1] : undefined);
+    return iterate(map, function (value, key) {
+      if (!boundFunction(value, key, map)) return false;
+    }, true) !== false;
+  }
+});
+
+
+/***/ }),
+
 /***/ "163d":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -640,6 +699,23 @@ function getMapData(map, key) {
 }
 
 module.exports = getMapData;
+
+
+/***/ }),
+
+/***/ "17c8":
+/***/ (function(module, exports, __webpack_require__) {
+
+var wellKnownSymbol = __webpack_require__("9168");
+var Iterators = __webpack_require__("1ce4");
+
+var ITERATOR = wellKnownSymbol('iterator');
+var ArrayPrototype = Array.prototype;
+
+// check on default Array iterator
+module.exports = function (it) {
+  return it !== undefined && (Iterators.Array === it || ArrayPrototype[ITERATOR] === it);
+};
 
 
 /***/ }),
@@ -890,6 +966,32 @@ module.exports = getValue;
 
 /***/ }),
 
+/***/ "1d56":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $ = __webpack_require__("6a00");
+var aMap = __webpack_require__("2872");
+var remove = __webpack_require__("120b").remove;
+
+// `Map.prototype.deleteAll` method
+// https://github.com/tc39/proposal-collection-methods
+$({ target: 'Map', proto: true, real: true, forced: true }, {
+  deleteAll: function deleteAll(/* ...elements */) {
+    var collection = aMap(this);
+    var allDeleted = true;
+    var wasDeleted;
+    for (var k = 0, len = arguments.length; k < len; k++) {
+      wasDeleted = remove(collection, arguments[k]);
+      allDeleted = allDeleted && wasDeleted;
+    } return !!allDeleted;
+  }
+});
+
+
+/***/ }),
+
 /***/ "214f":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1009,6 +1111,37 @@ module.exports = baseIsTypedArray;
 
 /***/ }),
 
+/***/ "23a6":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $ = __webpack_require__("6a00");
+var bind = __webpack_require__("881c");
+var aMap = __webpack_require__("2872");
+var MapHelpers = __webpack_require__("120b");
+var iterate = __webpack_require__("3007");
+
+var Map = MapHelpers.Map;
+var set = MapHelpers.set;
+
+// `Map.prototype.mapKeys` method
+// https://github.com/tc39/proposal-collection-methods
+$({ target: 'Map', proto: true, real: true, forced: true }, {
+  mapKeys: function mapKeys(callbackfn /* , thisArg */) {
+    var map = aMap(this);
+    var boundFunction = bind(callbackfn, arguments.length > 1 ? arguments[1] : undefined);
+    var newMap = new Map();
+    iterate(map, function (value, key) {
+      set(newMap, boundFunction(value, key, map), value);
+    });
+    return newMap;
+  }
+});
+
+
+/***/ }),
+
 /***/ "23df":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1041,6 +1174,20 @@ function copySymbols(source, object) {
 }
 
 module.exports = copySymbols;
+
+
+/***/ }),
+
+/***/ "2872":
+/***/ (function(module, exports, __webpack_require__) {
+
+var has = __webpack_require__("120b").has;
+
+// Perform ? RequireInternalSlot(M, [[MapData]])
+module.exports = function (it) {
+  has(it);
+  return it;
+};
 
 
 /***/ }),
@@ -1214,6 +1361,28 @@ function last(array) {
 }
 
 module.exports = last;
+
+
+/***/ }),
+
+/***/ "3007":
+/***/ (function(module, exports, __webpack_require__) {
+
+var uncurryThis = __webpack_require__("ab64");
+var iterateSimple = __webpack_require__("d6e7");
+var MapHelpers = __webpack_require__("120b");
+
+var Map = MapHelpers.Map;
+var MapPrototype = MapHelpers.proto;
+var forEach = uncurryThis(MapPrototype.forEach);
+var entries = uncurryThis(MapPrototype.entries);
+var next = entries(new Map()).next;
+
+module.exports = function (map, fn, interruptible) {
+  return interruptible ? iterateSimple(entries(map), function (entry) {
+    return fn(entry[1], entry[0]);
+  }, next) : forEach(map, fn);
+};
 
 
 /***/ }),
@@ -1423,6 +1592,81 @@ function baseUnary(func) {
 }
 
 module.exports = baseUnary;
+
+
+/***/ }),
+
+/***/ "35cf":
+/***/ (function(module, exports, __webpack_require__) {
+
+var bind = __webpack_require__("881c");
+var call = __webpack_require__("085a");
+var anObject = __webpack_require__("b172");
+var tryToString = __webpack_require__("bb5c");
+var isArrayIteratorMethod = __webpack_require__("17c8");
+var lengthOfArrayLike = __webpack_require__("dbeb");
+var isPrototypeOf = __webpack_require__("d1bf");
+var getIterator = __webpack_require__("f397");
+var getIteratorMethod = __webpack_require__("cf5f");
+var iteratorClose = __webpack_require__("eaef");
+
+var $TypeError = TypeError;
+
+var Result = function (stopped, result) {
+  this.stopped = stopped;
+  this.result = result;
+};
+
+var ResultPrototype = Result.prototype;
+
+module.exports = function (iterable, unboundFunction, options) {
+  var that = options && options.that;
+  var AS_ENTRIES = !!(options && options.AS_ENTRIES);
+  var IS_RECORD = !!(options && options.IS_RECORD);
+  var IS_ITERATOR = !!(options && options.IS_ITERATOR);
+  var INTERRUPTED = !!(options && options.INTERRUPTED);
+  var fn = bind(unboundFunction, that);
+  var iterator, iterFn, index, length, result, next, step;
+
+  var stop = function (condition) {
+    if (iterator) iteratorClose(iterator, 'normal', condition);
+    return new Result(true, condition);
+  };
+
+  var callFn = function (value) {
+    if (AS_ENTRIES) {
+      anObject(value);
+      return INTERRUPTED ? fn(value[0], value[1], stop) : fn(value[0], value[1]);
+    } return INTERRUPTED ? fn(value, stop) : fn(value);
+  };
+
+  if (IS_RECORD) {
+    iterator = iterable.iterator;
+  } else if (IS_ITERATOR) {
+    iterator = iterable;
+  } else {
+    iterFn = getIteratorMethod(iterable);
+    if (!iterFn) throw $TypeError(tryToString(iterable) + ' is not iterable');
+    // optimisation for array iterators
+    if (isArrayIteratorMethod(iterFn)) {
+      for (index = 0, length = lengthOfArrayLike(iterable); length > index; index++) {
+        result = callFn(iterable[index]);
+        if (result && isPrototypeOf(ResultPrototype, result)) return result;
+      } return new Result(false);
+    }
+    iterator = getIterator(iterable, iterFn);
+  }
+
+  next = IS_RECORD ? iterable.next : iterator.next;
+  while (!(step = call(next, iterator)).done) {
+    try {
+      result = callFn(step.value);
+    } catch (error) {
+      iteratorClose(iterator, 'throw', error);
+    }
+    if (typeof result == 'object' && result && isPrototypeOf(ResultPrototype, result)) return result;
+  } return new Result(false);
+};
 
 
 /***/ }),
@@ -1933,6 +2177,31 @@ function stubFalse() {
 }
 
 module.exports = stubFalse;
+
+
+/***/ }),
+
+/***/ "45f88":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $ = __webpack_require__("6a00");
+var bind = __webpack_require__("881c");
+var aMap = __webpack_require__("2872");
+var iterate = __webpack_require__("3007");
+
+// `Map.prototype.some` method
+// https://github.com/tc39/proposal-collection-methods
+$({ target: 'Map', proto: true, real: true, forced: true }, {
+  some: function some(callbackfn /* , thisArg */) {
+    var map = aMap(this);
+    var boundFunction = bind(callbackfn, arguments.length > 1 ? arguments[1] : undefined);
+    return iterate(map, function (value, key) {
+      if (boundFunction(value, key, map)) return true;
+    }, true) === true;
+  }
+});
 
 
 /***/ }),
@@ -2744,10 +3013,67 @@ module.exports = function symmetricDifference(other) {
 
 /***/ }),
 
+/***/ "5f4c":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $ = __webpack_require__("6a00");
+var bind = __webpack_require__("881c");
+var aMap = __webpack_require__("2872");
+var iterate = __webpack_require__("3007");
+
+// `Map.prototype.findKey` method
+// https://github.com/tc39/proposal-collection-methods
+$({ target: 'Map', proto: true, real: true, forced: true }, {
+  findKey: function findKey(callbackfn /* , thisArg */) {
+    var map = aMap(this);
+    var boundFunction = bind(callbackfn, arguments.length > 1 ? arguments[1] : undefined);
+    var result = iterate(map, function (value, key) {
+      if (boundFunction(value, key, map)) return { key: key };
+    }, true);
+    return result && result.key;
+  }
+});
+
+
+/***/ }),
+
 /***/ "5f72":
 /***/ (function(module, exports) {
 
 module.exports = require("element-ui");
+
+/***/ }),
+
+/***/ "603d":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $ = __webpack_require__("6a00");
+var bind = __webpack_require__("881c");
+var aMap = __webpack_require__("2872");
+var MapHelpers = __webpack_require__("120b");
+var iterate = __webpack_require__("3007");
+
+var Map = MapHelpers.Map;
+var set = MapHelpers.set;
+
+// `Map.prototype.filter` method
+// https://github.com/tc39/proposal-collection-methods
+$({ target: 'Map', proto: true, real: true, forced: true }, {
+  filter: function filter(callbackfn /* , thisArg */) {
+    var map = aMap(this);
+    var boundFunction = bind(callbackfn, arguments.length > 1 ? arguments[1] : undefined);
+    var newMap = new Map();
+    iterate(map, function (value, key) {
+      if (boundFunction(value, key, map)) set(newMap, key, value);
+    });
+    return newMap;
+  }
+});
+
 
 /***/ }),
 
@@ -4058,7 +4384,7 @@ let methods_MethodsMixins = class MethodsMixins extends external_vue_default.a {
   }
   // 根据attrs中的field字段匹配到目标配置项
   getTarget(fieldName) {
-    return this.cachedDataArr.find(o => o.field === fieldName);
+    return this.data.find(o => o.field === fieldName);
   }
   // 根据field字段值来查找其所在的配置项
   // 本质上还是变更option来达到更新目的
@@ -4069,6 +4395,7 @@ let methods_MethodsMixins = class MethodsMixins extends external_vue_default.a {
       object_path.set(target, path, value);
       // 没太找到更合适的方式，可能这部分需要重写下
       this.$forceUpdate();
+      return this.data;
     } catch (error) {
       console.error(error, 'updateField');
     }
@@ -4089,6 +4416,7 @@ let methods_MethodsMixins = class MethodsMixins extends external_vue_default.a {
       const target = this.getTarget(fieldName);
       object_path.insert(target, path, value, positions);
       this.$forceUpdate();
+      return this.data;
     } catch (error) {
       console.error(error, 'insertByField');
     }
@@ -4099,6 +4427,7 @@ let methods_MethodsMixins = class MethodsMixins extends external_vue_default.a {
       const target = this.getTarget(fieldName);
       object_path.empty(target, path);
       this.$forceUpdate();
+      return this.data;
     } catch (error) {
       console.error(error, 'emptysByField');
     }
@@ -4118,6 +4447,7 @@ let methods_MethodsMixins = class MethodsMixins extends external_vue_default.a {
       const target = this.getTarget(fieldName);
       object_path.del(target, path);
       this.$forceUpdate();
+      return this.data;
     } catch (error) {
       console.error(error, 'delByField');
     }
@@ -5712,6 +6042,45 @@ upload_UploadPlus = __decorate([vue_class_component_esm], upload_UploadPlus);
 
 
 
+// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/esnext.map.delete-all.js
+var esnext_map_delete_all = __webpack_require__("1d56");
+
+// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/esnext.map.every.js
+var esnext_map_every = __webpack_require__("160c");
+
+// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/esnext.map.filter.js
+var esnext_map_filter = __webpack_require__("603d");
+
+// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/esnext.map.find.js
+var esnext_map_find = __webpack_require__("f8fa");
+
+// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/esnext.map.find-key.js
+var esnext_map_find_key = __webpack_require__("5f4c");
+
+// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/esnext.map.includes.js
+var esnext_map_includes = __webpack_require__("7e60");
+
+// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/esnext.map.key-of.js
+var esnext_map_key_of = __webpack_require__("b6aa");
+
+// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/esnext.map.map-keys.js
+var esnext_map_map_keys = __webpack_require__("23a6");
+
+// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/esnext.map.map-values.js
+var esnext_map_map_values = __webpack_require__("b556");
+
+// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/esnext.map.merge.js
+var esnext_map_merge = __webpack_require__("66e9");
+
+// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/esnext.map.reduce.js
+var esnext_map_reduce = __webpack_require__("f556");
+
+// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/esnext.map.some.js
+var esnext_map_some = __webpack_require__("45f88");
+
+// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/esnext.map.update.js
+var esnext_map_update = __webpack_require__("9530");
+
 // EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/es.typed-array.at.js
 var es_typed_array_at = __webpack_require__("bf12");
 
@@ -5734,6 +6103,36 @@ var esnext_typed_array_to_sorted = __webpack_require__("1071");
 var esnext_typed_array_with = __webpack_require__("bb58");
 
 // CONCATENATED MODULE: ./src/components/utils/index.ts
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -5834,6 +6233,33 @@ function deepQuery(tree, value) {
   }
   deepSearch(tree, value);
   return target;
+}
+// JS对象深度合并
+function deepMerge() {
+  let target = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  let source = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  target = Object(lodash["cloneDeep"])(target);
+  if (typeof target !== 'object' || target === null || typeof source !== 'object' || source === null) return target;
+  const merged = Array.isArray(target) ? target.slice() : Object.assign({}, target);
+  for (const prop in source) {
+    if (!Object.prototype.hasOwnProperty.call(source, prop)) continue;
+    const sourceValue = source[prop];
+    const targetValue = merged[prop];
+    if (sourceValue instanceof Date) {
+      merged[prop] = new Date(sourceValue);
+    } else if (sourceValue instanceof RegExp) {
+      merged[prop] = new RegExp(sourceValue);
+    } else if (sourceValue instanceof Map) {
+      merged[prop] = new Map(sourceValue);
+    } else if (sourceValue instanceof Set) {
+      merged[prop] = new Set(sourceValue);
+    } else if (typeof sourceValue === 'object' && sourceValue !== null) {
+      merged[prop] = deepMerge(targetValue, sourceValue);
+    } else {
+      merged[prop] = sourceValue;
+    }
+  }
+  return merged;
 }
 // CONCATENATED MODULE: ./src/components/modules/desc-detail/autocomplete.tsx
 
@@ -6254,13 +6680,19 @@ rate_RateDetail = __decorate([vue_class_component_esm], rate_RateDetail);
 
 
 
+
 let select_SelectDetail = class SelectDetail extends external_vue_default.a {
   render(h) {
     const {
       value,
       groupOptions = [],
-      options = []
+      options = [],
+      detail
     } = this.$attrs;
+    const {
+      value: forceValue,
+      format
+    } = detail;
     let curOption = options.find(o => o.value === value);
     if (!curOption) {
       curOption = groupOptions.find(o => {
@@ -6284,12 +6716,19 @@ let select_SelectDetail = class SelectDetail extends external_vue_default.a {
     if (curOption.next && curOption.next.label) {
       label = label + '/' + curOption.next.label;
     }
+    function getContent() {
+      if (isDefined(forceValue)) return forceValue;
+      if (format) {
+        return format(value);
+      }
+      return label;
+    }
     return h("div", {
       "class": "el-form-item__content-detail",
       "on": {
         ...this.$listeners
       }
-    }, [label]);
+    }, [getContent()]);
   }
 };
 select_SelectDetail = __decorate([vue_class_component_esm], select_SelectDetail);
@@ -6561,8 +7000,8 @@ let form_ElFormPlus = class ElFormPlus extends mixins(methods) {
   }
   // 监听options
   // 先从option中取出所有的field字段 组成model
-  dataChange() {
-    const options = this.data;
+  dataChange(val, oldVal) {
+    const options = val;
     this.buildModel(options);
     // 将组装好的model对外暴露出去
     this.$emit('change', this.model);
@@ -6602,7 +7041,7 @@ let form_ElFormPlus = class ElFormPlus extends mixins(methods) {
         more
       } = o;
       if (field) {
-        this.$set(this.model, field, this.model[value] || value);
+        this.$set(this.model, field, this.model[field] || value);
       }
       if (more && Object(lodash["isArray"])(more)) {
         this.buildModel(more);
@@ -7287,6 +7726,36 @@ function hashHas(key) {
 }
 
 module.exports = hashHas;
+
+
+/***/ }),
+
+/***/ "66e9":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $ = __webpack_require__("6a00");
+var aMap = __webpack_require__("2872");
+var iterate = __webpack_require__("35cf");
+var set = __webpack_require__("120b").set;
+
+// `Map.prototype.merge` method
+// https://github.com/tc39/proposal-collection-methods
+$({ target: 'Map', proto: true, real: true, arity: 1, forced: true }, {
+  // eslint-disable-next-line no-unused-vars -- required for `.length`
+  merge: function merge(iterable /* ...iterables */) {
+    var map = aMap(this);
+    var argumentsLength = arguments.length;
+    var i = 0;
+    while (i < argumentsLength) {
+      iterate(arguments[i++], function (key, value) {
+        set(map, key, value);
+      }, { AS_ENTRIES: true });
+    }
+    return map;
+  }
+});
 
 
 /***/ }),
@@ -8276,6 +8745,29 @@ module.exports = eq;
 
 /***/ }),
 
+/***/ "7e60":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $ = __webpack_require__("6a00");
+var sameValueZero = __webpack_require__("082c");
+var aMap = __webpack_require__("2872");
+var iterate = __webpack_require__("3007");
+
+// `Map.prototype.includes` method
+// https://github.com/tc39/proposal-collection-methods
+$({ target: 'Map', proto: true, real: true, forced: true }, {
+  includes: function includes(searchElement) {
+    return iterate(aMap(this), function (value) {
+      if (sameValueZero(value, searchElement)) return true;
+    }, true) === true;
+  }
+});
+
+
+/***/ }),
+
 /***/ "7e8a":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9058,6 +9550,41 @@ var $symmetricDifference = __webpack_require__("5f2d");
 $({ target: 'Set', proto: true, real: true, forced: true }, {
   symmetricDifference: function symmetricDifference(other) {
     return call($symmetricDifference, this, toSetLike(other));
+  }
+});
+
+
+/***/ }),
+
+/***/ "9530":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $ = __webpack_require__("6a00");
+var aCallable = __webpack_require__("cd20");
+var aMap = __webpack_require__("2872");
+var MapHelpers = __webpack_require__("120b");
+
+var $TypeError = TypeError;
+var get = MapHelpers.get;
+var has = MapHelpers.has;
+var set = MapHelpers.set;
+
+// `Map.prototype.update` method
+// https://github.com/tc39/proposal-collection-methods
+$({ target: 'Map', proto: true, real: true, forced: true }, {
+  update: function update(key, callback /* , thunk */) {
+    var map = aMap(this);
+    var length = arguments.length;
+    aCallable(callback);
+    var isPresentInMap = has(map, key);
+    if (!isPresentInMap && length < 3) {
+      throw $TypeError('Updating absent value');
+    }
+    var value = isPresentInMap ? get(map, key) : aCallable(length > 2 ? arguments[2] : undefined)(key, map);
+    set(map, key, callback(value, key, map));
+    return map;
   }
 });
 
@@ -10057,6 +10584,37 @@ module.exports = initCloneArray;
 
 /***/ }),
 
+/***/ "b556":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $ = __webpack_require__("6a00");
+var bind = __webpack_require__("881c");
+var aMap = __webpack_require__("2872");
+var MapHelpers = __webpack_require__("120b");
+var iterate = __webpack_require__("3007");
+
+var Map = MapHelpers.Map;
+var set = MapHelpers.set;
+
+// `Map.prototype.mapValues` method
+// https://github.com/tc39/proposal-collection-methods
+$({ target: 'Map', proto: true, real: true, forced: true }, {
+  mapValues: function mapValues(callbackfn /* , thisArg */) {
+    var map = aMap(this);
+    var boundFunction = bind(callbackfn, arguments.length > 1 ? arguments[1] : undefined);
+    var newMap = new Map();
+    iterate(map, function (value, key) {
+      set(newMap, key, boundFunction(value, key, map));
+    });
+    return newMap;
+  }
+});
+
+
+/***/ }),
+
 /***/ "b58f":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10151,6 +10709,29 @@ module.exports = [
   'toString',
   'valueOf'
 ];
+
+
+/***/ }),
+
+/***/ "b6aa":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $ = __webpack_require__("6a00");
+var aMap = __webpack_require__("2872");
+var iterate = __webpack_require__("3007");
+
+// `Map.prototype.keyOf` method
+// https://github.com/tc39/proposal-collection-methods
+$({ target: 'Map', proto: true, real: true, forced: true }, {
+  keyOf: function keyOf(searchElement) {
+    var result = iterate(aMap(this), function (value, key) {
+      if (value === searchElement) return { key: key };
+    }, true);
+    return result && result.key;
+  }
+});
 
 
 /***/ }),
@@ -27820,6 +28401,26 @@ module.exports = function (argument) {
 
 /***/ }),
 
+/***/ "cf5f":
+/***/ (function(module, exports, __webpack_require__) {
+
+var classof = __webpack_require__("c74d");
+var getMethod = __webpack_require__("fee9");
+var isNullOrUndefined = __webpack_require__("5900");
+var Iterators = __webpack_require__("1ce4");
+var wellKnownSymbol = __webpack_require__("9168");
+
+var ITERATOR = wellKnownSymbol('iterator');
+
+module.exports = function (it) {
+  if (!isNullOrUndefined(it)) return getMethod(it, ITERATOR)
+    || getMethod(it, '@@iterator')
+    || Iterators[classof(it)];
+};
+
+
+/***/ }),
+
 /***/ "cf64":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -28674,6 +29275,36 @@ module.exports = {};
 
 /***/ }),
 
+/***/ "eaef":
+/***/ (function(module, exports, __webpack_require__) {
+
+var call = __webpack_require__("085a");
+var anObject = __webpack_require__("b172");
+var getMethod = __webpack_require__("fee9");
+
+module.exports = function (iterator, kind, value) {
+  var innerResult, innerError;
+  anObject(iterator);
+  try {
+    innerResult = getMethod(iterator, 'return');
+    if (!innerResult) {
+      if (kind === 'throw') throw value;
+      return value;
+    }
+    innerResult = call(innerResult, iterator);
+  } catch (error) {
+    innerError = true;
+    innerResult = error;
+  }
+  if (kind === 'throw') throw value;
+  if (innerError) throw innerResult;
+  anObject(innerResult);
+  return value;
+};
+
+
+/***/ }),
+
 /***/ "eaf0":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -29093,6 +29724,62 @@ module.exports = getAllKeysIn;
 
 /***/ }),
 
+/***/ "f397":
+/***/ (function(module, exports, __webpack_require__) {
+
+var call = __webpack_require__("085a");
+var aCallable = __webpack_require__("cd20");
+var anObject = __webpack_require__("b172");
+var tryToString = __webpack_require__("bb5c");
+var getIteratorMethod = __webpack_require__("cf5f");
+
+var $TypeError = TypeError;
+
+module.exports = function (argument, usingIterator) {
+  var iteratorMethod = arguments.length < 2 ? getIteratorMethod(argument) : usingIterator;
+  if (aCallable(iteratorMethod)) return anObject(call(iteratorMethod, argument));
+  throw $TypeError(tryToString(argument) + ' is not iterable');
+};
+
+
+/***/ }),
+
+/***/ "f556":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $ = __webpack_require__("6a00");
+var aCallable = __webpack_require__("cd20");
+var aMap = __webpack_require__("2872");
+var iterate = __webpack_require__("3007");
+
+var $TypeError = TypeError;
+
+// `Map.prototype.reduce` method
+// https://github.com/tc39/proposal-collection-methods
+$({ target: 'Map', proto: true, real: true, forced: true }, {
+  reduce: function reduce(callbackfn /* , initialValue */) {
+    var map = aMap(this);
+    var noInitial = arguments.length < 2;
+    var accumulator = noInitial ? undefined : arguments[1];
+    aCallable(callbackfn);
+    iterate(map, function (value, key) {
+      if (noInitial) {
+        noInitial = false;
+        accumulator = value;
+      } else {
+        accumulator = callbackfn(accumulator, value, key, map);
+      }
+    });
+    if (noInitial) throw $TypeError('Reduce of empty map with no initial value');
+    return accumulator;
+  }
+});
+
+
+/***/ }),
+
 /***/ "f5c1":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -29194,6 +29881,32 @@ module.exports = function (index, length) {
   var integer = toIntegerOrInfinity(index);
   return integer < 0 ? max(integer + length, 0) : min(integer, length);
 };
+
+
+/***/ }),
+
+/***/ "f8fa":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $ = __webpack_require__("6a00");
+var bind = __webpack_require__("881c");
+var aMap = __webpack_require__("2872");
+var iterate = __webpack_require__("3007");
+
+// `Map.prototype.find` method
+// https://github.com/tc39/proposal-collection-methods
+$({ target: 'Map', proto: true, real: true, forced: true }, {
+  find: function find(callbackfn /* , thisArg */) {
+    var map = aMap(this);
+    var boundFunction = bind(callbackfn, arguments.length > 1 ? arguments[1] : undefined);
+    var result = iterate(map, function (value, key) {
+      if (boundFunction(value, key, map)) return { value: value };
+    }, true);
+    return result && result.value;
+  }
+});
 
 
 /***/ }),

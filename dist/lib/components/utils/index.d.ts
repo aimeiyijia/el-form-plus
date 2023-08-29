@@ -16,3 +16,4 @@ export declare const isEmpty: (val: any) => boolean;
 export declare const kebabCase: (str: string) => string;
 export declare const capitalize: (str: string) => string;
 export declare function deepQuery(tree: any, value: string, matchMark?: string, children?: string): null;
+export declare function deepMerge(target?: any, source?: any): any;
