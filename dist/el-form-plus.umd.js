@@ -7308,7 +7308,7 @@ let form_ElFormPlus = class ElFormPlus extends mixins(methods) {
       const options = this.data;
       // 分流，SuperCustom是独立，但还是在el-form里面
       // 与el-form-item(不启用布局)或el-row(启用布局)平级
-      return options.filter(o => !o.hidden).map(o => {
+      return options.filter(o => Object(lodash["isFunction"])(o.hidden) ? !o.hidden(model) : !o.hidden).map(o => {
         if (o.type === 'SuperCustom') {
           return renderSuperCustom(o);
         }
