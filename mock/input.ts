@@ -97,6 +97,9 @@ const input = {
     //   return 'div'
     // },
 
+    // class: 'extraClass',
+    // style: 'color: red',
+
     // 外部的config中的rules会失效
     rules: [{ required: true, message: '请输入活动名称', trigger: 'blur' }],
     // 是否取消校验

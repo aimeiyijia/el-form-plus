@@ -288,7 +288,6 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
 
       const { label, field = '', config = {}, more = [], layout } = o
       const mergeConfig = { ...unifyConfig, ...config }
-
       const {
         col = globalColConfig,
         container,
@@ -323,10 +322,11 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
           <ContainerEl>
             <el-form-item
               class={mergeConfig.class}
+              style={mergeConfig.style}
               {...{
                 props: {
-                  ...shortcutConfig,
                   ...mergeConfig,
+                  ...shortcutConfig,
                   prop: cancelrule ? '' : field,
                 },
               }}
