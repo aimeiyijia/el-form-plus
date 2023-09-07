@@ -7255,10 +7255,11 @@ let form_ElFormPlus = class ElFormPlus extends mixins(methods) {
         }
       }, [h(ContainerEl, [h("el-form-item", {
         "class": mergeConfig.class,
+        "style": mergeConfig.style,
         "props": {
           ...{
-            ...shortcutConfig,
             ...mergeConfig,
+            ...shortcutConfig,
             prop: cancelrule ? '' : field
           }
         }
