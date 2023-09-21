@@ -1,11 +1,26 @@
 import Vue, { VNode, CreateElement } from 'vue'
 import { Component } from 'vue-property-decorator'
+import type { Option } from 'element-ui'
 import omit from 'lodash/omit'
+
+function transformKeyValue(
+  o: any,
+  {
+    labelName = 'label',
+    valueName = 'value',
+  }: { labelName?: string, valueName?: string }
+): any {
+  return {
+    ...omit(o, [labelName, valueName]),
+    label: o[labelName],
+    value: o[valueName],
+  }
+}
 
 @Component
 export default class SelectPlus extends Vue {
-
   render(h: CreateElement): VNode {
+    const { labelName = 'label', valueName = 'value' } = this.$attrs
     // 组装插槽及作用域插槽
     const scopedSlots: any = this.$scopedSlots
     const slots = []
@@ -23,8 +38,16 @@ export default class SelectPlus extends Vue {
 
     const renderOptions = (options: any) => {
       return options.map((o: any) => {
-        const { value, slot } = o
-        return <el-option key={value} {...{ attrs: o, props: o }}>{slot ? slot({ attr: o }) : ''}</el-option>
+        const transformObj = transformKeyValue(o, { labelName, valueName })
+        const { value, slot } = transformObj
+        return (
+          <el-option
+            key={value}
+            {...{ attrs: transformObj, props: transformObj }}
+          >
+            {slot ? slot({ attr: transformObj }) : ''}
+          </el-option>
+        )
       })
     }
     const renderGroupOption = () => {
@@ -33,11 +56,18 @@ export default class SelectPlus extends Vue {
       // groupOptions只要存在，就渲染分组select
       if (groupOptions) {
         (groupOptions as any).forEach((o: any) => {
+          o.options = o.options.map((m: any) =>
+            transformKeyValue(m, { labelName, valueName })
+          )
           const { options: gOptions } = o
           // 除options之外的配置项均为group参数
           const restAttrs = omit(o, 'options')
 
-          const el = <el-option-group {...{ attrs: restAttrs, props: restAttrs }}>{renderOptions(gOptions)}</el-option-group>
+          const el = (
+            <el-option-group {...{ attrs: restAttrs, props: restAttrs }}>
+              {renderOptions(gOptions)}
+            </el-option-group>
+          )
           optionEl.push(el)
         })
       }
@@ -50,7 +80,7 @@ export default class SelectPlus extends Vue {
           attrs: this.$attrs,
           props: this.$attrs,
           on: this.$listeners,
-          scopedSlots: customScopedSlots
+          scopedSlots: customScopedSlots,
         }}
       >
         {renderGroupOption()}

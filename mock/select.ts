@@ -45,6 +45,8 @@ const select = {
         ],
       },
     ],
+    labelName: 'mc',
+    valueName: 'code',
     // select options
     options: [
       {

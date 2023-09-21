@@ -32,7 +32,7 @@ data.push(
   // custom,
   // datepicker,
   // datetimepicker,
-  inputnumber,
+  // inputnumber,
   input,
   // radio,
   // rate,
