@@ -5745,8 +5745,23 @@ rate_RatePlus = __decorate([vue_class_component_esm], rate_RatePlus);
 
 
 
+function transformKeyValue(o, _ref) {
+  let {
+    labelName = 'label',
+    valueName = 'value'
+  } = _ref;
+  return {
+    ...omit_default()(o, [labelName, valueName]),
+    label: o[labelName],
+    value: o[valueName]
+  };
+}
 let select_SelectPlus = class SelectPlus extends external_vue_default.a {
   render(h) {
+    const {
+      labelName = 'label',
+      valueName = 'value'
+    } = this.$attrs;
     // 组装插槽及作用域插槽
     const scopedSlots = this.$scopedSlots;
     const slots = [];
@@ -5768,20 +5783,24 @@ let select_SelectPlus = class SelectPlus extends external_vue_default.a {
     }
     const renderOptions = options => {
       return options.map(o => {
+        const transformObj = transformKeyValue(o, {
+          labelName,
+          valueName
+        });
         const {
           value,
           slot
-        } = o;
+        } = transformObj;
         return h("el-option", {
           "key": value,
           "attrs": {
-            ...o
+            ...transformObj
           },
           "props": {
-            ...o
+            ...transformObj
           }
         }, [slot ? slot({
-          attr: o
+          attr: transformObj
         }) : '']);
       });
     };
@@ -5794,6 +5813,10 @@ let select_SelectPlus = class SelectPlus extends external_vue_default.a {
       // groupOptions只要存在，就渲染分组select
       if (groupOptions) {
         groupOptions.forEach(o => {
+          o.options = o.options.map(m => transformKeyValue(m, {
+            labelName,
+            valueName
+          }));
           const {
             options: gOptions
           } = o;
