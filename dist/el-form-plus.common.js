@@ -3161,9 +3161,6 @@ function _defineProperty(obj, key, value) {
   }
   return obj;
 }
-// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/es.array.push.js
-var es_array_push = __webpack_require__("ec53");
-
 // CONCATENATED MODULE: ./node_modules/.pnpm/tslib@2.4.1/node_modules/tslib/tslib.es6.js
 /******************************************************************************
 Copyright (c) Microsoft Corporation.
@@ -4131,6 +4128,9 @@ var omit_default = /*#__PURE__*/__webpack_require__.n(omit);
 // EXTERNAL MODULE: external "element-ui"
 var external_element_ui_ = __webpack_require__("5f72");
 
+// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/es.array.push.js
+var es_array_push = __webpack_require__("ec53");
+
 // CONCATENATED MODULE: ./src/components/utils/object-path.ts
 
 
@@ -4751,46 +4751,45 @@ var fragment = {
 // EXTERNAL MODULE: ./node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/lodash.js
 var lodash = __webpack_require__("bcba");
 
-// EXTERNAL MODULE: ./src/components/styles/index.scss
-var styles = __webpack_require__("c2cd");
+// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/esnext.map.delete-all.js
+var esnext_map_delete_all = __webpack_require__("1d56");
 
-// CONCATENATED MODULE: ./src/components/modules/select-tree/components/CacheOptions.tsx
+// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/esnext.map.every.js
+var esnext_map_every = __webpack_require__("160c");
 
+// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/esnext.map.filter.js
+var esnext_map_filter = __webpack_require__("603d");
 
+// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/esnext.map.find.js
+var esnext_map_find = __webpack_require__("f8fa");
 
+// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/esnext.map.find-key.js
+var esnext_map_find_key = __webpack_require__("5f4c");
 
+// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/esnext.map.includes.js
+var esnext_map_includes = __webpack_require__("7e60");
 
-let CacheOptions_CacheOptions = class CacheOptions extends external_vue_default.a {
-  dataChange() {
-    this.data.forEach(item => {
-      const isHas = this.select.cachedOptions.some(cache => cache.value === item.value);
-      if (!isHas) {
-        this.select.cachedOptions.push(item);
-      }
-      this.select.setSelected();
-    });
-  }
-  render() {
-    const h = arguments[0];
-    return h("fragment");
-  }
-};
-__decorate([Inject()], CacheOptions_CacheOptions.prototype, "select", void 0);
-__decorate([Prop({
-  type: Array,
-  default: () => []
-})], CacheOptions_CacheOptions.prototype, "data", void 0);
-__decorate([Watch('data', {
-  deep: true,
-  immediate: true
-})], CacheOptions_CacheOptions.prototype, "dataChange", null);
-CacheOptions_CacheOptions = __decorate([vue_class_component_esm({
-  components: {
-    Fragment: fragment
-  }
-})], CacheOptions_CacheOptions);
+// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/esnext.map.key-of.js
+var esnext_map_key_of = __webpack_require__("b6aa");
 
-/* harmony default export */ var components_CacheOptions = (CacheOptions_CacheOptions);
+// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/esnext.map.map-keys.js
+var esnext_map_map_keys = __webpack_require__("23a6");
+
+// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/esnext.map.map-values.js
+var esnext_map_map_values = __webpack_require__("b556");
+
+// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/esnext.map.merge.js
+var esnext_map_merge = __webpack_require__("66e9");
+
+// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/esnext.map.reduce.js
+var esnext_map_reduce = __webpack_require__("f556");
+
+// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/esnext.map.some.js
+var esnext_map_some = __webpack_require__("45f88");
+
+// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/esnext.map.update.js
+var esnext_map_update = __webpack_require__("9530");
+
 // EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/esnext.set.add-all.js
 var esnext_set_add_all = __webpack_require__("76ed");
 
@@ -4839,6 +4838,226 @@ var esnext_set_symmetric_difference = __webpack_require__("950b");
 // EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/esnext.set.union.js
 var esnext_set_union = __webpack_require__("4233");
 
+// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/es.typed-array.at.js
+var es_typed_array_at = __webpack_require__("bf12");
+
+// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/es.typed-array.find-last.js
+var es_typed_array_find_last = __webpack_require__("8c46");
+
+// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/es.typed-array.find-last-index.js
+var es_typed_array_find_last_index = __webpack_require__("7883");
+
+// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/es.typed-array.set.js
+var es_typed_array_set = __webpack_require__("47b1");
+
+// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/esnext.typed-array.to-reversed.js
+var esnext_typed_array_to_reversed = __webpack_require__("7eb5");
+
+// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/esnext.typed-array.to-sorted.js
+var esnext_typed_array_to_sorted = __webpack_require__("1071");
+
+// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/esnext.typed-array.with.js
+var esnext_typed_array_with = __webpack_require__("bb58");
+
+// CONCATENATED MODULE: ./src/components/utils/index.ts
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function isString(obj) {
+  return Object.prototype.toString.call(obj) === '[object String]';
+}
+function utils_isObject(obj) {
+  return Object.prototype.toString.call(obj) === '[object Object]';
+}
+function utils_isArray(val) {
+  return Object.prototype.toString.call(val) === '[object Array]';
+}
+function isMultiDimension(val) {
+  return val.some(item => item instanceof Array);
+}
+function utils_isBoolean(val) {
+  return Object.prototype.toString.call(val) === '[object Boolean]';
+}
+function isHtmlElement(node) {
+  return node && node.nodeType === Node.ELEMENT_NODE;
+}
+/**
+ *  - Inspired:
+ *    https://github.com/jashkenas/underscore/blob/master/modules/isFunction.js
+ */
+let isFunction = functionToCheck => {
+  const getType = {};
+  return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
+};
+if ( true && typeof Int8Array !== 'object' && (external_vue_default.a.prototype.$isServer || typeof document.childNodes !== 'function')) {
+  isFunction = function (obj) {
+    return typeof obj === 'function' || false;
+  };
+}
+
+const isUndefined = val => {
+  return typeof val === 'undefined';
+};
+const isDefined = val => {
+  return val !== undefined && val !== null;
+};
+const utils_isEmpty = function (val) {
+  // null or undefined
+  if (val == null) return true;
+  if (typeof val === 'boolean') return false;
+  if (typeof val === 'number') return !val;
+  if (val instanceof Error) return val.message === '';
+  switch (Object.prototype.toString.call(val)) {
+    // String or Array
+    case '[object String]':
+    case '[object Array]':
+      return !val.length;
+    // Map or Set or File
+    case '[object File]':
+    case '[object Map]':
+    case '[object Set]':
+      {
+        return !val.size;
+      }
+    // Plain Object
+    case '[object Object]':
+      {
+        return !Object.keys(val).length;
+      }
+  }
+  return false;
+};
+const kebabCase = function (str) {
+  const hyphenateRE = /([^-])([A-Z])/g;
+  return str.replace(hyphenateRE, '$1-$2').replace(hyphenateRE, '$1-$2').toLowerCase();
+};
+const capitalize = function (str) {
+  if (!isString(str)) return str;
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};
+function deepQuery(tree, value) {
+  let matchMark = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'value';
+  let children = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'children';
+  let isGet = false;
+  let target = null;
+  function deepSearch(tree, value) {
+    for (let i = 0; i < tree.length; i++) {
+      if (tree[i][children] && tree[i][children].length > 0) {
+        deepSearch(tree[i][children], value);
+      }
+      if (value === tree[i][matchMark] || isGet) {
+        isGet || (target = tree[i]);
+        isGet = true;
+        break;
+      }
+    }
+  }
+  deepSearch(tree, value);
+  return target;
+}
+// JS对象深度合并
+function deepMerge() {
+  let target = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  let source = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  target = Object(lodash["cloneDeep"])(target);
+  if (typeof target !== 'object' || target === null || typeof source !== 'object' || source === null) return target;
+  const merged = Array.isArray(target) ? target.slice() : Object.assign({}, target);
+  for (const prop in source) {
+    if (!Object.prototype.hasOwnProperty.call(source, prop)) continue;
+    const sourceValue = source[prop];
+    const targetValue = merged[prop];
+    if (sourceValue instanceof Date) {
+      merged[prop] = new Date(sourceValue);
+    } else if (sourceValue instanceof RegExp) {
+      merged[prop] = new RegExp(sourceValue);
+    } else if (sourceValue instanceof Map) {
+      merged[prop] = new Map(sourceValue);
+    } else if (sourceValue instanceof Set) {
+      merged[prop] = new Set(sourceValue);
+    } else if (typeof sourceValue === 'object' && sourceValue !== null) {
+      merged[prop] = deepMerge(targetValue, sourceValue);
+    } else {
+      merged[prop] = sourceValue;
+    }
+  }
+  return merged;
+}
+// EXTERNAL MODULE: ./src/components/styles/index.scss
+var styles = __webpack_require__("c2cd");
+
+// CONCATENATED MODULE: ./src/components/modules/select-tree/components/CacheOptions.tsx
+
+
+
+
+
+let CacheOptions_CacheOptions = class CacheOptions extends external_vue_default.a {
+  dataChange() {
+    this.data.forEach(item => {
+      const isHas = this.select.cachedOptions.some(cache => cache.value === item.value);
+      if (!isHas) {
+        this.select.cachedOptions.push(item);
+      }
+      this.select.setSelected();
+    });
+  }
+  render() {
+    const h = arguments[0];
+    return h("fragment");
+  }
+};
+__decorate([Inject()], CacheOptions_CacheOptions.prototype, "select", void 0);
+__decorate([Prop({
+  type: Array,
+  default: () => []
+})], CacheOptions_CacheOptions.prototype, "data", void 0);
+__decorate([Watch('data', {
+  deep: true,
+  immediate: true
+})], CacheOptions_CacheOptions.prototype, "dataChange", null);
+CacheOptions_CacheOptions = __decorate([vue_class_component_esm({
+  components: {
+    Fragment: fragment
+  }
+})], CacheOptions_CacheOptions);
+
+/* harmony default export */ var components_CacheOptions = (CacheOptions_CacheOptions);
 // CONCATENATED MODULE: ./src/components/modules/select-tree/components/utils.ts
 
 
@@ -6065,225 +6284,6 @@ upload_UploadPlus = __decorate([vue_class_component_esm], upload_UploadPlus);
 
 
 
-// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/esnext.map.delete-all.js
-var esnext_map_delete_all = __webpack_require__("1d56");
-
-// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/esnext.map.every.js
-var esnext_map_every = __webpack_require__("160c");
-
-// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/esnext.map.filter.js
-var esnext_map_filter = __webpack_require__("603d");
-
-// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/esnext.map.find.js
-var esnext_map_find = __webpack_require__("f8fa");
-
-// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/esnext.map.find-key.js
-var esnext_map_find_key = __webpack_require__("5f4c");
-
-// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/esnext.map.includes.js
-var esnext_map_includes = __webpack_require__("7e60");
-
-// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/esnext.map.key-of.js
-var esnext_map_key_of = __webpack_require__("b6aa");
-
-// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/esnext.map.map-keys.js
-var esnext_map_map_keys = __webpack_require__("23a6");
-
-// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/esnext.map.map-values.js
-var esnext_map_map_values = __webpack_require__("b556");
-
-// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/esnext.map.merge.js
-var esnext_map_merge = __webpack_require__("66e9");
-
-// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/esnext.map.reduce.js
-var esnext_map_reduce = __webpack_require__("f556");
-
-// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/esnext.map.some.js
-var esnext_map_some = __webpack_require__("45f88");
-
-// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/esnext.map.update.js
-var esnext_map_update = __webpack_require__("9530");
-
-// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/es.typed-array.at.js
-var es_typed_array_at = __webpack_require__("bf12");
-
-// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/es.typed-array.find-last.js
-var es_typed_array_find_last = __webpack_require__("8c46");
-
-// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/es.typed-array.find-last-index.js
-var es_typed_array_find_last_index = __webpack_require__("7883");
-
-// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/es.typed-array.set.js
-var es_typed_array_set = __webpack_require__("47b1");
-
-// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/esnext.typed-array.to-reversed.js
-var esnext_typed_array_to_reversed = __webpack_require__("7eb5");
-
-// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/esnext.typed-array.to-sorted.js
-var esnext_typed_array_to_sorted = __webpack_require__("1071");
-
-// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/esnext.typed-array.with.js
-var esnext_typed_array_with = __webpack_require__("bb58");
-
-// CONCATENATED MODULE: ./src/components/utils/index.ts
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-function isString(obj) {
-  return Object.prototype.toString.call(obj) === '[object String]';
-}
-function utils_isObject(obj) {
-  return Object.prototype.toString.call(obj) === '[object Object]';
-}
-function utils_isArray(val) {
-  return Object.prototype.toString.call(val) === '[object Array]';
-}
-function isMultiDimension(val) {
-  return val.some(item => item instanceof Array);
-}
-function utils_isBoolean(val) {
-  return Object.prototype.toString.call(val) === '[object Boolean]';
-}
-function isHtmlElement(node) {
-  return node && node.nodeType === Node.ELEMENT_NODE;
-}
-/**
- *  - Inspired:
- *    https://github.com/jashkenas/underscore/blob/master/modules/isFunction.js
- */
-let isFunction = functionToCheck => {
-  const getType = {};
-  return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
-};
-if ( true && typeof Int8Array !== 'object' && (external_vue_default.a.prototype.$isServer || typeof document.childNodes !== 'function')) {
-  isFunction = function (obj) {
-    return typeof obj === 'function' || false;
-  };
-}
-
-const isUndefined = val => {
-  return typeof val === 'undefined';
-};
-const isDefined = val => {
-  return val !== undefined && val !== null;
-};
-const utils_isEmpty = function (val) {
-  // null or undefined
-  if (val == null) return true;
-  if (typeof val === 'boolean') return false;
-  if (typeof val === 'number') return !val;
-  if (val instanceof Error) return val.message === '';
-  switch (Object.prototype.toString.call(val)) {
-    // String or Array
-    case '[object String]':
-    case '[object Array]':
-      return !val.length;
-    // Map or Set or File
-    case '[object File]':
-    case '[object Map]':
-    case '[object Set]':
-      {
-        return !val.size;
-      }
-    // Plain Object
-    case '[object Object]':
-      {
-        return !Object.keys(val).length;
-      }
-  }
-  return false;
-};
-const kebabCase = function (str) {
-  const hyphenateRE = /([^-])([A-Z])/g;
-  return str.replace(hyphenateRE, '$1-$2').replace(hyphenateRE, '$1-$2').toLowerCase();
-};
-const capitalize = function (str) {
-  if (!isString(str)) return str;
-  return str.charAt(0).toUpperCase() + str.slice(1);
-};
-function deepQuery(tree, value) {
-  let matchMark = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'value';
-  let children = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'children';
-  let isGet = false;
-  let target = null;
-  function deepSearch(tree, value) {
-    for (let i = 0; i < tree.length; i++) {
-      if (tree[i][children] && tree[i][children].length > 0) {
-        deepSearch(tree[i][children], value);
-      }
-      if (value === tree[i][matchMark] || isGet) {
-        isGet || (target = tree[i]);
-        isGet = true;
-        break;
-      }
-    }
-  }
-  deepSearch(tree, value);
-  return target;
-}
-// JS对象深度合并
-function deepMerge() {
-  let target = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-  let source = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-  target = Object(lodash["cloneDeep"])(target);
-  if (typeof target !== 'object' || target === null || typeof source !== 'object' || source === null) return target;
-  const merged = Array.isArray(target) ? target.slice() : Object.assign({}, target);
-  for (const prop in source) {
-    if (!Object.prototype.hasOwnProperty.call(source, prop)) continue;
-    const sourceValue = source[prop];
-    const targetValue = merged[prop];
-    if (sourceValue instanceof Date) {
-      merged[prop] = new Date(sourceValue);
-    } else if (sourceValue instanceof RegExp) {
-      merged[prop] = new RegExp(sourceValue);
-    } else if (sourceValue instanceof Map) {
-      merged[prop] = new Map(sourceValue);
-    } else if (sourceValue instanceof Set) {
-      merged[prop] = new Set(sourceValue);
-    } else if (typeof sourceValue === 'object' && sourceValue !== null) {
-      merged[prop] = deepMerge(targetValue, sourceValue);
-    } else {
-      merged[prop] = sourceValue;
-    }
-  }
-  return merged;
-}
 // CONCATENATED MODULE: ./src/components/modules/desc-detail/autocomplete.tsx
 
 
@@ -7018,8 +7018,7 @@ let form_ElFormPlus = class ElFormPlus extends mixins(methods) {
   // 深拷贝保存为内部状态
   setData() {
     const options = this.options;
-    this.data = Object(lodash["cloneDeep"])(options);
-    this.setCachedData();
+    this.data = options;
   }
   // 监听options
   // 先从option中取出所有的field字段 组成model
@@ -7029,18 +7028,6 @@ let form_ElFormPlus = class ElFormPlus extends mixins(methods) {
     // 将组装好的model对外暴露出去
     this.$emit('change', this.model);
     // this.exportInstance()
-  }
-  // 将数据扁平化并存储起来，便于后续的查询操作
-  setCachedData() {
-    // 扁平化为一维数组
-    let oneDemArr = [];
-    this.data.forEach(o => {
-      oneDemArr.push(o);
-      if (o.more && Object(lodash["isArray"])(o.more)) {
-        oneDemArr = oneDemArr.concat(o.more);
-      }
-    });
-    this.cachedDataArr = oneDemArr;
   }
   // 深度绑定数据
   bindData(data) {
@@ -7064,7 +7051,9 @@ let form_ElFormPlus = class ElFormPlus extends mixins(methods) {
         more
       } = o;
       if (field) {
-        this.$set(this.model, field, this.model[field] || value);
+        const modelValue = this.model[field];
+        const finalValue = isDefined(modelValue) ? modelValue : value;
+        this.$set(this.model, field, finalValue);
       }
       if (more && Object(lodash["isArray"])(more)) {
         this.buildModel(more);
@@ -7281,9 +7270,9 @@ let form_ElFormPlus = class ElFormPlus extends mixins(methods) {
         "style": mergeConfig.style,
         "props": {
           ...{
-            ...mergeConfig,
-            ...shortcutConfig,
-            prop: cancelrule ? '' : field
+            prop: field,
+            ...omit_default()(mergeConfig, cancelrule ? ['rules'] : []),
+            ...shortcutConfig
           }
         }
       }, [h(RowEl, {
