@@ -7,7 +7,7 @@ import './custom/fragment'
 import { Fragment } from 'vue-frag'
 import { cloneDeep, isFunction, isString, isArray } from 'lodash'
 import objectPath from './utils/object-path'
-import { deepMerge } from './utils'
+import { deepMerge, isDefined } from './utils'
 // 样式
 import './styles/index.scss'
 
@@ -118,7 +118,9 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
       }
       const { field, value, more } = o
       if (field) {
-        this.$set(this.model, field, this.model[field] || value)
+        const modelValue = this.model[field]
+        const finalValue = isDefined(modelValue) ? modelValue : value
+        this.$set(this.model, field, finalValue)
       }
       if (more && isArray(more)) {
         this.buildModel(more)
@@ -240,7 +242,6 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
       const TrueComponent: any = this.renderWhatComponent(type)
 
       const DetailComponent: any = this.renderWhatDetailComponent(type)
-
       return (
         <ColEl {...{ props: { ...globalColConfig, ...col } }}>
           <ContainerEl>
@@ -325,9 +326,9 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
               style={mergeConfig.style}
               {...{
                 props: {
-                  ...mergeConfig,
+                  prop: field,
+                  ...omit(mergeConfig, cancelrule ? ['rules'] : []),
                   ...shortcutConfig,
-                  prop: cancelrule ? '' : field,
                 },
               }}
             >
