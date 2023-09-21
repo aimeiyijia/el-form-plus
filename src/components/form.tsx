@@ -71,8 +71,7 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
   @Watch('options', { immediate: true, deep: true })
   public setData() {
     const options = this.options
-    this.data = cloneDeep(options)
-    this.setCachedData()
+    this.data = options
   }
 
   // 监听options
@@ -84,19 +83,6 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
     // 将组装好的model对外暴露出去
     this.$emit('change', this.model)
     // this.exportInstance()
-  }
-
-  // 将数据扁平化并存储起来，便于后续的查询操作
-  setCachedData() {
-    // 扁平化为一维数组
-    let oneDemArr: any = []
-    this.data.forEach(o => {
-      oneDemArr.push(o)
-      if (o.more && isArray(o.more)) {
-        oneDemArr = oneDemArr.concat(o.more)
-      }
-    })
-    this.cachedDataArr = oneDemArr
   }
 
   // 深度绑定数据
