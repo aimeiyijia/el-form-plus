@@ -19,6 +19,7 @@
 <script>
 import _ from 'lodash'
 import formData from '../mock/index'
+// 全局性的setByField 只能更新options中已有的属性，render-complete无此限制
 import { setByField } from './components/install'
 export default {
   name: 'app',
@@ -26,6 +27,8 @@ export default {
     return {
       // 除了在option配置项中的value字段中设置初始值，也可以直接传递model对象赋初值
       model: {},
+
+      setByFieldInner: null,
 
       api: null,
 
@@ -64,7 +67,61 @@ export default {
       },
 
       // 表单项生成配置
-      options: formData,
+      // options: formData,
+      options: [
+        {
+          // 表单项渲染类型 必需
+          type: 'Radio',
+          // 表单是否隐藏 默认为false（控制的是el-form-item）
+          hidden: false,
+          // 表单项绑定的值（字段名） 必需
+          field: 'radio',
+          // 初始值
+          value: 1,
+          // 表单项的配置项
+          attrs: {
+            // 是否渲染成组
+            isGroup: true,
+            options: [
+              {
+                label: 'radio 0',
+                value: 0,
+              },
+              {
+                label: 'radio 1',
+                value: 1,
+              },
+            ],
+          },
+          // 表单项事件
+          on: {
+            change: () => {
+              // setByField(
+              //   this.options,
+              //   'radio',
+              //   'label',
+              //   String(new Date().getSeconds())
+              // )
+              // 这种调用 不受是否在options配置影响
+              this.setByFieldInner(
+                'radio',
+                'label',
+                String(new Date().getSeconds())
+              )
+              console.log(this.options, 'this.options')
+            },
+          },
+          // 插槽
+          scopedSlots: {},
+          // el-form-item配置项 可选
+          config: {
+            // vue ref属性 默认为field 利用此属性来查找某一组件
+            ref: 'radio',
+            label: 'radio：',
+            // labelWidth: '120px',
+          },
+        },
+      ],
       // 各个表单项相同的配置项
       unifyOptions: {
         attrs: {},
@@ -76,8 +133,8 @@ export default {
     }
   },
   mounted() {
-    setByField(this.options, 'input', 'label', '变了')
-    setByField(this.options, 'inputNumber', 'value', '变了11')
+    // setByField(this.options, 'input', 'label', '变了')
+    // setByField(this.options, 'inputNumber', 'value', '变了11')
     // console.log(setByField, '内置方法')
     console.log(this.options, '配置项')
     // setByField(this.options, 'autoComplete', 'value', '1')
@@ -102,6 +159,7 @@ export default {
     renderComplete(val) {
       console.log(val, 'api')
       const { setByField, insertByField } = val.operaMethods
+      this.setByFieldInner = setByField
       // setInterval(() => {
       // setByField('input', 'value', new Date().getSeconds() + 100)
       //   setByField('city', 'attrs.options', [
