@@ -7271,8 +7271,8 @@ let form_ElFormPlus = class ElFormPlus extends mixins(methods) {
         "props": {
           ...{
             prop: field,
-            ...omit_default()(mergeConfig, cancelrule ? ['rules'] : []),
-            ...shortcutConfig
+            ...shortcutConfig,
+            ...omit_default()(mergeConfig, cancelrule ? ['rules'] : [])
           }
         }
       }, [h(RowEl, {
