@@ -313,8 +313,8 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
               {...{
                 props: {
                   prop: field,
-                  ...omit(mergeConfig, cancelrule ? ['rules'] : []),
                   ...shortcutConfig,
+                  ...omit(mergeConfig, cancelrule ? ['rules'] : []),
                 },
               }}
             >
