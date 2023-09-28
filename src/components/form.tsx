@@ -7,7 +7,7 @@ import './custom/fragment'
 import { Fragment } from 'vue-frag'
 import { cloneDeep, isFunction, isString, isArray } from 'lodash'
 import objectPath from './utils/object-path'
-import { deepMerge, isDefined } from './utils'
+import { deepQuery, isDefined } from './utils'
 // 样式
 import './styles/index.scss'
 
@@ -64,6 +64,36 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
   modelDataChange() {
     this.bindData(this.modelData)
     this.$emit('change', this.model)
+  }
+
+  get cacheModelData() {
+    return JSON.parse(JSON.stringify(this.modelData))
+  }
+
+  objDiff(a: IModel, b: IModel) {
+    const c: string[] = []
+    Object.keys(b).map(key => {
+      // 在a中不存在
+      // 与a中相同的key 但value不同
+      if (!a[key] || a[key] !== b[key]) {
+        // c[key] = b[key]
+        c.push(key)
+      }
+    })
+    return c
+  }
+
+  @Watch('cacheModelData', { deep: true })
+  cacheModelDataChange(value: IModel, oldValue: IModel) {
+    console.log(this.objDiff(oldValue, value))
+    const changedModelKey = this.objDiff(oldValue, value)
+    changedModelKey.forEach(o => {
+      const option = deepQuery(this.options, o, 'field')
+      console.log(option, '找到的options')
+      const { on } = option as any
+      const { modelChange } = on
+      modelChange && isFunction(modelChange) && modelChange(value[o])
+    })
   }
 
   // 这一步主要是为了方便内部操作options

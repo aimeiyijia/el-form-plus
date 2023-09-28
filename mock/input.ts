@@ -59,6 +59,9 @@ const input = {
     input: () => {
       console.log('input', 'input事件')
     },
+    modelChange: (val: any) => {
+      console.log(val, '变化')
+    }
   },
   // 插槽
   scopedSlots: {
