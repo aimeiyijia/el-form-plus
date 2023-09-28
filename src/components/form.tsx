@@ -85,11 +85,9 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
 
   @Watch('cacheModelData', { deep: true })
   cacheModelDataChange(value: IModel, oldValue: IModel) {
-    console.log(this.objDiff(oldValue, value))
     const changedModelKey = this.objDiff(oldValue, value)
     changedModelKey.forEach(o => {
       const option = deepQuery(this.options, o, 'field')
-      console.log(option, '找到的options')
       const { on } = option as any
       const { modelChange } = on
       modelChange && isFunction(modelChange) && modelChange(value[o])
