@@ -3161,6 +3161,9 @@ function _defineProperty(obj, key, value) {
   }
   return obj;
 }
+// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/es.array.push.js
+var es_array_push = __webpack_require__("ec53");
+
 // CONCATENATED MODULE: ./node_modules/.pnpm/tslib@2.4.1/node_modules/tslib/tslib.es6.js
 /******************************************************************************
 Copyright (c) Microsoft Corporation.
@@ -4127,9 +4130,6 @@ var omit_default = /*#__PURE__*/__webpack_require__.n(omit);
 
 // EXTERNAL MODULE: external "element-ui"
 var external_element_ui_ = __webpack_require__("5f72");
-
-// EXTERNAL MODULE: ./node_modules/.pnpm/core-js@3.27.1/node_modules/core-js/modules/es.array.push.js
-var es_array_push = __webpack_require__("ec53");
 
 // CONCATENATED MODULE: ./src/components/utils/object-path.ts
 
@@ -6984,6 +6984,7 @@ const SuperCustom = super_custom;
 
 
 
+
 // 样式
 
 // 取出vnode匹配表
@@ -7013,6 +7014,34 @@ let form_ElFormPlus = class ElFormPlus extends mixins(methods) {
   modelDataChange() {
     this.bindData(this.modelData);
     this.$emit('change', this.model);
+  }
+  get cacheModelData() {
+    return JSON.parse(JSON.stringify(this.modelData));
+  }
+  objDiff(a, b) {
+    const c = [];
+    Object.keys(b).map(key => {
+      // 在a中不存在
+      // 与a中相同的key 但value不同
+      if (!a[key] || a[key] !== b[key]) {
+        // c[key] = b[key]
+        c.push(key);
+      }
+    });
+    return c;
+  }
+  cacheModelDataChange(value, oldValue) {
+    const changedModelKey = this.objDiff(oldValue, value);
+    changedModelKey.forEach(o => {
+      const option = deepQuery(this.options, o, 'field');
+      const {
+        on
+      } = option;
+      const {
+        modelChange
+      } = on;
+      modelChange && Object(lodash["isFunction"])(modelChange) && modelChange(value[o]);
+    });
   }
   // 这一步主要是为了方便内部操作options
   // 深拷贝保存为内部状态
@@ -7367,6 +7396,9 @@ __decorate([Prop({
 __decorate([Watch('modelData', {
   deep: true
 })], form_ElFormPlus.prototype, "modelDataChange", null);
+__decorate([Watch('cacheModelData', {
+  deep: true
+})], form_ElFormPlus.prototype, "cacheModelDataChange", null);
 __decorate([Watch('options', {
   immediate: true,
   deep: true
