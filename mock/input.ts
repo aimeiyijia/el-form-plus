@@ -56,12 +56,15 @@ const input = {
     blur: () => {
       console.log('input', '失去焦点')
     },
-    input: () => {
-      console.log('input', 'input事件')
+    input: (val: any) => {
+      console.log(val, 'input事件')
+    },
+    change: (val: any) => {
+      console.log(val, 'change事件')
     },
     modelChange: (val: any) => {
-      console.log(val, '变化')
-    }
+      console.log(val, 'modelChange变化')
+    },
   },
   // 插槽
   scopedSlots: {

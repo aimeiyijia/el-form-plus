@@ -13,18 +13,18 @@ const radio = {
     isGroup: true,
     options: [
       {
-        label: 'radio 1',
-        value: 1,
+        label: 'radio 0',
+        value: 0,
       },
       {
-        label: 'radio 2',
-        value: 2,
+        label: 'radio 1',
+        value: 1,
       },
     ],
   },
   // 表单项事件
   on: {
-    change: () => {
+    input: () => {
       console.log('singleChange')
     },
   },

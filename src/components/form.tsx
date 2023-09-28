@@ -88,9 +88,11 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
     const changedModelKey = this.objDiff(oldValue, value)
     changedModelKey.forEach(o => {
       const option = deepQuery(this.options, o, 'field')
-      const { on } = option as any
-      const { modelChange } = on
-      modelChange && isFunction(modelChange) && modelChange(value[o])
+      if (option) {
+        const { on = {} } = option as any
+        const { modelChange } = on
+        modelChange && isFunction(modelChange) && modelChange(value[o])
+      }
     })
   }
 
