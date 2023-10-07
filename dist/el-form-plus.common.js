@@ -7023,7 +7023,7 @@ let form_ElFormPlus = class ElFormPlus extends mixins(methods) {
     Object.keys(b).map(key => {
       // 在a中不存在
       // 与a中相同的key 但value不同
-      if (!a[key] || a[key] !== b[key]) {
+      if (!isDefined(a[key]) || a[key] !== b[key]) {
         // c[key] = b[key]
         c.push(key);
       }
@@ -7034,13 +7034,15 @@ let form_ElFormPlus = class ElFormPlus extends mixins(methods) {
     const changedModelKey = this.objDiff(oldValue, value);
     changedModelKey.forEach(o => {
       const option = deepQuery(this.options, o, 'field');
-      const {
-        on
-      } = option;
-      const {
-        modelChange
-      } = on;
-      modelChange && Object(lodash["isFunction"])(modelChange) && modelChange(value[o]);
+      if (option) {
+        const {
+          on = {}
+        } = option;
+        const {
+          modelChange
+        } = on;
+        modelChange && Object(lodash["isFunction"])(modelChange) && modelChange(value[o]);
+      }
     });
   }
   // 这一步主要是为了方便内部操作options
