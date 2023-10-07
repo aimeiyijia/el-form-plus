@@ -75,7 +75,7 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
     Object.keys(b).map(key => {
       // 在a中不存在
       // 与a中相同的key 但value不同
-      if (!a[key] || a[key] !== b[key]) {
+      if (!isDefined(a[key]) || a[key] !== b[key]) {
         // c[key] = b[key]
         c.push(key)
       }

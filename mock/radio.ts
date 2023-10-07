@@ -24,9 +24,12 @@ const radio = {
   },
   // 表单项事件
   on: {
-    input: () => {
-      console.log('singleChange')
-    },
+    // input: () => {
+    //   console.log('singleChange')
+    // },
+    modelChange(){
+      console.log('modelChange')
+    }
   },
   // 插槽
   scopedSlots: {},
