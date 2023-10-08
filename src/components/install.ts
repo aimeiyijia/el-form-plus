@@ -43,4 +43,5 @@ export {
   delByField,
 }
 
+export { ElFormPlus }
 export default install
