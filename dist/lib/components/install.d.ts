@@ -1,3 +1,4 @@
+import ElFormPlus from './form';
 import { PluginFunction } from 'vue';
 import { setByField, isHasByField, insertByField, emptysByField, getByField, delByField } from './utils/opera';
 interface InstallFunction extends PluginFunction<any> {
@@ -5,4 +6,5 @@ interface InstallFunction extends PluginFunction<any> {
 }
 declare const install: InstallFunction;
 export { setByField, isHasByField, insertByField, emptysByField, getByField, delByField, };
+export { ElFormPlus };
 export default install;
