@@ -7,12 +7,15 @@ const input = {
   // 表单项绑定的值（字段名） 必需
   field: 'input',
   // 初始值
-  value: 'input初始值',
+  value: 123456789,
   customValue: 0,
   placeholder: '快捷方式配置的placeholder',
   // disabled: true,
   // 表单项的配置项
   attrs: {
+    money: {
+      precision: 4
+    },
     type: 'text',
     // 控件支持的原生属性也可以写在这里
     extraClass: 'extraClass',
@@ -53,18 +56,18 @@ const input = {
   // },
   // 表单项事件
   on: {
-    blur: () => {
-      console.log('input', '失去焦点')
-    },
+    // blur: (val: any) => {
+    //   // console.log(val, '失去焦点')
+    // },
     input: (val: any) => {
       console.log(val, 'input事件')
     },
-    change: (val: any) => {
-      console.log(val, 'change事件')
-    },
-    modelChange: (val: any) => {
-      console.log(val, 'modelChange变化')
-    },
+    // change: (val: any) => {
+    //   console.log(val, 'change事件')
+    // },
+    // modelChange: (val: any) => {
+    //   console.log(val, 'modelChange变化')
+    // },
   },
   // 插槽
   scopedSlots: {
