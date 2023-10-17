@@ -1187,6 +1187,25 @@ module.exports = copySymbols;
 
 /***/ }),
 
+/***/ "275e":
+/***/ (function(module, exports, __webpack_require__) {
+
+/*
+ currency.js - v2.0.4
+ http://scurker.github.io/currency.js
+
+ Copyright (c) 2021 Jason Wilson
+ Released under MIT license
+*/
+(function(e,g){ true?module.exports=g():undefined})(this,function(){function e(b,a){if(!(this instanceof e))return new e(b,a);a=Object.assign({},m,a);var d=Math.pow(10,a.precision);this.intValue=b=g(b,a);this.value=b/d;a.increment=a.increment||1/d;a.groups=a.useVedic?n:p;this.s=a;this.p=d}function g(b,a){var d=2<arguments.length&&void 0!==arguments[2]?arguments[2]:!0;var c=a.decimal;
+var h=a.errorOnInvalid,k=a.fromCents,l=Math.pow(10,a.precision),f=b instanceof e;if(f&&k)return b.intValue;if("number"===typeof b||f)c=f?b.value:b;else if("string"===typeof b)h=new RegExp("[^-\\d"+c+"]","g"),c=new RegExp("\\"+c,"g"),c=(c=b.replace(/\((.*)\)/,"-$1").replace(h,"").replace(c,"."))||0;else{if(h)throw Error("Invalid Input");c=0}k||(c=(c*l).toFixed(4));return d?Math.round(c):c}var m={symbol:"$",separator:",",decimal:".",errorOnInvalid:!1,precision:2,pattern:"!#",negativePattern:"-!#",format:function(b,
+a){var d=a.pattern,c=a.negativePattern,h=a.symbol,k=a.separator,l=a.decimal;a=a.groups;var f=(""+b).replace(/^-/,"").split("."),q=f[0];f=f[1];return(0<=b.value?d:c).replace("!",h).replace("#",q.replace(a,"$1"+k)+(f?l+f:""))},fromCents:!1},p=/(\d)(?=(\d{3})+\b)/g,n=/(\d)(?=(\d\d)+\d\b)/g;e.prototype={add:function(b){var a=this.s,d=this.p;return e((this.intValue+g(b,a))/(a.fromCents?1:d),a)},subtract:function(b){var a=this.s,d=this.p;return e((this.intValue-g(b,a))/(a.fromCents?1:d),a)},multiply:function(b){var a=
+this.s;return e(this.intValue*b/(a.fromCents?1:Math.pow(10,a.precision)),a)},divide:function(b){var a=this.s;return e(this.intValue/g(b,a,!1),a)},distribute:function(b){var a=this.intValue,d=this.p,c=this.s,h=[],k=Math[0<=a?"floor":"ceil"](a/b),l=Math.abs(a-k*b);for(d=c.fromCents?1:d;0!==b;b--){var f=e(k/d,c);0<l--&&(f=f[0<=a?"add":"subtract"](1/d));h.push(f)}return h},dollars:function(){return~~this.value},cents:function(){return~~(this.intValue%this.p)},format:function(b){var a=this.s;return"function"===
+typeof b?b(this,a):a.format(this,Object.assign({},a,b))},toString:function(){var b=this.s,a=b.increment;return(Math.round(this.intValue/this.p/a)*a).toFixed(b.precision)},toJSON:function(){return this.value}};return e});
+
+
+/***/ }),
+
 /***/ "2872":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -5816,14 +5835,218 @@ let input_number_InputNumberPlus = class InputNumberPlus extends external_vue_de
 };
 input_number_InputNumberPlus = __decorate([vue_class_component_esm], input_number_InputNumberPlus);
 /* harmony default export */ var input_number = (input_number_InputNumberPlus);
+// EXTERNAL MODULE: ./node_modules/.pnpm/registry.npmmirror.com+currency.js@2.0.4/node_modules/currency.js/dist/currency.min.js
+var currency_min = __webpack_require__("275e");
+var currency_min_default = /*#__PURE__*/__webpack_require__.n(currency_min);
+
+// CONCATENATED MODULE: ./src/components/directives/thousands.ts
+
+
+function formatVal(val, options) {
+  // {
+  //   symbol: '%',
+  //   separator: ',j',
+  //   precision: 2,
+  // }
+  return currency_min_default()(val, options).format();
+}
+const directive = {
+  inserted: function (el, binding) {
+    const {
+      value: bindingValue
+    } = binding;
+    console.log(bindingValue, '指令值');
+    const {
+      precision,
+      thousand
+    } = bindingValue;
+    let inputEl = el;
+    // 获取input节点
+    if (inputEl.tagName.toLocaleUpperCase() !== 'INPUT') {
+      inputEl = inputEl.getElementsByTagName('input')[0];
+    }
+    // 初始化时，格式化值为千分位
+    const numberValue = parseFloat(inputEl.value.replace(/,/g, ''));
+    if (!isNaN(numberValue)) {
+      inputEl.value = formatVal(numberValue, {
+        ...thousand,
+        precision
+      });
+    }
+    // 聚焦时转化为数字格式（去除千分位）
+    inputEl.onfocus = () => {
+      inputEl.value = parseFloat(inputEl.value.replace(/,/g, '')).toFixed(precision);
+    };
+    // 失去焦点时转化为千分位
+    inputEl.onblur = () => {
+      const onBlurValue = parseFloat(inputEl.value.replace(/,/g, ''));
+      if (!isNaN(onBlurValue)) {
+        inputEl.value = formatVal(onBlurValue, {
+          ...thousand,
+          precision
+        });
+      }
+    };
+  }
+};
+external_vue_default.a.directive('thousands', directive);
 // CONCATENATED MODULE: ./src/components/modules/input.tsx
 
 
 
 
 
+
+
+function generateZero(length) {
+  if (length <= 0) {
+    return '';
+  }
+  return '0'.repeat(length);
+}
+function extractDecimalParts(str, options) {
+  const {
+    integer = 14,
+    precision = 2
+  } = options || {};
+  const decimalIndex = str.indexOf('.');
+  if (decimalIndex !== -1) {
+    const decimalPart = str.substring(0, decimalIndex).slice(0, integer);
+    const fractionPart = str.substring(decimalIndex + 1, decimalIndex + 1 + precision);
+    return {
+      decimalPart,
+      fractionPart,
+      hasPrecision: true
+    };
+  } else {
+    let hasPrecision = false;
+    const decimalPart = str.slice(0, integer);
+    let fractionPart = '';
+    if (precision > 0) {
+      hasPrecision = true;
+      fractionPart = generateZero(precision);
+    }
+    return {
+      decimalPart,
+      fractionPart,
+      hasPrecision
+    };
+  }
+}
+function assembleDecimalParts(val, options) {
+  const str = val.toString() // 第一步：转成字符串
+  .replace(/[^\d^.]+/g, '') // 第二步：把不是数字，不是小数点的过滤掉
+  .replace(/^0+(\d)/, '$1') // 第三步：第一位0开头，0后面为数字，则过滤掉，取后面的数字
+  .replace(/^\./, '0.'); // 第四步：如果输入的第一位为小数点，则替换成 0. 实现自动补全
+  const parts = extractDecimalParts(str, options);
+  const {
+    decimalPart,
+    fractionPart,
+    hasPrecision
+  } = parts;
+  if (hasPrecision) {
+    return decimalPart + '.' + fractionPart;
+  }
+  return decimalPart;
+}
 let input_InputPlus = class InputPlus extends external_vue_default.a {
+  customInput(val) {
+    const {
+      precision,
+      integer
+    } = this.digitConfig;
+    const {
+      input
+    } = this.$listeners;
+    if (!input) return;
+    if (isFunction(input)) {
+      const finalVal = assembleDecimalParts(val, {
+        precision,
+        integer
+      });
+      // eslint-disable-next-line no-useless-call
+      input.call(this, finalVal);
+    }
+  }
+  get digitExit() {
+    const {
+      digit
+    } = this.$attrs;
+    if (!digit) return false;
+    if (utils_isBoolean(digit)) {
+      return digit;
+    }
+    if (utils_isObject(digit)) {
+      return true;
+    }
+    return false;
+  }
+  get digitConfig() {
+    const {
+      digit
+    } = this.$attrs;
+    const defaultThousandConfig = {
+      symbol: '',
+      separator: ','
+    };
+    const defaultDigitConfig = {
+      precision: 2,
+      integer: 14,
+      thousand: defaultThousandConfig
+    };
+    // digit: {}
+    if (utils_isObject(digit)) {
+      const {
+        thousand
+      } = digit;
+      if (utils_isBoolean(thousand) && thousand) {
+        digit.thousand = {
+          symbol: '',
+          separator: ','
+        };
+      }
+      if (utils_isObject(thousand)) {
+        digit.thousand = Object.assign(defaultThousandConfig, digit.thousand);
+      }
+      return Object.assign(defaultDigitConfig, digit);
+    }
+    // digit: true
+    if (utils_isBoolean(digit) && digit) {
+      return defaultDigitConfig;
+    }
+    return defaultDigitConfig;
+  }
+  get hasDirectives() {
+    const {
+      thousand
+    } = this.digitConfig;
+    return this.digitExit && thousand;
+  }
+  get directives() {
+    const directives = this.hasDirectives ? [{
+      name: 'thousands',
+      value: this.digitConfig
+    }] : [];
+    return directives;
+  }
+  get listeners() {
+    return this.digitExit ? {
+      ...this.$listeners,
+      input: this.customInput
+    } : this.$listeners;
+  }
   render(h) {
+    const {
+      value
+    } = this.$attrs;
+    const {
+      precision,
+      integer
+    } = this.digitConfig;
+    const showValue = assembleDecimalParts(value, {
+      precision,
+      integer
+    });
     // 组装插槽及作用域插槽
     const scopedSlots = this.$scopedSlots;
     const slots = [];
@@ -5844,9 +6067,17 @@ let input_InputPlus = class InputPlus extends external_vue_default.a {
       };
     }
     return h("el-input", helper_default()([{}, {
-      attrs: this.$attrs,
-      props: this.$attrs,
-      on: this.$listeners,
+      directives: this.directives
+    }, {}, {
+      attrs: {
+        ...this.$attrs,
+        value: showValue
+      },
+      props: {
+        ...this.$attrs,
+        value: showValue
+      },
+      on: this.listeners,
       scopedSlots: customScopedSlots
     }]), [slots.map(o => {
       return h("template", {
