@@ -13,8 +13,12 @@ const input = {
   // disabled: true,
   // 表单项的配置项
   attrs: {
-    money: {
-      precision: 4
+    digit: {
+      precision: 4,
+      integer: 14,
+      thousand: {
+        symbol: '$'
+      },
     },
     type: 'text',
     // 控件支持的原生属性也可以写在这里

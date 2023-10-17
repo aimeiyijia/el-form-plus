@@ -2,47 +2,139 @@ import Vue, { VNode, CreateElement } from 'vue'
 import { Component } from 'vue-property-decorator'
 import { isBoolean, isFunction, isObject } from '../utils'
 import '../directives/thousands'
+
+function generateZero(length: number) {
+  if (length <= 0) {
+    return ''
+  }
+
+  return '0'.repeat(length)
+}
+
+type Options = {
+  precision: number
+  integer: number
+}
+type ExtractDecimalParts = {
+  decimalPart: string
+  fractionPart: string
+  hasPrecision: boolean
+}
+function extractDecimalParts(
+  str: string,
+  options?: Options
+): ExtractDecimalParts {
+  const { integer = 14, precision = 2 } = options || {}
+  const decimalIndex = str.indexOf('.')
+  if (decimalIndex !== -1) {
+    const decimalPart = str.substring(0, decimalIndex).slice(0, integer)
+    const fractionPart = str.substring(
+      decimalIndex + 1,
+      decimalIndex + 1 + precision
+    )
+    return { decimalPart, fractionPart, hasPrecision: true }
+  } else {
+    let hasPrecision = false
+    const decimalPart = str.slice(0, integer)
+    let fractionPart = ''
+    if (precision > 0) {
+      hasPrecision = true
+      fractionPart = generateZero(precision)
+    }
+
+    return {
+      decimalPart,
+      fractionPart,
+      hasPrecision,
+    }
+  }
+}
+
+function assembleDecimalParts(val: number | string, options?: Options) {
+  const str = val
+    .toString() // 第一步：转成字符串
+    .replace(/[^\d^.]+/g, '') // 第二步：把不是数字，不是小数点的过滤掉
+    .replace(/^0+(\d)/, '$1') // 第三步：第一位0开头，0后面为数字，则过滤掉，取后面的数字
+    .replace(/^\./, '0.') // 第四步：如果输入的第一位为小数点，则替换成 0. 实现自动补全
+  const parts = extractDecimalParts(str, options)
+  const { decimalPart, fractionPart, hasPrecision } = parts
+  if (hasPrecision) {
+    return decimalPart + '.' + fractionPart
+  }
+  return decimalPart
+}
+
 @Component
 export default class InputPlus extends Vue {
-  customInput(val: any, leg = 2) {
-    const reg1 = /^\d{1,11}$|^\d{1,11}[.]\d{1,8}$/
-    console.log(val.match(reg1), 'test')
-    const reg = new RegExp(`^\\d*(\\.?\\d{0,${leg}})`, 'g')
+  customInput(val: any) {
+    const { precision, integer } = this.digitConfig as any
     const { input } = this.$listeners as any
     if (!input) return
     if (isFunction(input)) {
-      const finalVal =
-        val
-          .toString() // 第一步：转成字符串
-          .replace(/[^\d^.]+/g, '') // 第二步：把不是数字，不是小数点的过滤掉
-          .replace(/^0+(\d)/, '$1') // 第三步：第一位0开头，0后面为数字，则过滤掉，取后面的数字
-          .replace(/^\./, '0.') // 第四步：如果输入的第一位为小数点，则替换成 0. 实现自动补全
-          .match(reg)[0] || '' // 第五步：最终匹配得到结果 以数字开头，只有一个小数点，而且小数点后面只能有0到2位小数
+      const finalVal = assembleDecimalParts(val, {
+        precision,
+        integer,
+      })
       // eslint-disable-next-line no-useless-call
       input.call(this, finalVal)
     }
   }
 
-  get moneyExit() {
-    const { money } = this.$attrs
-    if (!money) return false
-    if (isBoolean(money)) {
-      return money
+  get digitExit() {
+    const { digit } = this.$attrs
+    if (!digit) return false
+    if (isBoolean(digit)) {
+      return digit
     }
-    return money
+    if (isObject(digit)) {
+      return true
+    }
+    return false
   }
 
-  get moneyConfig() {
-    const { money } = this.$attrs
-    return isObject(money) ? money : {}
+  get digitConfig() {
+    const { digit } = this.$attrs as any
+    const defaultThousandConfig = {
+      symbol: '',
+      separator: ',',
+    }
+    const defaultDigitConfig = {
+      precision: 2,
+      integer: 14,
+      thousand: defaultThousandConfig,
+    }
+    // digit: {}
+    if (isObject(digit)) {
+      const { thousand } = digit
+      if (isBoolean(thousand) && thousand) {
+        digit.thousand = {
+          symbol: '',
+          separator: ',',
+        }
+      }
+      if (isObject(thousand)) {
+        digit.thousand = Object.assign(defaultThousandConfig, digit.thousand)
+      }
+      return Object.assign(defaultDigitConfig, digit)
+    }
+    // digit: true
+    if (isBoolean(digit) && digit) {
+      return defaultDigitConfig
+    }
+    return defaultDigitConfig
+  }
+
+  get hasDirectives() {
+    const { thousand } = this.digitConfig
+    return this.digitExit && thousand
   }
 
   get directives() {
-    const directives = this.moneyExit
+    const directives = this.hasDirectives
       ? [
           {
             name: 'thousands',
-            value: this.moneyConfig,
+            value: this.digitConfig,
           },
         ]
       : []
@@ -50,16 +142,21 @@ export default class InputPlus extends Vue {
   }
 
   get listeners() {
-    const { precision = 2 } = this.moneyConfig as any
-    return this.moneyExit
+    return this.digitExit
       ? {
           ...this.$listeners,
-          input: (val: any) => this.customInput(val, precision),
+          input: this.customInput,
         }
       : this.$listeners
   }
 
   render(h: CreateElement): VNode {
+    const { value } = this.$attrs
+    const { precision, integer } = this.digitConfig as any
+    const showValue = assembleDecimalParts(value, {
+      precision,
+      integer,
+    })
     // 组装插槽及作用域插槽
     const scopedSlots: any = this.$scopedSlots
     const slots = []
@@ -77,8 +174,8 @@ export default class InputPlus extends Vue {
       <el-input
         {...{ directives: this.directives }}
         {...{
-          attrs: this.$attrs,
-          props: this.$attrs,
+          attrs: { ...this.$attrs, value: showValue },
+          props: { ...this.$attrs, value: showValue },
           on: this.listeners,
           scopedSlots: customScopedSlots,
         }}

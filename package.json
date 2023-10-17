@@ -11,6 +11,7 @@
     "build": "vue-cli-service build --target lib --name el-form-plus ./src/components/install.ts"
   },
   "dependencies": {
+    "currency.js": "^2.0.4",
     "dayjs": "^1.11.9",
     "lodash": "^4.17.20",
     "normalize.css": "^8.0.1",
