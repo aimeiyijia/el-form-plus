@@ -150,13 +150,22 @@ export default class InputPlus extends Vue {
       : this.$listeners
   }
 
-  render(h: CreateElement): VNode {
+  renderValue() {
     const { value } = this.$attrs
-    const { precision, integer } = this.digitConfig as any
-    const showValue = assembleDecimalParts(value, {
-      precision,
-      integer,
-    })
+
+    if (this.digitExit) {
+      const { precision, integer } = this.digitConfig as any
+      const showValue = assembleDecimalParts(value, {
+        precision,
+        integer,
+      })
+      return showValue
+    }
+    return value
+  }
+
+  render(h: CreateElement): VNode {
+    const showValue = this.renderValue()
     // 组装插槽及作用域插槽
     const scopedSlots: any = this.$scopedSlots
     const slots = []
