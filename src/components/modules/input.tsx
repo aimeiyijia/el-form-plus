@@ -3,81 +3,20 @@ import { Component } from 'vue-property-decorator'
 import { isBoolean, isFunction, isObject } from '../utils'
 import '../directives/thousands'
 
-function generateZero(length: number) {
-  if (length <= 0) {
-    return ''
-  }
-
-  return '0'.repeat(length)
-}
-
-type Options = {
-  precision: number
-  integer: number
-}
-type ExtractDecimalParts = {
-  decimalPart: string
-  fractionPart: string
-  hasPrecision: boolean
-}
+// const elInputRef = this.$refs.elInputRef as Vue
+//         const inputEl = elInputRef.$refs.input as HTMLInputElement
+//         setTimeout(() => {
+//           inputEl.setSelectionRange(1, 1)
+//         }, 0)
 
 @Component
 export default class InputPlus extends Vue {
-  extractDecimalParts(str: string, options?: Options): ExtractDecimalParts {
-    const { integer = 14, precision = 2 } = options || {}
-    const decimalIndex = str.indexOf('.')
-    if (decimalIndex !== -1) {
-      const decimalPart = str.substring(0, decimalIndex).slice(0, integer)
-      const fractionPart = str.substring(
-        decimalIndex + 1,
-        decimalIndex + 1 + precision
-      )
-      return { decimalPart, fractionPart, hasPrecision: true }
-    } else {
-      let hasPrecision = false
-      const decimalPart = str.slice(0, integer)
-      let fractionPart = ''
-      if (precision > 0) {
-        hasPrecision = true
-        fractionPart = generateZero(precision)
-        const elInputRef = this.$refs.elInputRef as Vue
-        const inputEl = elInputRef.$refs.input as HTMLInputElement
-        setTimeout(() => {
-          inputEl.setSelectionRange(1, 1)
-        }, 0)
-      }
-
-      return {
-        decimalPart,
-        fractionPart,
-        hasPrecision,
-      }
-    }
-  }
-
-  assembleDecimalParts(val: number | string, options?: Options) {
-    const str = val
-      .toString() // 第一步：转成字符串
-      .replace(/[^\d^.]+/g, '') // 第二步：把不是数字，不是小数点的过滤掉
-      .replace(/^0+(\d)/, '$1') // 第三步：第一位0开头，0后面为数字，则过滤掉，取后面的数字
-      .replace(/^\./, '0.') // 第四步：如果输入的第一位为小数点，则替换成 0. 实现自动补全
-    const parts = this.extractDecimalParts(str, options)
-    const { decimalPart, fractionPart, hasPrecision } = parts
-    if (hasPrecision) {
-      return decimalPart + '.' + fractionPart
-    }
-    return decimalPart
-  }
-
   customInput(val: any) {
-    const { precision, integer } = this.digitConfig as any
+    const { precision } = this.digitConfig
     const { input } = this.$listeners as any
     if (!input) return
     if (isFunction(input)) {
-      const finalVal = this.assembleDecimalParts(val, {
-        precision,
-        integer,
-      })
+      const finalVal = val
       input.call(this, finalVal)
     }
   }
@@ -155,14 +94,14 @@ export default class InputPlus extends Vue {
   renderValue() {
     const { value } = this.$attrs
 
-    if (value && this.digitExit) {
-      const { precision, integer } = this.digitConfig as any
-      const showValue = this.assembleDecimalParts(value, {
-        precision,
-        integer,
-      })
-      return showValue
-    }
+    // if (value && this.digitExit) {
+    //   const { precision, integer } = this.digitConfig as any
+    //   const showValue = this.assembleDecimalParts(value, {
+    //     precision,
+    //     integer,
+    //   })
+    //   return showValue
+    // }
     return value
   }
 

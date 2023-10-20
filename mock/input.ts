@@ -7,7 +7,7 @@ const input = {
   // 表单项绑定的值（字段名） 必需
   field: 'input',
   // 初始值
-  value: '',
+  value: 123456,
   customValue: 0,
   placeholder: '快捷方式配置的placeholder',
   // disabled: true,
