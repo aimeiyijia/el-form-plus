@@ -7,18 +7,15 @@ const input = {
   // 表单项绑定的值（字段名） 必需
   field: 'input',
   // 初始值
-  value: 123456789,
+  value: '',
   customValue: 0,
   placeholder: '快捷方式配置的placeholder',
   // disabled: true,
   // 表单项的配置项
   attrs: {
     digit: {
-      precision: 4,
+      precision: 2,
       integer: 14,
-      thousand: {
-        symbol: '$'
-      },
     },
     type: 'text',
     // 控件支持的原生属性也可以写在这里

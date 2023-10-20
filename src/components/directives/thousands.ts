@@ -18,7 +18,6 @@ function formatVal(val: number, options: Options) {
 const directive: DirectiveOptions = {
   inserted: function(el: HTMLElement, binding: DirectiveBinding) {
     const { value: bindingValue } = binding
-    console.log(bindingValue, '指令值')
     const { precision, thousand } = bindingValue
     let inputEl = el as HTMLElement as HTMLInputElement
     // 获取input节点
@@ -37,9 +36,9 @@ const directive: DirectiveOptions = {
 
     // 聚焦时转化为数字格式（去除千分位）
     inputEl.onfocus = () => {
-      inputEl.value = parseFloat(inputEl.value.replace(/,/g, '')).toFixed(
-        precision
-      )
+      inputEl.value = inputEl.value
+        ? parseFloat(inputEl.value.replace(/,/g, '')).toFixed(precision)
+        : inputEl.value
     }
 
     // 失去焦点时转化为千分位

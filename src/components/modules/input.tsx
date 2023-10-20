@@ -20,62 +20,64 @@ type ExtractDecimalParts = {
   fractionPart: string
   hasPrecision: boolean
 }
-function extractDecimalParts(
-  str: string,
-  options?: Options
-): ExtractDecimalParts {
-  const { integer = 14, precision = 2 } = options || {}
-  const decimalIndex = str.indexOf('.')
-  if (decimalIndex !== -1) {
-    const decimalPart = str.substring(0, decimalIndex).slice(0, integer)
-    const fractionPart = str.substring(
-      decimalIndex + 1,
-      decimalIndex + 1 + precision
-    )
-    return { decimalPart, fractionPart, hasPrecision: true }
-  } else {
-    let hasPrecision = false
-    const decimalPart = str.slice(0, integer)
-    let fractionPart = ''
-    if (precision > 0) {
-      hasPrecision = true
-      fractionPart = generateZero(precision)
-    }
-
-    return {
-      decimalPart,
-      fractionPart,
-      hasPrecision,
-    }
-  }
-}
-
-function assembleDecimalParts(val: number | string, options?: Options) {
-  const str = val
-    .toString() // 第一步：转成字符串
-    .replace(/[^\d^.]+/g, '') // 第二步：把不是数字，不是小数点的过滤掉
-    .replace(/^0+(\d)/, '$1') // 第三步：第一位0开头，0后面为数字，则过滤掉，取后面的数字
-    .replace(/^\./, '0.') // 第四步：如果输入的第一位为小数点，则替换成 0. 实现自动补全
-  const parts = extractDecimalParts(str, options)
-  const { decimalPart, fractionPart, hasPrecision } = parts
-  if (hasPrecision) {
-    return decimalPart + '.' + fractionPart
-  }
-  return decimalPart
-}
 
 @Component
 export default class InputPlus extends Vue {
+  extractDecimalParts(str: string, options?: Options): ExtractDecimalParts {
+    const { integer = 14, precision = 2 } = options || {}
+    const decimalIndex = str.indexOf('.')
+    if (decimalIndex !== -1) {
+      const decimalPart = str.substring(0, decimalIndex).slice(0, integer)
+      const fractionPart = str.substring(
+        decimalIndex + 1,
+        decimalIndex + 1 + precision
+      )
+      return { decimalPart, fractionPart, hasPrecision: true }
+    } else {
+      let hasPrecision = false
+      const decimalPart = str.slice(0, integer)
+      let fractionPart = ''
+      if (precision > 0) {
+        hasPrecision = true
+        fractionPart = generateZero(precision)
+        const elInputRef = this.$refs.elInputRef as Vue
+        const inputEl = elInputRef.$refs.input as HTMLInputElement
+        setTimeout(() => {
+          inputEl.setSelectionRange(1, 1)
+        }, 0)
+      }
+
+      return {
+        decimalPart,
+        fractionPart,
+        hasPrecision,
+      }
+    }
+  }
+
+  assembleDecimalParts(val: number | string, options?: Options) {
+    const str = val
+      .toString() // 第一步：转成字符串
+      .replace(/[^\d^.]+/g, '') // 第二步：把不是数字，不是小数点的过滤掉
+      .replace(/^0+(\d)/, '$1') // 第三步：第一位0开头，0后面为数字，则过滤掉，取后面的数字
+      .replace(/^\./, '0.') // 第四步：如果输入的第一位为小数点，则替换成 0. 实现自动补全
+    const parts = this.extractDecimalParts(str, options)
+    const { decimalPart, fractionPart, hasPrecision } = parts
+    if (hasPrecision) {
+      return decimalPart + '.' + fractionPart
+    }
+    return decimalPart
+  }
+
   customInput(val: any) {
     const { precision, integer } = this.digitConfig as any
     const { input } = this.$listeners as any
     if (!input) return
     if (isFunction(input)) {
-      const finalVal = assembleDecimalParts(val, {
+      const finalVal = this.assembleDecimalParts(val, {
         precision,
         integer,
       })
-      // eslint-disable-next-line no-useless-call
       input.call(this, finalVal)
     }
   }
@@ -153,9 +155,9 @@ export default class InputPlus extends Vue {
   renderValue() {
     const { value } = this.$attrs
 
-    if (this.digitExit) {
+    if (value && this.digitExit) {
       const { precision, integer } = this.digitConfig as any
-      const showValue = assembleDecimalParts(value, {
+      const showValue = this.assembleDecimalParts(value, {
         precision,
         integer,
       })
@@ -181,6 +183,7 @@ export default class InputPlus extends Vue {
     }
     return (
       <el-input
+        ref="elInputRef"
         {...{ directives: this.directives }}
         {...{
           attrs: { ...this.$attrs, value: showValue },
