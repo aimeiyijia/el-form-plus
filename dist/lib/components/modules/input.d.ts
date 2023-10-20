@@ -10,5 +10,6 @@ export default class InputPlus extends Vue {
         value: any;
     }[];
     get listeners(): Record<string, Function | Function[]>;
+    renderValue(): string;
     render(h: CreateElement): VNode;
 }
