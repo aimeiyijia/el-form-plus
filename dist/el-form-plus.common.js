@@ -7380,7 +7380,7 @@ function generateZero(length) {
 }
 function extractDecimalParts(str, options) {
   const {
-    integer = 14,
+    integer = 12,
     precision = 2
   } = options || {};
   const decimalIndex = str.indexOf('.');
@@ -7514,7 +7514,7 @@ let input_InputPlus = class InputPlus extends external_vue_default.a {
     };
     const defaultDigitConfig = {
       precision: 2,
-      integer: 14,
+      integer: 12,
       thousand: defaultThousandConfig
     };
     // digit: {}
