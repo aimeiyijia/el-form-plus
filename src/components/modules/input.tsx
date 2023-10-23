@@ -41,7 +41,7 @@ export default class InputPlus extends Vue {
     }
     const defaultDigitConfig = {
       precision: 2,
-      integer: 14,
+      integer: 12,
       thousand: defaultThousandConfig,
     }
     // digit: {}

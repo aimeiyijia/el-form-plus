@@ -21,7 +21,7 @@ function generateZero(length: number) {
 }
 
 function extractDecimalParts(str: string, options?: Options): any {
-  const { integer = 14, precision = 2 } = options || {}
+  const { integer = 12, precision = 2 } = options || {}
   const decimalIndex = str.indexOf('.')
   if (decimalIndex !== -1) {
     const decimalPart = str.substring(0, decimalIndex).slice(0, integer)
