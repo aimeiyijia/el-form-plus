@@ -297,6 +297,34 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
       )
     }
 
+    // 拼装el-form-item插槽
+    const getElFormItemScopedSlots = (
+      field: string,
+      config: any,
+      mergeConfig: any
+    ) => {
+      const { scopedSlots = {} } = config
+      const elFormItemScopedSlots: { [key: string]: any } = {}
+      const { label: labelSlots } = scopedSlots
+      if (labelSlots) {
+        if (isFunction(labelSlots)) {
+          elFormItemScopedSlots.label = () =>
+            labelSlots({ h, value: model[field], config, mergeConfig })
+        }
+        const labelSlotsRender = this.$scopedSlots[labelSlots]
+        if (isString(labelSlots) && labelSlotsRender) {
+          elFormItemScopedSlots.label = () =>
+            labelSlotsRender({
+              h,
+              value: model[field],
+              config,
+              mergeConfig,
+            })
+        }
+      }
+      return elFormItemScopedSlots
+    }
+
     // 渲染 el-form-item
     const renderElFormItem = (o: any) => {
       const { config: unifyConfig = {} } = this.unifyOptions
@@ -312,6 +340,12 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
       } = mergeConfig
       // 将config中一些常用的配置提取出来，
       const shortcutConfig = { label }
+
+      const elFormItemScopedSlots = getElFormItemScopedSlots(
+        field,
+        o,
+        mergeConfig
+      )
 
       const isHasField = this.isFieldExist(singleFormAttrs)
 
@@ -346,6 +380,7 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
                   ...shortcutConfig,
                   ...omit(mergeConfig, cancelrule ? ['rules'] : []),
                 },
+                scopedSlots: elFormItemScopedSlots,
               }}
             >
               <RowEl {...{ props: { ...globalRowConfig, ...layout } }}>
