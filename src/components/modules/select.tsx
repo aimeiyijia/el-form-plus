@@ -2,6 +2,7 @@ import Vue, { VNode, CreateElement } from 'vue'
 import { Component } from 'vue-property-decorator'
 import type { Option } from 'element-ui'
 import omit from 'lodash/omit'
+import { cloneDeep } from 'lodash'
 
 function transformKeyValue(
   o: any,
@@ -51,7 +52,7 @@ export default class SelectPlus extends Vue {
       })
     }
     const renderGroupOption = () => {
-      const { groupOptions = [], options = [] } = this.$attrs
+      const { groupOptions = [], options = [] } = cloneDeep(this.$attrs)
       const optionEl: any = []
       // groupOptions只要存在，就渲染分组select
       if (groupOptions) {
