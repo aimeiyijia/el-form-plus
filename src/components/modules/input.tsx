@@ -1,7 +1,7 @@
 import Vue, { VNode, CreateElement } from 'vue'
-import { Component } from 'vue-property-decorator'
+import { Component, Watch } from 'vue-property-decorator'
 import { isBoolean, isFunction, isObject } from '../utils'
-import '../directives/thousands'
+import { formatMoney } from '../directives/thousands'
 
 // const elInputRef = this.$refs.elInputRef as Vue
 //         const inputEl = elInputRef.$refs.input as HTMLInputElement
@@ -11,6 +11,7 @@ import '../directives/thousands'
 
 @Component
 export default class InputPlus extends Vue {
+  allowThosands = true
   customInput(val: any) {
     const { precision } = this.digitConfig
     const { input } = this.$listeners as any
@@ -18,6 +19,24 @@ export default class InputPlus extends Vue {
     if (isFunction(input)) {
       const finalVal = val
       input.call(this, finalVal)
+    }
+  }
+
+  customFocus(e: Event) {
+    this.allowThosands = false
+    const { focus } = this.$listeners as any
+    if (!focus) return
+    if (isFunction(focus)) {
+      focus.call(this, e)
+    }
+  }
+
+  customBlur(e: Event) {
+    this.allowThosands = true
+    const { blur } = this.$listeners as any
+    if (!blur) return
+    if (isFunction(blur)) {
+      blur.call(this, e)
     }
   }
 
@@ -87,12 +106,20 @@ export default class InputPlus extends Vue {
       ? {
           ...this.$listeners,
           input: this.customInput,
+          focus: (e: Event) => this.customFocus(e),
+          blur: (e: Event) => this.customBlur(e),
         }
       : this.$listeners
   }
 
   renderValue() {
     const { value } = this.$attrs
+    let showValue = ''
+    if (value && this.digitExit) {
+      showValue = this.allowThosands
+        ? formatMoney(value, this.digitConfig)
+        : value
+    }
 
     // if (value && this.digitExit) {
     //   const { precision, integer } = this.digitConfig as any
@@ -102,7 +129,7 @@ export default class InputPlus extends Vue {
     //   })
     //   return showValue
     // }
-    return value
+    return showValue
   }
 
   render(h: CreateElement): VNode {

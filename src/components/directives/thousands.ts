@@ -52,7 +52,6 @@ function assembleDecimalParts(val: number | string, options?: Options) {
   // .replace(/^0+(\d)/, '$1') // 第三步：第一位0开头，0后面为数字，则过滤掉，取后面的数字
   // .replace(/^\./, '') // 第四步：如果输入的第一位为小数点，替换为空
   const parts = extractDecimalParts(str, options)
-  console.log(parts, 'parts')
   const { decimalPart, fractionPart, hasPrecision } = parts
   if (hasPrecision) {
     return decimalPart + '.' + fractionPart
@@ -67,7 +66,7 @@ function addCommas(number: any, options: Options) {
   return symbol + parts.join('.')
 }
 
-function formatMoney(num: any, options: Options) {
+export function formatMoney(num: any, options: Options) {
   const decimalPartsValue = assembleDecimalParts(num, options)
   const thousands = addCommas(decimalPartsValue, options)
   return thousands
