@@ -67,7 +67,7 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
   }
 
   get cacheModelData() {
-    return JSON.parse(JSON.stringify(this.modelData))
+    return cloneDeep(this.modelData)
   }
 
   objDiff(a: IModel, b: IModel) {
@@ -91,7 +91,7 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
       if (option) {
         const { on = {} } = option as any
         const { modelChange } = on
-        modelChange && isFunction(modelChange) && modelChange(value[o])
+        modelChange && isFunction(modelChange) && modelChange.call(this, value[o], this.options, this.model, this)
       }
     })
   }
@@ -372,6 +372,7 @@ export default class ElFormPlus extends Mixins(MethodsMixins) {
         <ColEl {...{ props: { ...globalColConfig, ...col } }}>
           <ContainerEl>
             <el-form-item
+              key={field}
               class={mergeConfig.class}
               style={mergeConfig.style}
               {...{

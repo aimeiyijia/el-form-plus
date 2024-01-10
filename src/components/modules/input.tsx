@@ -114,7 +114,7 @@ export default class InputPlus extends Vue {
 
   renderValue() {
     const { value } = this.$attrs
-    let showValue = ''
+    let showValue = value
     if (value && this.digitExit) {
       showValue = this.allowThosands
         ? formatMoney(value, this.digitConfig)

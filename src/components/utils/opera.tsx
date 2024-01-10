@@ -93,8 +93,7 @@ export function getByField(
 ): any {
   try {
     const target = getTarget(options, fieldName)
-    objectPath.get(target, path, defaultValue)
-    return options
+    return objectPath.get(target, path, defaultValue)
   } catch (error) {
     console.error(error, 'getByField')
   }
