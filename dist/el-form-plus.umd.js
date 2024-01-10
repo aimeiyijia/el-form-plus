@@ -7421,7 +7421,6 @@ function assembleDecimalParts(val, options) {
   // .replace(/^0+(\d)/, '$1') // 第三步：第一位0开头，0后面为数字，则过滤掉，取后面的数字
   // .replace(/^\./, '') // 第四步：如果输入的第一位为小数点，替换为空
   const parts = extractDecimalParts(str, options);
-  console.log(parts, 'parts');
   const {
     decimalPart,
     fractionPart,
@@ -7481,12 +7480,17 @@ external_vue_default.a.directive('thousands', directive);
 
 
 
+
 // const elInputRef = this.$refs.elInputRef as Vue
 //         const inputEl = elInputRef.$refs.input as HTMLInputElement
 //         setTimeout(() => {
 //           inputEl.setSelectionRange(1, 1)
 //         }, 0)
 let input_InputPlus = class InputPlus extends external_vue_default.a {
+  constructor() {
+    super(...arguments);
+    _defineProperty(this, "allowThosands", true);
+  }
   customInput(val) {
     const {
       precision
@@ -7498,6 +7502,26 @@ let input_InputPlus = class InputPlus extends external_vue_default.a {
     if (isFunction(input)) {
       const finalVal = val;
       input.call(this, finalVal);
+    }
+  }
+  customFocus(e) {
+    this.allowThosands = false;
+    const {
+      focus
+    } = this.$listeners;
+    if (!focus) return;
+    if (isFunction(focus)) {
+      focus.call(this, e);
+    }
+  }
+  customBlur(e) {
+    this.allowThosands = true;
+    const {
+      blur
+    } = this.$listeners;
+    if (!blur) return;
+    if (isFunction(blur)) {
+      blur.call(this, e);
     }
   }
   get digitExit() {
@@ -7564,13 +7588,19 @@ let input_InputPlus = class InputPlus extends external_vue_default.a {
   get listeners() {
     return this.digitExit ? {
       ...this.$listeners,
-      input: this.customInput
+      input: this.customInput,
+      focus: e => this.customFocus(e),
+      blur: e => this.customBlur(e)
     } : this.$listeners;
   }
   renderValue() {
     const {
       value
     } = this.$attrs;
+    let showValue = value;
+    if (value && this.digitExit) {
+      showValue = this.allowThosands ? formatMoney(value, this.digitConfig) : value;
+    }
     // if (value && this.digitExit) {
     //   const { precision, integer } = this.digitConfig as any
     //   const showValue = this.assembleDecimalParts(value, {
@@ -7579,7 +7609,7 @@ let input_InputPlus = class InputPlus extends external_vue_default.a {
     //   })
     //   return showValue
     // }
-    return value;
+    return showValue;
   }
   render(h) {
     const showValue = this.renderValue();
@@ -7734,6 +7764,7 @@ rate_RatePlus = __decorate([vue_class_component_esm], rate_RatePlus);
 
 
 
+
 function transformKeyValue(o, _ref) {
   let {
     labelName = 'label',
@@ -7797,7 +7828,7 @@ let select_SelectPlus = class SelectPlus extends external_vue_default.a {
       const {
         groupOptions = [],
         options = []
-      } = this.$attrs;
+      } = Object(lodash["cloneDeep"])(this.$attrs);
       const optionEl = [];
       // groupOptions只要存在，就渲染分组select
       if (groupOptions) {
@@ -8764,6 +8795,7 @@ const SuperCustom = super_custom;
 
 
 
+
 // 样式
 
 // 取出vnode匹配表
@@ -8795,7 +8827,7 @@ let form_ElFormPlus = class ElFormPlus extends mixins(methods) {
     this.$emit('change', this.model);
   }
   get cacheModelData() {
-    return JSON.parse(JSON.stringify(this.modelData));
+    return Object(lodash["cloneDeep"])(this.modelData);
   }
   objDiff(a, b) {
     const c = [];
@@ -8820,7 +8852,7 @@ let form_ElFormPlus = class ElFormPlus extends mixins(methods) {
         const {
           modelChange
         } = on;
-        modelChange && Object(lodash["isFunction"])(modelChange) && modelChange(value[o]);
+        modelChange && Object(lodash["isFunction"])(modelChange) && modelChange.call(this, value[o], this.options, this.model, this);
       }
     });
   }
@@ -9025,6 +9057,36 @@ let form_ElFormPlus = class ElFormPlus extends mixins(methods) {
         }
       }]))])]);
     };
+    // 拼装el-form-item插槽
+    const getElFormItemScopedSlots = (field, config, mergeConfig) => {
+      const {
+        scopedSlots = {}
+      } = config;
+      const elFormItemScopedSlots = {};
+      const {
+        label: labelSlots
+      } = scopedSlots;
+      if (labelSlots) {
+        if (Object(lodash["isFunction"])(labelSlots)) {
+          elFormItemScopedSlots.label = () => labelSlots({
+            h,
+            value: model[field],
+            config,
+            mergeConfig
+          });
+        }
+        const labelSlotsRender = this.$scopedSlots[labelSlots];
+        if (Object(lodash["isString"])(labelSlots) && labelSlotsRender) {
+          elFormItemScopedSlots.label = () => labelSlotsRender({
+            h,
+            value: model[field],
+            config,
+            mergeConfig
+          });
+        }
+      }
+      return elFormItemScopedSlots;
+    };
     // 渲染 el-form-item
     const renderElFormItem = o => {
       const {
@@ -9052,6 +9114,7 @@ let form_ElFormPlus = class ElFormPlus extends mixins(methods) {
       const shortcutConfig = {
         label
       };
+      const elFormItemScopedSlots = getElFormItemScopedSlots(field, o, mergeConfig);
       const isHasField = this.isFieldExist(singleFormAttrs);
       // 一个el-form-item占据的空间
       const ColEl = this.layout ? 'el-col' : 'FFragment';
@@ -9075,17 +9138,18 @@ let form_ElFormPlus = class ElFormPlus extends mixins(methods) {
             ...col
           }
         }
-      }, [h(ContainerEl, [h("el-form-item", {
+      }, [h(ContainerEl, [h("el-form-item", helper_default()([{
+        "key": field,
         "class": mergeConfig.class,
-        "style": mergeConfig.style,
-        "props": {
-          ...{
-            prop: field,
-            ...shortcutConfig,
-            ...omit_default()(mergeConfig, cancelrule ? ['rules'] : [])
-          }
-        }
-      }, [h(RowEl, {
+        "style": mergeConfig.style
+      }, {
+        props: {
+          prop: field,
+          ...shortcutConfig,
+          ...omit_default()(mergeConfig, cancelrule ? ['rules'] : [])
+        },
+        scopedSlots: elFormItemScopedSlots
+      }]), [h(RowEl, {
         "props": {
           ...{
             ...globalRowConfig,
@@ -9259,8 +9323,7 @@ function emptysByField(options, fieldName, path) {
 function getByField(options, fieldName, path, defaultValue) {
   try {
     const target = getTarget(options, fieldName);
-    object_path.get(target, path, defaultValue);
-    return options;
+    return object_path.get(target, path, defaultValue);
   } catch (error) {
     console.error(error, 'getByField');
   }

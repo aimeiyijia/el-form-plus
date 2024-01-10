@@ -1,7 +1,9 @@
 import Vue, { VNode, CreateElement } from 'vue';
-import '../directives/thousands';
 export default class InputPlus extends Vue {
+    allowThosands: boolean;
     customInput(val: any): void;
+    customFocus(e: Event): void;
+    customBlur(e: Event): void;
     get digitExit(): string | boolean;
     get digitConfig(): any;
     get hasDirectives(): any;
